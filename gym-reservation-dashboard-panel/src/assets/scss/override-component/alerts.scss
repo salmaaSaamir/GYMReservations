@@ -1,0 +1,11 @@
+div:where(.swal2-icon).swal2-warning {
+    border-color: rgb(221, 0, 92) !important;
+    color: #dc3545 !important;
+}
+
+div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm) {
+
+    background-color: #f8c20a !important;
+    color: black !important;
+
+}

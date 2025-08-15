@@ -1,0 +1,79 @@
+<!-- Loader -->
+<div class="rope-loader" *ngIf="isSpinner">
+  <div class="content text-center">
+    <div class="jumper">
+      <div class="head"></div>
+    </div>
+    <div class="rope"></div>
+    <div class="loading-text">Beast Loading</div>
+  </div>
+</div>
+
+<!-- Login Page -->
+<div class="container-fluid d-flex justify-content-center align-items-center bg-light loginPage" style="min-height: 100vh;">
+  <div class="row w-100 justify-content-center">
+    <div class="col-lg-4 col-md-6 col-sm-8 d-flex align-items-center">
+      <div class="card shadow-lg w-100 border-0">
+        <div class="card-body p-4">
+          
+          <!-- Logo -->
+          <div class="text-center mb-4">
+            <a [routerLink]="['/dashboard']">
+              <img 
+                src="./assets/images/logos/logo.jpg" 
+                class="rounded-circle" 
+                alt="logo" 
+                width="120" 
+                height="120" 
+              />
+            </a>
+          </div>
+
+          <!-- Form -->
+          <form [formGroup]="form" (ngSubmit)="login()">
+            <!-- Email -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Email</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                placeholder="Enter your email" 
+                formControlName="Email"
+              />
+            </div>
+
+            <!-- Password -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Password</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                placeholder="Enter your password" 
+                formControlName="Password"
+              />
+            </div>
+
+            <!-- Remember Me -->
+            <div class="form-check mb-3">
+              <input 
+                type="checkbox" 
+                class="form-check-input" 
+                id="rememberMe" 
+                formControlName="IsRememberMe"
+              />
+              <label class="form-check-label" for="rememberMe">
+                Remember this Device
+              </label>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary w-100">
+              Sign In
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

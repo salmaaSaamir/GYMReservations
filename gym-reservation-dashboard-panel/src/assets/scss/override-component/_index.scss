@@ -1,0 +1,95 @@
+// @use "badge";
+@use "button";
+// @use "button-toggle";
+@use "card";
+// @use "checkbox";
+@use "alerts";
+@use "dialog";
+// @use "fab";
+@use "form-field";
+// @use "list";
+@use "menu";
+// @use "theme";
+// @use "table";
+// @use "typography";
+// @use "drawer";
+// @use "progress";
+
+
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+
+
+@font-face {
+    font-family: 'Michroma';
+    src: url('/assets/fonts/Michroma-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; // Improves loading
+}
+
+
+// 1️⃣ Base variables
+// Set as default font for your app
+$font-family: 'Michroma', sans-serif;
+
+// Bootstrap base override
+$font-family-base: $font-family;
+// If you want Bootstrap to compile successfully, give it fallback HEX values
+// while still using CSS variables in your runtime styles
+$primary: rgb(221, 0, 92);
+$secondary: #6c757d; // Fallback for Bootstrap compilation
+$success: #36c76c;
+$warning: #f8c20a;
+$info: #17a2b8; // Fallback for Bootstrap compilation
+$danger: #dc3545; // Fallback for Bootstrap compilation
+$light: #f4f7fb;
+$dark: #0a081c;
+$white: #ffffff;
+
+$layout-bg: #f4f7fb;
+$text-color: #212529; // Fallback for Bootstrap
+
+// 2️⃣ Override Bootstrap defaults
+$font-family-base: $font-family;
+$body-bg: $layout-bg;
+$body-color: $text-color;
+
+$theme-colors: (
+    "primary": $primary,
+    "secondary": $secondary,
+    "success": $success,
+    "warning": $warning,
+    "danger": $danger,
+    "light": $light,
+    "dark": $dark,
+    "info": $info
+);
+
+// 3️⃣ Optional radius override
+$border-radius: 12px;
+
+// 4️⃣ Import Bootstrap after overrides
+@import "bootstrap/scss/bootstrap";
+
+body {
+    font-family: $font-family-base !important;
+    text-transform: capitalize;
+    background: #9d818930;
+}
+ .body-wrapper {
+    margin: 20px;
+  }
+// 5️⃣ Apply CSS variables to runtime (not during SCSS compilation)
+:root {
+    --mat-sys-secondary: #6c757d;
+    --mat-sys-error: #dc3545;
+    --mat-sys-on-background: #212529;
+}
+.bi {
+    font-size: 18px;
+}
+
+.bi-asterisk{
+    font-size: 8px;
+    color: red;
+}

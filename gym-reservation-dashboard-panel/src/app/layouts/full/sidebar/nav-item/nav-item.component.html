@@ -1,0 +1,62 @@
+<!-- navCap section -->
+<ng-container *ngIf="item.navCap">
+  <span class="sidebar-divider d-block my-2 border-top" *ngIf="item.divider"></span>
+
+  <div class="nav-caption text-uppercase fw-bold small text-muted px-3 py-2">
+    {{ item.navCap }}
+  </div>
+</ng-container>
+
+<!-- normal internal link -->
+<ng-container *ngIf="!item.navCap && !item.external">
+  <a href="javascript:void(0)" (click)="onItemSelected(item)"
+    class="d-flex align-items-center px-3 py-2 text-decoration-none menu-list-item" [ngClass]="{
+      'active bg-primary text-white': item.route ? router.isActive(item.route, true) : false,
+      'expanded': expanded,
+      'disabled text-muted': item.disabled
+    }">
+    <!-- <i class="bi" [ngClass]="item.iconName"></i> -->
+
+    <i-tabler [name]="item.iconName"></i-tabler>
+
+    <span class="ms-2 hide-menu flex-grow-1">{{ item.displayName }}</span>
+
+    <!-- children indicator -->
+    <ng-container *ngIf="item.children && item.children.length">
+      <span class="ms-auto d-flex align-items-center">
+        <!-- chip -->
+        <ng-container *ngIf="item.chip">
+          <span class="badge rounded-pill ms-2" [ngClass]="item.chipClass">
+            {{ item.chipContent }}
+          </span>
+        </ng-container>
+
+        <i class="bi ms-2" [ngClass]="expanded ? 'bi-chevron-down' : 'bi-chevron-right'"></i>
+      </span>
+    </ng-container>
+  </a>
+</ng-container>
+
+<!-- external link -->
+<ng-container *ngIf="!item.navCap && item.external">
+  <a href="javascript:void(0)" (click)="openExternalLink(item.route)" target="_blank"
+    class="d-flex align-items-center px-3 py-2 text-decoration-none menu-list-item">
+    <i class="bi" [ngClass]="item.iconName"></i>
+    <i-tabler name="x"></i-tabler>
+
+    <span class="ms-2 hide-menu flex-grow-1">{{ item.displayName }}</span>
+
+    <ng-container *ngIf="item.chip">
+      <span class="badge rounded-pill ms-auto" [ngClass]="item.chipClass">
+        {{ item.chipContent }}
+      </span>
+    </ng-container>
+  </a>
+</ng-container>
+
+<!-- children -->
+<ng-container *ngIf="expanded">
+  <ng-container *ngFor="let child of item.children; trackBy: trackChild">
+    <app-nav-item [item]="child" (click)="onSubItemSelected(child)" [depth]="depth + 1"></app-nav-item>
+  </ng-container>
+</ng-container>

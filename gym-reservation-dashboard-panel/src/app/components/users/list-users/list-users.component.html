@@ -1,0 +1,51 @@
+<div  *ngIf="isSpinner">
+<app-loader></app-loader>
+</div>
+
+<div *ngIf="!isSpinner">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Users</h3>
+    <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddUser()">
+      <i class="bi bi-plus-lg"></i> Add User
+    </button>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>First</th>
+        <th>Last</th>
+        <th>Email</th>
+        <th class="text-end">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let u of users">
+        <td>{{ u.Id }}</td>
+        <td>{{ u.FName }}</td>
+        <td>{{ u.LName }}</td>
+        <td>{{ u.Email }}</td>
+        <td class="text-end">
+             <button class="btn btn-sm btn-outline-info iconButton" (click)="openAddUserMenu(u.Id)">
+            <i class="bi bi-menu-down"></i> </button>
+          <button class="btn btn-sm btn-outline-secondary me-1 iconButton" (click)="openAddUser(u)">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button class="btn btn-sm btn-outline-danger iconButton" (click)="deleteUser(u.Id)">
+            <i class="bi bi-trash"></i>
+          </button>
+
+       
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
+<!-- Add/Edit User Form -->
+<app-add-user *ngIf="isAddUser" [user]="selectedUser" (closeAddUserModal)="closeAddUserModal()">
+</app-add-user>
+
+<app-add-user-menu *ngIf="isAddUserMenu" [userId]="selectedUserId" (menusSaved)="closeAddUserMenuModal()">
+</app-add-user-menu>

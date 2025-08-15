@@ -1,0 +1,40 @@
+.form-control {
+    margin: 10px 0px;
+}
+
+.form-check .form-check-input {
+
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+::placeholder {
+  color: #87818166 !important;  // Pick your color
+  opacity: 1; // Bootstrap sometimes lowers opacity
+}
+
+
+.mat-select-panel {
+ 
+    background: #edf0f4;
+    margin: 55px 0px;
+   
+}.mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate {
+    background: rgb(221, 0, 92);
+}.mat-option-text {
+  
+    color: black;
+}
+.mat-form-field {
+
+    margin: 15px;
+}.mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 1px;
+    background: rgb(221, 0, 92) !important;
+}.mat-select-arrow {
+    color: rgb(221, 0, 92);
+}.mat-form-field-infix {
+  
+    width: 25vw !important;
+}
