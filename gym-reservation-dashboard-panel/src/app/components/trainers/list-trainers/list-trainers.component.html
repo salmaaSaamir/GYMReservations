@@ -1,0 +1,65 @@
+<div *ngIf="isSpinner">
+  <app-loader></app-loader>
+</div>
+
+<div *ngIf="!isSpinner">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Trainers</h3>
+    <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddTrainer()">
+      <i class="bi bi-plus-lg"></i> Add Trainer
+    </button>
+  </div>
+
+  <div class="table-responsive">
+
+
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>First</th>
+          <th>Last</th>
+          <th>Email</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of Trainers">
+          <td>{{ u.Id }}</td>
+          <td>{{ u.Name }}</td>
+          <td>{{ u.Phone }}</td>
+          <td>{{ u.Email }}</td>
+          <td class="text-end">
+
+            <button class="btn btn-sm btn-outline-secondary me-1 iconButton" (click)="openAddTrainer(u)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger iconButton" (click)="deleteTrainer(u.Id)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="Trainers.length === 0">
+          <td colspan="5" class="text-center">No Trainers found</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Page size selector -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-center">
+      <label for="pageSize" class="me-2" style="width: 450px;">Items per page:</label>
+      <select id="pageSize" class="form-select form-select-sm" [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+        <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
+      </select>
+    </div>
+    <div class="text-muted">
+      {{ (currentPage - 1) * pageSize + 1 }} to {{ getShowingTo() }} of {{ totalCount }} Trainers
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Trainer Form -->
+<app-add-trainer *ngIf="isAddTrainer" [trainer]="selectedTrainer" [lastIDCard]="LastIDCard"
+  (closeAddTrainerModal)="closeAddTrainerModal()">
+</app-add-trainer>

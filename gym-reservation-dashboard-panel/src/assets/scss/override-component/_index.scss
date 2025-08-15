@@ -10,9 +10,9 @@
 // @use "list";
 @use "menu";
 // @use "theme";
-// @use "table";
+@use "table";
 // @use "typography";
-// @use "drawer";
+@use "drawer";
 // @use "progress";
 
 
@@ -85,6 +85,8 @@ body {
     --mat-sys-error: #dc3545;
     --mat-sys-on-background: #212529;
 }
+
+
 .bi {
     font-size: 18px;
 }

@@ -49,12 +49,7 @@ namespace gym_reservation_backend.Context
                 .HasForeignKey(r => r.MemberId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Configure Trainer relationship
-            modelBuilder.Entity<Reservation>()
-                .HasOne(r => r.Trainer)
-                .WithMany(t => t.Reservations)
-                .HasForeignKey(r => r.TrainerId)
-                .OnDelete(DeleteBehavior.NoAction);
+           
         }
     }
 }

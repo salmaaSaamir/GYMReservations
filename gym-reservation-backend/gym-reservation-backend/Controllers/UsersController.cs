@@ -24,7 +24,7 @@ namespace gym_reservation_backend.Controllers
             var res = await _user.GetUserMenus(userId);
             return Ok(JsonConvert.SerializeObject(res));
         }
-        // GET: api/Users/GetSystemMenus/5
+        // GET: api/Users/GetSystemMenus
         [HttpGet]
         public async Task<IActionResult> GetSystemMenus()
         {

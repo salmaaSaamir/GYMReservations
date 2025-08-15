@@ -1,0 +1,59 @@
+<!-- Modal -->
+<div class="modal fade" id="addTrainerModal" aria-labelledby="addTrainerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-sm">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addTrainerModalLabel">
+          {{ form.value.Id ? 'Edit Trainer' : 'Add Trainer' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <div class="mb-3">
+            <label>Name <i class="bi bi-asterisk"></i></label>
+            <input type="text" class="form-control" formControlName="Name">
+            <div *ngIf="form.get('Name')?.invalid && form.get('Name')?.touched" class="text-danger">
+              <small *ngIf="form.get('Name')?.errors?.['required']">Name is required.</small>
+              <small *ngIf="form.get('Name')?.errors?.['minlength']">Name must be at least 2 characters long.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label>Email <i class="bi bi-asterisk"></i></label>
+            <input type="email" class="form-control" formControlName="Email">
+            <div *ngIf="form.get('Email')?.invalid && form.get('Email')?.touched" class="text-danger">
+              <small *ngIf="form.get('Email')?.errors?.['required']">Email is required.</small>
+              <small *ngIf="form.get('Email')?.errors?.['email']">Invalid email format.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label>Phone <i class="bi bi-asterisk"></i></label>
+            <input type="tel" class="form-control" formControlName="Phone">
+            <div *ngIf="form.get('Phone')?.invalid && form.get('Phone')?.touched" class="text-danger">
+              <small *ngIf="form.get('Phone')?.errors?.['required']">Phone is required.</small>
+              <small *ngIf="form.get('Phone')?.errors?.['pattern']">Please enter a valid phone number.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label>ID Card</label>
+            <input type="text" class="form-control" [disabled]="true" formControlName="IDCard">
+          </div>
+
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="isGeneralCheck" formControlName="IsGeneralTrainer">
+            <label class="form-check-label" for="isGeneralCheck">Is General Trainer</label>
+          </div>
+
+          <div class="d-flex justify-content-end gap-3 mt-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

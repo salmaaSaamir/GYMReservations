@@ -12,14 +12,16 @@ import Swal from 'sweetalert2';
 })
 export class ListUsersComponent {
   users: User[] = [];
-  page = 1;
-  pageSize = 20;
+  currentPage = 1;  // Always start with page 1
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 20, 50];
   isSpinner = true;
-  TotalCount = 0;
+  totalCount = 0;
   isAddUser = false;
   selectedUser?: User;
   isAddUserMenu = false;
   selectedUserId = 0;
+
   constructor(private userService: UserService, private toaster: ToastrService) { }
 
   async ngOnInit() {
@@ -30,38 +32,54 @@ export class ListUsersComponent {
     try {
       this.isSpinner = true;
       const res: any = await lastValueFrom(
-        this.userService.getUsers(this.page, this.pageSize)
+        this.userService.getUsers(this.currentPage, this.pageSize)
       );
-      console.log('Users loaded:', res);
+      
       if (res.State) {
-        this.TotalCount = res.Data[0];
-        this.page = res.Data[1];
+        this.totalCount = res.Data[0];
+        // Ensure currentPage is within valid range
+        const totalPages = Math.ceil(this.totalCount / this.pageSize);
+        this.currentPage = Math.max(1, Math.min(res.Data[1] || 1, totalPages));
         this.pageSize = res.Data[2];
         this.users = res.Data[3];
       }
     } catch (error) {
       console.error('Error loading users', error);
+      this.toaster.error('Failed to load users');
     } finally {
       this.isSpinner = false;
     }
+  }
+
+  onPageChange(page: number) {
+    this.currentPage = page;
+    this.loadUsers();
+  }
+
+  onPageSizeChange() {
+    this.currentPage = 1;
+    this.loadUsers();
   }
 
   openAddUser(user?: User) {
     this.selectedUser = user;
     this.isAddUser = true;
   }
+
   openAddUserMenu(Id: number) {
     this.selectedUserId = Id;
     this.isAddUserMenu = true;
   }
+
   async closeAddUserModal() {
     this.isAddUser = false;
     await this.loadUsers();
-
   }
+
   closeAddUserMenuModal() {
     this.isAddUserMenu = false;
   }
+
   async deleteUser(id: number) {
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -83,4 +101,8 @@ export class ListUsersComponent {
       }
     }
   }
+  // In your component class
+getShowingTo(): number {
+  return Math.min(this.currentPage * this.pageSize, this.totalCount);
+}
 }

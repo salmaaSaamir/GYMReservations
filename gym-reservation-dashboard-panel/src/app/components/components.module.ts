@@ -8,12 +8,19 @@ import { TablerIconsModule } from 'angular-tabler-icons';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material.module';
 import { SharedModule } from '../shared/shared.module';
+import { ListTrainersComponent } from './trainers/list-trainers/list-trainers.component';
+import { AddTrainerComponent } from './trainers/add-trainer/add-trainer.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
     ListUsersComponent,
     AddUserComponent,
-    AddUserMenuComponent
+    AddUserMenuComponent,
+    ListTrainersComponent,
+    AddTrainerComponent,
+    ListTrainersComponent,
+    AddTrainerComponent
   ],
   imports: [
     CommonModule,
@@ -21,8 +28,10 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     ReactiveFormsModule,
     TablerIconsModule,
-  
-  MaterialModule,SharedModule
+
+    MaterialModule, 
+    SharedModule,
+    NgxPaginationModule
   ],
 
 })

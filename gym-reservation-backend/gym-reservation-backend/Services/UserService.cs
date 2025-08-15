@@ -143,18 +143,27 @@ namespace gym_reservation_backend.Services
             
             try
             {
-                var existing = await _dbContext.Users.FindAsync(id);
-                if (existing == null)
+
+                if (IsExists(id))
+                {
+                    var Trainer = await _dbContext.Trainers.FirstAsync(x => x.Id == id);
+
+                    _dbContext.Trainers.Remove(Trainer);
+                    await _dbContext.SaveChangesAsync();
+
+
+                 
+
+                    _response.State = true;
+                }
+                else
                 {
                     _response.State = false;
                     _response.ErrorMessage = "User not found";
                     return _response;
                 }
 
-                _dbContext.Users.Remove(existing);
-                await _dbContext.SaveChangesAsync();
 
-                _response.State = true;
             }
             catch (Exception ex)
             {
@@ -162,6 +171,10 @@ namespace gym_reservation_backend.Services
                 _response.ErrorMessage = $"Error deleting user: {ex.Message}";
             }
             return _response;
+        }
+        private bool IsExists(int id)
+        {
+            return _dbContext.Users.Any(e => e.Id == id);
         }
         public async Task<ServiceResponse> SaveUserMenus(UserMenuRequest request)
         {
