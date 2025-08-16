@@ -1,0 +1,86 @@
+<div *ngIf="isSpinner">
+    <app-loader></app-loader>
+</div>
+
+<div *ngIf="!isSpinner">
+    <div class="d-flex justify-content-between align-items-center  flex-wrap mb-3">
+        <h3>Classs</h3>
+        <div class="d-flex gap-3 align-items-center flex-wrap my-2">
+            <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddClass()">
+                <i class="bi bi-plus-lg"></i> Add Class
+            </button>
+            <button class="btn btn-info d-flex align-items-center gap-1" >
+                <i class="bi bi-card-image"></i> Get Weekly Schadual
+            </button>
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+
+                    <th>Limit</th>
+                    <th>Trainer</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let u of Classs">
+                    <td>{{ u.Id }}</td>
+                    <td>{{ u.Name }}</td>
+                    <td>{{ u.ClassDay }}</td>
+                    <td>{{ formatTo12Hour(u.ClassTime) }}</td>
+                    <td>{{ u.ClassLimit }}</td>
+
+                    <td>{{ u.Trainer.Name }}</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-info iconButton" (click)="openAddClassMenu(u.Id)">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-warning iconButton" (click)="CancelClass(u.Id)"
+                            [disabled]="u.IsCancelled">
+                            <i class="bi bi-x-circle-fill"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-secondary me-1 iconButton" (click)="openAddClass(u)">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger iconButton" (click)="deleteClass(u.Id)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="Classs.length === 0">
+                    <td colspan="5" class="text-center">No Classs found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Page size selector -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+            <label for="pageSize" class="me-2" style="width: 450px;">Items per page:</label>
+            <select id="pageSize" class="form-select form-select-sm" [(ngModel)]="pageSize"
+                (change)="onPageSizeChange()">
+                <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
+            </select>
+        </div>
+        <div class="text-muted">
+            {{ (currentPage - 1) * pageSize + 1 }} to {{ getShowingTo() }} of {{ totalCount }} Classs
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Class Form -->
+<app-add-class *ngIf="isAddClass" [class]="selectedClass" (closeAddClassModal)="closeAddClassModal()">
+</app-add-class>
+<!-- 
+
+<app-add-Class-menu *ngIf="isAddClassMenu" [ClassId]="selectedClassId" (menusSaved)="closeAddClassMenuModal()">
+</app-add-Class-menu> -->

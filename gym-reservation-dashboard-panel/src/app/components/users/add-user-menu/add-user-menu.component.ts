@@ -36,7 +36,7 @@ export class AddUserMenuComponent implements OnInit {
         // Load user's current menus if userId is provided (edit case)
         if (this.userId) {
           const userRes: any = await lastValueFrom(this.userService.getUserMenus(this.userId));
-console.log('User Menus:', userRes);
+
           if (userRes.State ) {
             this.userCurrentMenus = userRes.Data[0];
             // Initialize selectedMenus with the user's current menu IDs

@@ -1,0 +1,86 @@
+<!-- Modal -->
+<div class="modal fade" id="addClassModal" aria-labelledby="addClassModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-sm">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addClassModalLabel">
+          {{ form.value.Id ? 'Edit Class' : 'Add Class' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <!-- Conflict Alert -->
+          <div *ngIf="conflictError" class="alert alert-danger mb-3">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ conflictError }}
+          </div>
+
+          <!-- Row 1: Class Name and Class Limit -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label>Class Name <i class="bi bi-asterisk"></i></label>
+              <input type="text" class="form-control" formControlName="Name">
+              <div *ngIf="form.get('Name')?.invalid && form.get('Name')?.touched" class="text-danger">
+                <small *ngIf="form.get('Name')?.errors?.['required']">Class name is required.</small>
+                <small *ngIf="form.get('Name')?.errors?.['minlength']">Class name must be at least 2 characters long.</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>Class Limit</label>
+              <input type="number" class="form-control" formControlName="ClassLimit" min="1">
+            </div>
+          </div>
+
+          <!-- Row 2: Class Date and Time -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label>Class Date <i class="bi bi-asterisk"></i></label>
+              <input type="date" class="form-control" formControlName="ClassDay" (change)="checkConflict()">
+              <div *ngIf="form.get('ClassDay')?.invalid && form.get('ClassDay')?.touched" class="text-danger">
+                <small *ngIf="form.get('ClassDay')?.errors?.['required']">Class date is required.</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>Class Time <i class="bi bi-asterisk"></i></label>
+              <input type="time" class="form-control" formControlName="ClassTime" (change)="checkConflict()">
+              <div *ngIf="form.get('ClassTime')?.invalid && form.get('ClassTime')?.touched" class="text-danger">
+                <small *ngIf="form.get('ClassTime')?.errors?.['required']">Class time is required.</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 3: Trainer and Cancelled Checkbox -->
+          <div class="row mb-3 d-flex align-items-center">
+            <div class="col-md-8">
+              <label>Trainer <i class="bi bi-asterisk"></i></label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="TrainerId">
+                  <mat-option *ngFor="let trainer of trainers" [value]="trainer.Id">
+                    {{ trainer.Name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="form.get('TrainerId')?.invalid && form.get('TrainerId')?.touched" class="text-danger">
+                <small *ngIf="form.get('TrainerId')?.errors?.['required']">Trainer is required.</small>
+              </div>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="isCancelledCheck" formControlName="IsCancelled">
+                <label class="form-check-label" for="isCancelledCheck">Class Cancelled</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Save/Cancel Buttons -->
+          <div class="d-flex justify-content-end gap-3 mt-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid || conflictError">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

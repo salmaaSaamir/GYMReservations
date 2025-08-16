@@ -31,14 +31,14 @@ export class AppSideLoginComponent {
   }
 
   async login() {
-    console.log(this.form.value)
+    
 
     this.isSpinner = true;
 
     try {
       const observable = this.authService.login(this.form.value);
       const result: any = await lastValueFrom(observable);
-      console.log(result);
+      
       window.scrollTo(0, 0);
       if (result.State) {
        this.toaster.success(result.SuccessMessage)

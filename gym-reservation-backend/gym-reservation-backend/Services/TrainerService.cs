@@ -52,7 +52,24 @@ namespace gym_reservation_backend.Services
 
             return _response;
         }
+        public async Task<ServiceResponse> GetAllTrainers()
+        {
+            try
+            {
+                var trainers =await  _dbContext.Trainers.AsNoTracking().Where(x=>!x.IsGeneralTrainer).ToListAsync(); // Faster read
+                _response.State = true;
+             
+                _response.Data.Add(trainers);
+                
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = $"Error retrieving trainers: {ex.Message}";
+            }
 
+            return _response;
+        }
         public async Task<bool> Delete(int TrainerId)
         {
             if (IsExists(TrainerId))

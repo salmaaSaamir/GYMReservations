@@ -6,6 +6,7 @@ namespace gym_reservation_backend.Models
     {
         public int Id { get; set; }
         public string ReservationNo { get; set; } = string.Empty;
+        public string Status { get; set; } = string.Empty;
      
 
         public int ClassId { get; set; }

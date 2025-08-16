@@ -14,19 +14,19 @@ export class AuthGuard implements CanActivate {
   state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
   const token = localStorage.getItem('GYMReservationToken');
-  console.log("🚨 Guard Checked — Token:", token);
+  
 
   if (token) {
     try {
       const tokenPayload = JSON.parse(atob(token.split('.')[1]));
-      console.log("✅ Token Payload:", tokenPayload);
+      
       return true;
     } catch (e) {
-      console.warn("❌ Invalid token:", e);
+      
     }
   }
 
-  console.log("🔒 No token — redirecting to login");
+  
   this.router.navigate(['/authentication/login']);
   return false;
 }

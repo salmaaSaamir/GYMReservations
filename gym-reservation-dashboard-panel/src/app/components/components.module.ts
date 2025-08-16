@@ -11,6 +11,9 @@ import { SharedModule } from '../shared/shared.module';
 import { ListTrainersComponent } from './trainers/list-trainers/list-trainers.component';
 import { AddTrainerComponent } from './trainers/add-trainer/add-trainer.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { ListClassesComponent } from './classes/list-classes/list-classes.component';
+import { AddClassComponent } from './classes/add-class/add-class.component';
+import { ShowClassReservationsComponent } from './classes/show-class-reservations/show-class-reservations.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ListTrainersComponent,
     AddTrainerComponent,
     ListTrainersComponent,
-    AddTrainerComponent
+    AddTrainerComponent,
+    ListClassesComponent,
+    AddClassComponent,
+    ShowClassReservationsComponent
   ],
   imports: [
     CommonModule,

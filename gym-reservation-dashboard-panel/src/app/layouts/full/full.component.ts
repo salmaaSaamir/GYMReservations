@@ -106,7 +106,7 @@ async GetUserMenu() {
   try {
     const observable = this.userService.getUserMenus(+this.userData.Id);
     const result: any = await lastValueFrom(observable);
-    console.log(result);
+    
     if (result.State) {
       // Transform the API data to match NavItem structure
       this.navItems = [
@@ -117,7 +117,7 @@ async GetUserMenu() {
           route: menu.Route,
         }))
       ];
-      console.log(this.navItems);
+      
     }
   } catch (error) {
     console.error('Error loading user menus:', error);

@@ -22,7 +22,13 @@ namespace gym_reservation_backend.Controllers
             var res = await _trainer.GetTrainers(page, pageSize);
             return Ok(JsonConvert.SerializeObject(res));
         }
-
+        // GET: api/Trainers/GetAllTrainers For Classes
+        [HttpGet]
+        public async Task<IActionResult> GetAllTrainers()
+        {
+            var res = await _trainer.GetAllTrainers();
+            return Ok(JsonConvert.SerializeObject(res));
+        }
         // POST: api/Trainers/SaveTrainer
         // Will Add if Id == 0, Update otherwise
         [HttpPost]
