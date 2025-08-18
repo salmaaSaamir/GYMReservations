@@ -63,6 +63,13 @@ namespace gym_reservation_backend.Controllers
             var res = await _classService.CancelClass(id);
             return Ok(JsonConvert.SerializeObject(res));
         }
+        // GET: api/Classes/GetWeeklySchedule
 
+        [HttpGet]
+        public async Task<IActionResult> GetWeeklySchedule([FromQuery] DateTime? date = null)
+        {
+            var res = await _classService.GetWeeklySchedule(date);
+            return Ok(JsonConvert.SerializeObject(res));
+        }
     }
 }

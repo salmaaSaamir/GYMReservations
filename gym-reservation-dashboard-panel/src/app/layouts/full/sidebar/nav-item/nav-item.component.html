@@ -10,7 +10,7 @@
 <!-- normal internal link -->
 <ng-container *ngIf="!item.navCap && !item.external">
   <a href="javascript:void(0)" (click)="onItemSelected(item)"
-    class="d-flex align-items-center px-3 py-2 text-decoration-none menu-list-item" [ngClass]="{
+    class="d-flex  flex-nowrap align-items-center px-3 py-2 text-decoration-none menu-list-item" [ngClass]="{
       'active bg-primary text-white': item.route ? router.isActive(item.route, true) : false,
       'expanded': expanded,
       'disabled text-muted': item.disabled
@@ -40,7 +40,7 @@
 <!-- external link -->
 <ng-container *ngIf="!item.navCap && item.external">
   <a href="javascript:void(0)" (click)="openExternalLink(item.route)" target="_blank"
-    class="d-flex align-items-center px-3 py-2 text-decoration-none menu-list-item">
+    class="d-flex align-items-center px-3 py-2 text-decoration-none menu-list-item flex-nowrap">
     <i class="bi" [ngClass]="item.iconName"></i>
     <i-tabler name="x"></i-tabler>
 

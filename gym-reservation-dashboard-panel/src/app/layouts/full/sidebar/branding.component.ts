@@ -9,12 +9,13 @@ import { RouterModule } from '@angular/router';
 
 
     <img
-    [routerLink]="['/']"
+    [routerLink]="['/dashboard']"
         src="./assets/images/logos/logo.jpg"
         class="align-middle m-2 rounded-circle"
         alt="logo"
         height="100"
         width="100"
+        style="cursor: pointer;"
       />
   `,
 })

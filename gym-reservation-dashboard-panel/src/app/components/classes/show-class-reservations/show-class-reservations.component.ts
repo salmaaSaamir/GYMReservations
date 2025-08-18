@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { lastValueFrom } from 'rxjs';
+import { ClassService } from 'src/app/core/services/ClassService';
+declare var $: any;
 
 @Component({
   selector: 'app-show-class-reservations',
@@ -6,10 +9,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./show-class-reservations.component.css']
 })
 export class ShowClassReservationsComponent implements OnInit {
-
-  constructor() { }
+  @Input() classId: number = 0;
+  @Output() closeShoeModal = new EventEmitter();
+  data: any[] = [];
+  constructor(private ClassService: ClassService) { }
 
   ngOnInit(): void {
+    this.loadReservation();
+    $('#showClassReservationModal').modal('show');  
   }
 
+  async loadReservation() {
+    try {
+      const res: any = await lastValueFrom(
+        this.ClassService.getClassReservations(this.classId)
+      );
+console.log(res)
+      if (res.State) {
+        this.data = res.Data[0];
+
+      }
+    } catch (error) {
+      console.error('Error loading resevations', error);
+    }
+  }
+  cancel() {
+    $('#showClassReservationModal').modal('hide');
+    this.closeShoeModal.emit();
+  }
 }

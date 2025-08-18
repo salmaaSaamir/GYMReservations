@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { GymClass } from 'src/app/core/models/GymClass';
 import { ClassService } from 'src/app/core/services/ClassService';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-list-classes',
   templateUrl: './list-classes.component.html',
@@ -21,7 +22,7 @@ export class ListClassesComponent implements OnInit {
   selectedClass?: GymClass;
   isAddClassMenu = false;
   selectedClassId = 0;
-
+  isShowClassReservation = false;
   constructor(private ClassService: ClassService, private toaster: ToastrService) { }
 
   async ngOnInit() {
@@ -76,10 +77,13 @@ export class ListClassesComponent implements OnInit {
     await this.loadClasss();
   }
 
-  closeAddClassMenuModal() {
-    this.isAddClassMenu = false;
+ openShowReservationModal(id:number) {
+    this.isShowClassReservation = true;
+    this.selectedClassId = id
   }
-
+  closeshowReservationModal() {
+    this.isShowClassReservation = false;
+  }
   async deleteClass(id: number) {
     const result = await Swal.fire({
       title: 'Are you sure?',
@@ -103,7 +107,7 @@ export class ListClassesComponent implements OnInit {
   }
 
   // cancel class
-    async CancelClass(id: number) {
+  async CancelClass(id: number) {
     const result = await Swal.fire({
       title: 'Are you sure?',
       text: 'This Class will be  Cancelled.',
@@ -130,14 +134,23 @@ export class ListClassesComponent implements OnInit {
   }
 
   formatTo12Hour(time: string): string {
-  const [hours, minutes] = time.split(':').map(Number);
-  const date = new Date();
-  date.setHours(hours, minutes);
-  return new Intl.DateTimeFormat('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
-  }).format(date);
-}
+    const [hours, minutes] = time.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes);
+    return new Intl.DateTimeFormat('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    }).format(date);
+  }
+
+  // schedule image
+  isGenerateWeeklySchedule = false;
+  generateWeeklySchedule() {
+    this.isGenerateWeeklySchedule = true;
+  }
+  closeGenerateModal() {
+    this.isGenerateWeeklySchedule = false;
+  }
 
 }

@@ -30,13 +30,13 @@
         <td>{{ u.LName }}</td>
         <td>{{ u.Email }}</td>
         <td class="text-end">
-          <button class="btn btn-sm btn-outline-info iconButton" (click)="openAddUserMenu(u.Id)">
+          <button class="btn btn-sm btn-outline-info iconButton"  matTooltip="mrnus"  (click)="openAddUserMenu(u.Id)">
             <i class="bi bi-menu-down"></i>
           </button>
-          <button class="btn btn-sm btn-outline-secondary me-1 iconButton" (click)="openAddUser(u)">
+          <button class="btn btn-sm btn-outline-secondary me-1 iconButton"  matTooltip="edit"  (click)="openAddUser(u)">
             <i class="bi bi-pencil"></i>
           </button>
-          <button class="btn btn-sm btn-outline-danger iconButton" (click)="deleteUser(u.Id)">
+          <button class="btn btn-sm btn-outline-danger iconButton"   matTooltip="delete"  (click)="deleteUser(u.Id)">
             <i class="bi bi-trash"></i>
           </button>
         </td>

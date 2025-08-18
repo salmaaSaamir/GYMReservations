@@ -40,4 +40,15 @@ export class ClassService {
   CancelClass(id: number): Observable<any> {
     return this.http.post(`${this.APIUrl}CancelClass/${id}`,{});
   }
+
+
+  /** GET: Get  classes schadule */
+getWeeklySchedule(date: Date | string) {
+  // Ensure we have a Date object
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  
+  // Format as YYYY-MM-DD
+  const dateStr = dateObj.toISOString().split('T')[0];
+  return this.http.get(`${this.APIUrl}GetWeeklySchedule?date=${dateStr}`);
+}
 }

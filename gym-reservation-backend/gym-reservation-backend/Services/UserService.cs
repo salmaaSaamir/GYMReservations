@@ -32,8 +32,9 @@ namespace gym_reservation_backend.Services
                         um.Menu.Id,
                         um.Menu.DisplayName,
                         um.Menu.IconName,
-                        um.Menu.Route
-                    })
+                        um.Menu.Route,
+                        um.Menu.ArrangeNumber
+                    }).OrderBy(um => um.ArrangeNumber)
                     .ToListAsync();
 
                 if (userMenus == null || !userMenus.Any())

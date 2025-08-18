@@ -1,0 +1,65 @@
+<!-- Modal -->
+<div class="modal fade" id="addSubscriptionModal" aria-labelledby="addSubscriptionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-sm">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addSubscriptionModalLabel">
+          {{ form.value.Id ? 'Edit Subscription' : 'Add Subscription' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <div class="mb-3">
+            <label>Name <i class="bi bi-asterisk"></i></label>
+            <input type="text" class="form-control" formControlName="Name">
+            <div *ngIf="form.get('Name')?.invalid && form.get('Name')?.touched" class="text-danger">
+              <small *ngIf="form.get('Name')?.errors?.['required']">Name is required.</small>
+              <small *ngIf="form.get('Name')?.errors?.['minlength']">Name must be at least 2 characters long.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label>Description</label>
+            <textarea class="form-control" formControlName="Description" rows="3"></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label>Price <i class="bi bi-asterisk"></i></label>
+            <input type="number" class="form-control" formControlName="Price" min="0" step="0.01">
+            <div *ngIf="form.get('Price')?.invalid && form.get('Price')?.touched" class="text-danger">
+              <small *ngIf="form.get('Price')?.errors?.['required']">Price is required.</small>
+              <small *ngIf="form.get('Price')?.errors?.['min']">Price must be positive.</small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label>Freeze Days</label>
+            <input type="number" class="form-control" formControlName="FreezeDays" min="0">
+            <small class="text-muted">Number of days subscription can be frozen (optional)</small>
+          </div>
+
+          <div class="mb-3">
+            <label>Invitations Number <i class="bi bi-asterisk"></i></label>
+            <input type="number" class="form-control" formControlName="InvetaionsNo" min="0">
+            <div *ngIf="form.get('InvetaionsNo')?.invalid && form.get('InvetaionsNo')?.touched" class="text-danger">
+              <small *ngIf="form.get('InvetaionsNo')?.errors?.['required']">Invitations number is required.</small>
+              <small *ngIf="form.get('InvetaionsNo')?.errors?.['min']">Must be 0 or more.</small>
+            </div>
+          </div>
+
+          <div class="mb-3 form-check form-switch">
+            <input type="checkbox" class="form-check-input" id="isActiveCheck" formControlName="IsActive">
+            <label class="form-check-label" for="isActiveCheck">Active Subscription</label>
+          </div>
+
+          <div class="d-flex justify-content-end gap-3 mt-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

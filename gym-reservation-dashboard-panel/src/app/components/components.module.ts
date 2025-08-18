@@ -14,6 +14,15 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { ListClassesComponent } from './classes/list-classes/list-classes.component';
 import { AddClassComponent } from './classes/add-class/add-class.component';
 import { ShowClassReservationsComponent } from './classes/show-class-reservations/show-class-reservations.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { GenerateSchaduleComponent } from './classes/generate-schadule/generate-schadule.component';
+import { ListMembersComponent } from './members/list-members/list-members.component';
+import { AddMemberComponent } from './members/add-member/add-member.component';
+import { ListSubscriptionComponent } from './subscription/list-subscription/list-subscription.component';
+import { AddSubscriptionComponent } from './subscription/add-subscription/add-subscription.component';
+import { ListMemberSubscriptionsComponent } from './members/list-member-subscriptions/list-member-subscriptions.component';
+import { ListReservationsComponent } from './reservations/list-reservations/list-reservations.component';
+import { AddReservationComponent } from './reservations/add-reservation/add-reservation.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +35,15 @@ import { ShowClassReservationsComponent } from './classes/show-class-reservation
     AddTrainerComponent,
     ListClassesComponent,
     AddClassComponent,
-    ShowClassReservationsComponent
+    ShowClassReservationsComponent,
+    GenerateSchaduleComponent,
+    ListMembersComponent,
+    AddMemberComponent,
+    ListSubscriptionComponent,
+    AddSubscriptionComponent,
+    ListMemberSubscriptionsComponent,
+    ListReservationsComponent,
+    AddReservationComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +54,8 @@ import { ShowClassReservationsComponent } from './classes/show-class-reservation
 
     MaterialModule, 
     SharedModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MatTooltipModule
   ],
 
 })

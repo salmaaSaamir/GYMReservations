@@ -2,6 +2,7 @@
 using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Models;
 using gym_reservation_backend.Response;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace gym_reservation_backend.Services
@@ -179,5 +180,50 @@ namespace gym_reservation_backend.Services
             }
         }
 
+
+        public async Task<ServiceResponse> GetWeeklySchedule(DateTime? date = null)
+        {
+            try
+            {
+                // Use current date if none provided
+                var referenceDate = date ?? DateTime.Today;
+
+                // Find the most recent Saturday (or today if it's Saturday)
+                var startDate = referenceDate;
+                while (startDate.DayOfWeek != DayOfWeek.Saturday)
+                {
+                    startDate = startDate.AddDays(-1);
+                }
+
+                // Calculate the end date (next Friday)
+                var endDate = startDate.AddDays(6);
+
+                // Format dates to match your string format
+                string startDateStr = startDate.ToString("yyyy-MM-dd");
+                string endDateStr = endDate.ToString("yyyy-MM-dd");
+
+                // Get classes within this date range using string comparison
+                var classes = await _dbContext.Classes
+                    .Include(c => c.Trainer)
+                    .Where(c => string.Compare(c.ClassDay, startDateStr) >= 0 &&
+                                string.Compare(c.ClassDay, endDateStr) <= 0 &&
+                                !c.IsCancelled)
+                    .OrderBy(c => c.ClassDay)
+                    .ThenBy(c => c.ClassTime)
+                    .ToListAsync();
+
+                _response.State = true;
+                _response.Data.Add(startDate);
+                _response.Data.Add(endDate);
+                _response.Data.Add(classes);
+                return _response;
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = ex.Message;
+                return _response;
+            }
+        }
     }
 }

@@ -6,12 +6,14 @@
     <div class="d-flex justify-content-between align-items-center  flex-wrap mb-3">
         <h3>Classs</h3>
         <div class="d-flex gap-3 align-items-center flex-wrap my-2">
+
+            <button class="btn btn-info d-flex align-items-center gap-1"  (click)="generateWeeklySchedule()">
+                <i class="bi bi-card-image" ></i> Get Weekly Schadual
+            </button>
             <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddClass()">
                 <i class="bi bi-plus-lg"></i> Add Class
             </button>
-            <button class="btn btn-info d-flex align-items-center gap-1" >
-                <i class="bi bi-card-image"></i> Get Weekly Schadual
-            </button>
+            
         </div>
     </div>
 
@@ -41,23 +43,23 @@
 
                     <td>{{ u.Trainer.Name }}</td>
                     <td class="text-end">
-                        <button class="btn btn-sm btn-outline-info iconButton" (click)="openAddClassMenu(u.Id)">
+                        <button class="btn btn-sm btn-outline-info iconButton" [matTooltip]="'show reservations'" (click)="openShowReservationModal(u.Id)">
                             <i class="bi bi-eye"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-warning iconButton" (click)="CancelClass(u.Id)"
+                        <button class="btn btn-sm btn-outline-warning iconButton"   matTooltip="cancel" (click)="CancelClass(u.Id)"
                             [disabled]="u.IsCancelled">
                             <i class="bi bi-x-circle-fill"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-secondary me-1 iconButton" (click)="openAddClass(u)">
+                        <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="edit" (click)="openAddClass(u)">
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger iconButton" (click)="deleteClass(u.Id)">
+                        <button class="btn btn-sm btn-outline-danger iconButton"  matTooltip="delete" (click)="deleteClass(u.Id)">
                             <i class="bi bi-trash"></i>
                         </button>
                     </td>
                 </tr>
                 <tr *ngIf="Classs.length === 0">
-                    <td colspan="5" class="text-center">No Classs found</td>
+                    <td colspan="7" class="text-center">No Classs found</td>
                 </tr>
             </tbody>
         </table>
@@ -80,7 +82,6 @@
 <!-- Add/Edit Class Form -->
 <app-add-class *ngIf="isAddClass" [class]="selectedClass" (closeAddClassModal)="closeAddClassModal()">
 </app-add-class>
-<!-- 
-
-<app-add-Class-menu *ngIf="isAddClassMenu" [ClassId]="selectedClassId" (menusSaved)="closeAddClassMenuModal()">
-</app-add-Class-menu> -->
+<app-generate-schadule *ngIf="isGenerateWeeklySchedule" (closeGenerateModal)="closeGenerateModal()"></app-generate-schadule>
+<app-show-class-reservations *ngIf="isShowClassReservation" [classId]="selectedClassId" (closeShoeModal)="closeshowReservationModal()">
+</app-show-class-reservations> 

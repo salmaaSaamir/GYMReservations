@@ -10,31 +10,54 @@
 }
 
 ::placeholder {
-  color: #87818166 !important;  // Pick your color
-  opacity: 1; // Bootstrap sometimes lowers opacity
+    color: #87818166 !important; // Pick your color
+    opacity: 1; // Bootstrap sometimes lowers opacity
 }
 
 
 .mat-select-panel {
- 
+
     background: #edf0f4;
-    margin: 55px 0px;
-   
-}.mat-primary .mat-pseudo-checkbox-checked, .mat-primary .mat-pseudo-checkbox-indeterminate {
+    margin: 45px 0px;
+
+}
+
+.mat-primary .mat-pseudo-checkbox-checked,
+.mat-primary .mat-pseudo-checkbox-indeterminate {
     background: rgb(221, 0, 92);
-}.mat-option-text {
-  
+}
+
+.mat-option-text {
+
     color: black;
 }
+
 .mat-form-field {
 
     margin: 15px;
-}.mat-form-field-appearance-legacy .mat-form-field-underline {
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline {
     height: 1px;
     background: rgb(221, 0, 92) !important;
-}.mat-select-arrow {
+}
+
+.mat-select-arrow {
     color: rgb(221, 0, 92);
-}.mat-form-field-infix {
-  
+}
+
+.mat-form-field-infix {
+
     width: 25vw !important;
+}
+/* Change the outline color when focused */
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: rgb(221, 0, 92) !important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+    border-color:rgb(221, 0, 92) !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix {
+    padding: 5px !important;
 }

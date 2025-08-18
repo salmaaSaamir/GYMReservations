@@ -31,10 +31,10 @@
           <td>{{ u.Email }}</td>
           <td class="text-end">
 
-            <button class="btn btn-sm btn-outline-secondary me-1 iconButton" (click)="openAddTrainer(u)">
+            <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="edit" (click)="openAddTrainer(u)">
               <i class="bi bi-pencil"></i>
             </button>
-            <button class="btn btn-sm btn-outline-danger iconButton" (click)="deleteTrainer(u.Id)">
+            <button class="btn btn-sm btn-outline-danger iconButton"   matTooltip="delete"  (click)="deleteTrainer(u.Id)">
               <i class="bi bi-trash"></i>
             </button>
           </td>

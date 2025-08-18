@@ -11,6 +11,7 @@ namespace gym_reservation_backend.Models
         [JsonIgnore]
         public ICollection<UserMenus> UserMenus { get; set; } = new List<UserMenus>();
 
+        public int? ArrangeNumber { get; set; }
 
     }
 }

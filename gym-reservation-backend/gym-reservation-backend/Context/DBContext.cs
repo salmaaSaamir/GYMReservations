@@ -31,6 +31,10 @@ namespace gym_reservation_backend.Context
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<UserMenus> UserMenus { get; set; }
         public DbSet<SystemMenu> SystemMenus { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
+
+        public DbSet<MemberSubscription> MemberSubscriptions { get; set; }
+
 
         // Add this method right here, after your DbSet properties
         protected override void OnModelCreating(ModelBuilder modelBuilder)
