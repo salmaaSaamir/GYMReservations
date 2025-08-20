@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using gym_reservation_backend.Context;
 
@@ -11,9 +12,11 @@ using gym_reservation_backend.Context;
 namespace gym_reservation_backend.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20250820123404_edite-subscription-add-MonthsNo")]
+    partial class editesubscriptionaddMonthsNo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,16 +104,7 @@ namespace gym_reservation_backend.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("FreezeEndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("FreezeStartDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RemainingFreezeDays")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -126,8 +120,6 @@ namespace gym_reservation_backend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MemberId");
-
-                    b.HasIndex("SubscriptionId");
 
                     b.ToTable("MemberSubscriptions");
                 });
@@ -333,21 +325,11 @@ namespace gym_reservation_backend.Migrations
 
             modelBuilder.Entity("gym_reservation_backend.Models.MemberSubscription", b =>
                 {
-                    b.HasOne("gym_reservation_backend.Models.Member", "Member")
+                    b.HasOne("gym_reservation_backend.Models.Member", null)
                         .WithMany("MemberSubscriptions")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("gym_reservation_backend.Models.Subscription", "Subscription")
-                        .WithMany()
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Member");
-
-                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("gym_reservation_backend.Models.Reservation", b =>

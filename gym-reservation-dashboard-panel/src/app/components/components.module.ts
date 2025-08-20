@@ -20,9 +20,10 @@ import { ListMembersComponent } from './members/list-members/list-members.compon
 import { AddMemberComponent } from './members/add-member/add-member.component';
 import { ListSubscriptionComponent } from './subscription/list-subscription/list-subscription.component';
 import { AddSubscriptionComponent } from './subscription/add-subscription/add-subscription.component';
-import { ListMemberSubscriptionsComponent } from './members/list-member-subscriptions/list-member-subscriptions.component';
 import { ListReservationsComponent } from './reservations/list-reservations/list-reservations.component';
 import { AddReservationComponent } from './reservations/add-reservation/add-reservation.component';
+import { ListMemberSubscriptionsComponent } from './members/list-member-subscriptions/list-member-subscriptions.component';
+import { ListSubscriptionsHistoryComponent } from './members/list-subscriptions-history/list-subscriptions-history.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { AddReservationComponent } from './reservations/add-reservation/add-rese
     AddSubscriptionComponent,
     ListMemberSubscriptionsComponent,
     ListReservationsComponent,
-    AddReservationComponent
+    AddReservationComponent,
+    ListSubscriptionsHistoryComponent
   ],
   imports: [
     CommonModule,

@@ -7,6 +7,7 @@ using System.Text;
 using Swashbuckle.AspNetCore.Filters;
 using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Services;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Connection");
@@ -24,7 +25,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHangfire(x => x.UseSqlServerStorage(builder.Configuration.GetConnectionString("Connection")));
 
+// Add Hangfire Server
+builder.Services.AddHangfireServer();
 
 builder.Services.AddCors(options =>
 {
@@ -76,7 +80,7 @@ builder.Services.AddScoped<ITrainerService, TrainerService>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
-
+builder.Services.AddHostedService<SubscriptionBackgroundService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -94,5 +98,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseHangfireDashboard();
 
 app.Run();

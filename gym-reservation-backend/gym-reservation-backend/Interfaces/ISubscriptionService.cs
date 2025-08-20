@@ -8,5 +8,6 @@ namespace gym_reservation_backend.Interfaces
         Task<ServiceResponse> GetSubscriptions(int page = 1, int pageSize = 20);
         Task<ServiceResponse> Save(Subscription subscription);
         Task<bool> Delete(int subscriptionId);
+        Task<ServiceResponse> GetAllSubscriptions();
     }
 }

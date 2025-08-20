@@ -50,14 +50,24 @@
 
     width: 25vw !important;
 }
+
 /* Change the outline color when focused */
 .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
     color: rgb(221, 0, 92) !important;
 }
+
 .mat-form-field-appearance-outline .mat-form-field-outline-thick {
-    border-color:rgb(221, 0, 92) !important;
+    border-color: rgb(221, 0, 92) !important;
 }
 
 .mat-form-field-appearance-outline .mat-form-field-infix {
     padding: 5px !important;
+}
+
+.form-control:focus {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    border: 0px;
+    outline: none !important;
+    box-shadow: 0 0 5px 1px rgba(221, 0, 92, 0.25) !important;
 }

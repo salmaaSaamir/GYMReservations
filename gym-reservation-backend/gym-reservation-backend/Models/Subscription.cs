@@ -13,6 +13,7 @@ namespace gym_reservation_backend.Models
         public bool IsActive { get; set; }       
         public int? FreezeDays { get; set; }   
         public int InvetaionsNo { get; set; }
+        public int MonthsNo { get; set; }
 
         [NotMapped]
         public ICollection<MemberSubscription>? MemberSubscriptions { get; set; }

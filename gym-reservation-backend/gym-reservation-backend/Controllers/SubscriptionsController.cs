@@ -39,5 +39,13 @@ namespace gym_reservation_backend.Controllers
             var res = await _subsc.Delete(id);
             return Ok(JsonConvert.SerializeObject(res));
         }
+        // GET: api/Subscriptions/GetAllSubscriptions
+        [HttpGet]
+        public async Task<IActionResult> GetAllSubscriptions()
+        {
+            var res = await _subsc.GetAllSubscriptions();
+            return Ok(JsonConvert.SerializeObject(res));
+        }
+
     }
 }

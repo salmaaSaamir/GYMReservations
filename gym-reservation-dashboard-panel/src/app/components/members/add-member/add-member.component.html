@@ -1,1 +1,79 @@
-<p>add-member works!</p>
+<!-- Modal -->
+<div class="modal fade" id="addMemberModal" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-sm">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMemberModalLabel">
+          {{ form.value.Id ? 'Edit Member' : 'Add Member' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <!-- Row 1: Name and Email -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label>Name <i class="bi bi-asterisk"></i></label>
+              <input type="text" class="form-control" formControlName="Name">
+              <div *ngIf="form.get('Name')?.invalid && form.get('Name')?.touched" class="text-danger">
+                <small *ngIf="form.get('Name')?.errors?.['required']">Name is required.</small>
+                <small *ngIf="form.get('Name')?.errors?.['minlength']">Name must be at least 2 characters long.</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>Email <i class="bi bi-asterisk"></i></label>
+              <input type="email" class="form-control" formControlName="Email">
+              <div *ngIf="form.get('Email')?.invalid && form.get('Email')?.touched" class="text-danger">
+                <small *ngIf="form.get('Email')?.errors?.['required']">Email is required.</small>
+                <small *ngIf="form.get('Email')?.errors?.['email']">Invalid email format.</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Phone and ID Card -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label>Phone <i class="bi bi-asterisk"></i></label>
+              <input type="tel" class="form-control" formControlName="Phone">
+              <div *ngIf="form.get('Phone')?.invalid && form.get('Phone')?.touched" class="text-danger">
+                <small *ngIf="form.get('Phone')?.errors?.['required']">Phone is required.</small>
+                <small *ngIf="form.get('Phone')?.errors?.['pattern']">Please enter a valid phone number.</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label>ID Card</label>
+              <input type="text" class="form-control" formControlName="IDCard" [readonly]="!form.value.Id">
+              <small class="text-muted">ID Card is automatically generated for new members</small>
+            </div>
+          </div>
+
+          <!-- Row 3: Subscription (full width) -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label>Subscription <i class="bi bi-asterisk"></i></label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="CurrentSubscriptionId">
+                  <mat-option *ngFor="let sub of subscriptions" [value]="sub.Id">
+                    {{ sub.Name }} - {{ sub.Price | currency:("EGP") }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div *ngIf="form.get('CurrentSubscriptionId')?.invalid && form.get('CurrentSubscriptionId')?.touched" class="text-danger">
+                <small *ngIf="form.get('CurrentSubscriptionId')?.errors?.['required']">Subscription is required.</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-3 mt-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+              <span *ngIf="isSpinner" class="spinner-border spinner-border-sm me-1"></span>
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

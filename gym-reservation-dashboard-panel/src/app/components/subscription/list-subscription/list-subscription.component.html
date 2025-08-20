@@ -16,6 +16,8 @@
         <tr>
           <th>#</th>
           <th>Name</th>
+
+          <th>Months Number</th>
           <th>Description</th>
           <th>Price</th>
           <th>Status</th>
@@ -28,6 +30,8 @@
         <tr *ngFor="let sub of subscriptions">
           <td>{{ sub.Id }}</td>
           <td>{{ sub.Name }}</td>
+          <td>{{ sub.MonthsNo }}</td>
+
           <td>{{ sub.Description }}</td>
           <td>{{ sub.Price | currency:'EGP' }}</td>
           <td>
@@ -38,16 +42,18 @@
           <td>{{ sub.FreezeDays ?? 'N/A' }}</td>
           <td>{{ sub.InvetaionsNo }}</td>
           <td class="text-end">
-            <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="edit" (click)="openAddSubscription(sub)">
+            <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="edit"
+              (click)="openAddSubscription(sub)">
               <i class="bi bi-pencil"></i>
             </button>
-            <button class="btn btn-sm btn-outline-danger iconButton" matTooltip="delete" (click)="deleteSubscription(sub.Id)">
+            <button class="btn btn-sm btn-outline-danger iconButton" matTooltip="delete"
+              (click)="deleteSubscription(sub.Id)">
               <i class="bi bi-trash"></i>
             </button>
           </td>
         </tr>
         <tr *ngIf="subscriptions.length === 0">
-          <td colspan="8" class="text-center">No Subscriptions found</td>
+          <td colspan="9" class="text-center">No Subscriptions found</td>
         </tr>
       </tbody>
     </table>
@@ -68,7 +74,6 @@
 </div>
 
 <!-- Add/Edit Subscription Form -->
-<app-add-subscription *ngIf="isAddSubscription" 
-  [subscription]="selectedSubscription"
+<app-add-subscription *ngIf="isAddSubscription" [subscription]="selectedSubscription"
   (closeAddSubscriptionModal)="closeAddSubscriptionModal()">
 </app-add-subscription>

@@ -87,5 +87,25 @@ namespace gym_reservation_backend.Services
             _response.Data.Add(Subscription);
             return _response;
         }
+
+
+        public async Task<ServiceResponse> GetAllSubscriptions()
+        {
+            try
+            {
+                var Subscriptions = await _dbContext.Subscriptions.AsNoTracking().ToListAsync(); // Faster read
+                _response.State = true;
+
+                _response.Data.Add(Subscriptions);
+
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = $"Error retrieving Subscriptions: {ex.Message}";
+            }
+
+            return _response;
+        }
     }
 }

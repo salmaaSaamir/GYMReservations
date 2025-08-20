@@ -29,7 +29,8 @@ export class AddSubscriptionComponent implements OnInit {
       Price: [0, [Validators.required, Validators.min(0)]],
       IsActive: [true],
       FreezeDays: [null],
-      InvetaionsNo: [0, [Validators.required, Validators.min(0)]]
+      InvetaionsNo: [0, [Validators.required, Validators.min(0)]],
+      MonthsNo: [0, [Validators.required, Validators.min(0)]]
     });
   }
 

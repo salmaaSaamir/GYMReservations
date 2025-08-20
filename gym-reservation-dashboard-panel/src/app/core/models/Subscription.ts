@@ -6,4 +6,6 @@ export class Subscription {
   IsActive: boolean = false;
   FreezeDays: number | null = null;
   InvetaionsNo: number = 0;
+
+  MonthsNo: number = 0;
 }
