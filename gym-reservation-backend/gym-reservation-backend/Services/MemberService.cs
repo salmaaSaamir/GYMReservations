@@ -59,7 +59,7 @@ namespace gym_reservation_backend.Services
         {
             try
             {
-                var members = await _dbContext.Members.AsNoTracking().ToListAsync(); // Faster read
+                var members = await _dbContext.Members.Where(x => x.Status == "Active").AsNoTracking().ToListAsync(); // Faster read
                 _response.State = true;
                 _response.Data.Add(members);
             }
@@ -71,7 +71,6 @@ namespace gym_reservation_backend.Services
 
             return _response;
         }
-
         public async Task<ServiceResponse> GetMemberSubscriptionHistory(int memberId)
         {
             try
@@ -109,6 +108,7 @@ namespace gym_reservation_backend.Services
 
             return _response;
         }
+
         public async Task<bool> Delete(int memberId)
         {
             if (IsExists(memberId))
@@ -137,6 +137,8 @@ namespace gym_reservation_backend.Services
             {
                 if (member.Id == 0) // New member
                 {
+                    // Set default status for new member
+                    member.Status = "Active";
                     _dbContext.Members.Add(member);
                     await _dbContext.SaveChangesAsync();
 
@@ -170,10 +172,6 @@ namespace gym_reservation_backend.Services
                     existingMember.Phone = member.Phone;
                     existingMember.IDCard = member.IDCard;
                     existingMember.CurrentSubscriptionId = member.CurrentSubscriptionId;
-
-                    _dbContext.Members.Update(existingMember);
-                    await _dbContext.SaveChangesAsync();
-
                     // Create new subscription history entry if subscription changed
                     if (subscriptionChanged && member.CurrentSubscriptionId > 0)
                     {
@@ -182,6 +180,21 @@ namespace gym_reservation_backend.Services
                         // Schedule expiration check for the new subscription
                         ScheduleExpirationCheck(memberSubscription.Id, memberSubscription.EndDate);
                     }
+                    // Update member status based on subscription
+                    if ( member.CurrentSubscriptionId > 0)
+                    {
+                        var subscriptionStatus = await GetActiveSubscriptionStatus(member.Id);
+                        existingMember.Status = subscriptionStatus.Status;
+                    }
+                    else
+                    {
+                        existingMember.Status = "Inactive";
+                    }
+
+                    _dbContext.Members.Update(existingMember);
+                    await _dbContext.SaveChangesAsync();
+
+                   
                 }
 
                 await transaction.CommitAsync();
@@ -268,6 +281,14 @@ namespace gym_reservation_backend.Services
                 memberSubscription.FreezeEndDate = DateTime.Now.AddDays(freezeDays);
                 memberSubscription.Status = "Frozen";
 
+                // Update member status to match subscription status
+                var member = await _dbContext.Members.FirstOrDefaultAsync(m => m.Id == memberId);
+                if (member != null)
+                {
+                    member.Status = "Frozen";
+                    _dbContext.Members.Update(member);
+                }
+
                 _dbContext.MemberSubscriptions.Update(memberSubscription);
                 await _dbContext.SaveChangesAsync();
 
@@ -308,15 +329,37 @@ namespace gym_reservation_backend.Services
 
                 if (memberSubscription != null && memberSubscription.Status == "Frozen")
                 {
-                    memberSubscription.Status = "Active";
+                    // Check if subscription is expired
+                    if (memberSubscription.EndDate <= DateTime.Now)
+                    {
+                        memberSubscription.Status = "Expired";
+                    }
+                    else
+                    {
+                        memberSubscription.Status = "Active";
+                    }
+
                     memberSubscription.FreezeStartDate = null;
                     memberSubscription.FreezeEndDate = null;
 
                     _dbContext.MemberSubscriptions.Update(memberSubscription);
+
+                    // Update member status to match subscription status
+                    var member = await _dbContext.Members
+                        .FirstOrDefaultAsync(m => m.Id == memberSubscription.MemberId);
+                    if (member != null)
+                    {
+                        member.Status = memberSubscription.Status;
+                        _dbContext.Members.Update(member);
+                    }
+
                     await _dbContext.SaveChangesAsync();
 
-                    // Schedule expiration check for the new end date
-                    ScheduleExpirationCheck(memberSubscription.Id, memberSubscription.EndDate);
+                    // Schedule expiration check if subscription is active
+                    if (memberSubscription.Status == "Active")
+                    {
+                        ScheduleExpirationCheck(memberSubscription.Id, memberSubscription.EndDate);
+                    }
 
                     await transaction.CommitAsync();
 
@@ -347,8 +390,17 @@ namespace gym_reservation_backend.Services
                 {
                     memberSubscription.Status = "Expired";
                     _dbContext.MemberSubscriptions.Update(memberSubscription);
-                    await _dbContext.SaveChangesAsync();
 
+                    // Update member status to expired
+                    var member = await _dbContext.Members
+                        .FirstOrDefaultAsync(m => m.Id == memberSubscription.MemberId);
+                    if (member != null)
+                    {
+                        member.Status = "Expired";
+                        _dbContext.Members.Update(member);
+                    }
+
+                    await _dbContext.SaveChangesAsync();
                     await transaction.CommitAsync();
 
                     Console.WriteLine($"Subscription {memberSubscriptionId} expired automatically.");
@@ -385,7 +437,7 @@ namespace gym_reservation_backend.Services
             {
                 var activeSubscription = await _dbContext.MemberSubscriptions
                     .AsNoTracking()
-                    .Where(ms => ms.MemberId == memberId && ms.Status == "Active" && ms.EndDate >= DateTime.Now)
+                    .Where(ms => ms.MemberId == memberId && (ms.Status == "Active" || ms.Status == "Frozen") && ms.EndDate >= DateTime.Now)
                     .Include(ms => ms.Subscription)
                     .OrderByDescending(ms => ms.StartDate)
                     .Select(ms => new
@@ -413,6 +465,15 @@ namespace gym_reservation_backend.Services
             }
 
             return _response;
+        }
+
+        // Helper method to get subscription status
+        private async Task<MemberSubscription> GetActiveSubscriptionStatus(int memberId)
+        {
+            return await _dbContext.MemberSubscriptions
+                .Where(ms => ms.MemberId == memberId)
+                .OrderByDescending(ms => ms.StartDate)
+                .FirstOrDefaultAsync();
         }
 
         // Add this method to initialize expiration checks on application start

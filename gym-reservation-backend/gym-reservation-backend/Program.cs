@@ -81,6 +81,10 @@ builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddHostedService<SubscriptionBackgroundService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IOfferService, OfferService>();
+builder.Services.AddScoped<IContactService, ContactService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

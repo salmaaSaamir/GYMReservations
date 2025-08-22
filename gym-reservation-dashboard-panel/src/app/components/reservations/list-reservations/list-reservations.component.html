@@ -1,1 +1,78 @@
-<p>list-reservations works!</p>
+<div *ngIf="isSpinner">
+    <app-loader></app-loader>
+</div>
+
+<div *ngIf="!isSpinner">
+    <div class="d-flex justify-content-between align-items-center  flex-wrap mb-3">
+        <h3>Reservations</h3>
+        <div class="d-flex gap-3 align-items-center flex-wrap my-2">
+
+
+            <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddReservation()">
+                <i class="bi bi-plus-lg"></i> Add Reservation
+            </button>
+
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Class Name</th>
+                    <th>Member ID</th>
+                    <th>Member Name</th>
+
+                    <th>Trainer</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let u of Reservations">
+                    <td>{{ u.Id }}</td>
+                    <td>{{ u.ClassName }}</td>
+                    <td>{{ u.MemberID }}</td>
+                    <td>{{ u.MemberName }}</td>
+
+                    <td>{{ u.TrainerName}}</td>
+                    <td class="text-end">
+
+
+                        <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="edit"
+                            (click)="openAddReservation(u)">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger iconButton" matTooltip="delete"
+                            (click)="deleteReservation(u.Id)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="Reservations.length === 0">
+                    <td colspan="7" class="text-center">No Reservations found</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Page size selector -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+            <label for="pageSize" class="me-2" style="width: 450px;">Items per page:</label>
+            <select id="pageSize" class="form-select form-select-sm" [(ngModel)]="pageSize"
+                (change)="onPageSizeChange()">
+                <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
+            </select>
+        </div>
+        <div class="text-muted">
+            {{ (currentPage - 1) * pageSize + 1 }} to {{ getShowingTo() }} of {{ totalCount }} Reservations
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Reservation Form -->
+<app-add-reservation *ngIf="isAddReservation" [Reservation]="selectedReservation"
+    (closeAddReservationModal)="closeAddReservationModal()">
+</app-add-reservation>

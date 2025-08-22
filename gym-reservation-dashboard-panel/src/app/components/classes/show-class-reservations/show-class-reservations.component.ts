@@ -10,13 +10,15 @@ declare var $: any;
 })
 export class ShowClassReservationsComponent implements OnInit {
   @Input() classId: number = 0;
+  @Input() className: string = '';
+
   @Output() closeShoeModal = new EventEmitter();
   data: any[] = [];
   constructor(private ClassService: ClassService) { }
 
   ngOnInit(): void {
     this.loadReservation();
-    $('#showClassReservationModal').modal('show');  
+    $('#showClassReservationModal').modal('show');
   }
 
   async loadReservation() {
@@ -24,7 +26,7 @@ export class ShowClassReservationsComponent implements OnInit {
       const res: any = await lastValueFrom(
         this.ClassService.getClassReservations(this.classId)
       );
-console.log(res)
+      
       if (res.State) {
         this.data = res.Data[0];
 

@@ -8,6 +8,7 @@ import { ListMemberSubscriptionsComponent } from './members/list-member-subscrip
 import { ListSubscriptionComponent } from './subscription/list-subscription/list-subscription.component';
 import { ListMembersComponent } from './members/list-members/list-members.component';
 import { ListReservationsComponent } from './reservations/list-reservations/list-reservations.component';
+import { ListContactsComponent } from './contact/list-contacts/list-contacts.component';
 
 const routes: Routes = [{
   path: 'users',
@@ -34,6 +35,11 @@ const routes: Routes = [{
  {
   path: 'reservations',
   component: ListReservationsComponent,
+},
+
+ {
+  path: 'contacts',
+  component: ListContactsComponent,
 },
 ];
 

@@ -27,19 +27,21 @@
 }
 
 .mat-nav-list a {
-  margin: 10px;
+  margin: 25px 10px;
   border-radius: 10px;
-  transition:all .25s ;
-  -webkit-transition:all .25s ;
-  -moz-transition:all .25s ;
-  -ms-transition:all .25s ;
-  -o-transition:all .25s ;
-}.mat-nav-list a:hover {
+  transition: all .25s;
+  -webkit-transition: all .25s;
+  -moz-transition: all .25s;
+  -ms-transition: all .25s;
+  -o-transition: all .25s;
+}
 
-background-color: var(--mat-sys-primary) !important;
+.mat-nav-list a:hover {
+
+  background-color: var(--mat-sys-primary) !important;
   color: white !important;
 }
 
 .mat-drawer.mat-drawer-side {
-    z-index: 1 !important;
+  z-index: 1 !important;
 }

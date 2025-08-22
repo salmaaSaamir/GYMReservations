@@ -25,7 +25,7 @@ namespace gym_reservation_backend.Services
                 var query = _dbContext.Classes.Include(x=>x.Trainer).AsNoTracking(); // Faster read, no change tracking
 
                 var total = await query.CountAsync();
-                var users = await query
+                var classes = await query
                     .OrderBy(u => u.Id)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
@@ -35,7 +35,7 @@ namespace gym_reservation_backend.Services
                 _response.Data.Add(total);
                 _response.Data.Add(page);
                 _response.Data.Add(pageSize);
-                _response.Data.Add(users);
+                _response.Data.Add(classes);
 
             }
             catch (Exception ex)
@@ -45,7 +45,28 @@ namespace gym_reservation_backend.Services
             }
             return _response;
         }
+        public async Task<ServiceResponse> GetAllClasses()
+        {
+            try
+            {
+                // Get today's date in the format "yyyy-MM-dd"
+                var today = DateTime.Now.ToString("yyyy-MM-dd");
 
+                var classes = await _dbContext.Classes
+                    .Where(x => !x.IsCancelled && x.ClassDay == today)
+                    .AsNoTracking()
+                    .ToListAsync(); // Faster read, no change tracking
+
+                _response.State = true;
+                _response.Data.Add(classes);
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = $"Error retrieving Class: {ex.Message}";
+            }
+            return _response;
+        }
         public async Task<ServiceResponse> CheckClassConflict(string classDay, string classTime)
         {
             try
@@ -95,7 +116,13 @@ namespace gym_reservation_backend.Services
             try
             {
                 var reservations = await _dbContext.Reservations
-                    .Where(r => r.ClassId == classId)
+                    .Where(r => r.ClassId == classId).Select(x=>new {
+                        x.Member.Name,
+                        x.Member.IDCard,
+                       
+                    })
+
+                    
                     .AsNoTracking() // Important for read-only operations
                     .ToListAsync();
 

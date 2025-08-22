@@ -11,17 +11,23 @@ namespace gym_reservation_backend.Models
         public string Email { get; set; } = string.Empty;
         public string Phone { get; set; }
         public string IDCard { get; set; }
+        public string? Status { get; set; }
         public int CurrentSubscriptionId { get; set; }
 
         // Navigation property
         [NotMapped]
         [JsonIgnore]
         public Subscription? Subscription { get; set; }
+        [NotMapped]
 
         [JsonIgnore] // Add this to prevent circular reference
+
         public ICollection<MemberSubscription>? MemberSubscriptions { get; set; }
 
+        [NotMapped]
+
         [JsonIgnore] // Add this to prevent circular reference
+
         public ICollection<Reservation>? Reservations { get; set; }
     }
     public class FreezeRequest

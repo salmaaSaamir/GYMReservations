@@ -22,6 +22,8 @@ export class ListClassesComponent implements OnInit {
   selectedClass?: GymClass;
   isAddClassMenu = false;
   selectedClassId = 0;
+    selectedClassName ='';
+
   isShowClassReservation = false;
   constructor(private ClassService: ClassService, private toaster: ToastrService) { }
 
@@ -77,9 +79,10 @@ export class ListClassesComponent implements OnInit {
     await this.loadClasss();
   }
 
- openShowReservationModal(id:number) {
+ openShowReservationModal(data:any) {
     this.isShowClassReservation = true;
-    this.selectedClassId = id
+    this.selectedClassId = data.Id
+    this.selectedClassName = data.Name
   }
   closeshowReservationModal() {
     this.isShowClassReservation = false;

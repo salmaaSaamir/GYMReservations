@@ -13,6 +13,7 @@ namespace gym_reservation_backend.Interfaces
         Task<ServiceResponse> CancelClass(int classId);
 
         Task<ServiceResponse> GetWeeklySchedule(DateTime? date = null);
+        Task<ServiceResponse> GetAllClasses();
 
     }
 }

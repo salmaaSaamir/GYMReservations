@@ -24,6 +24,8 @@ import { ListReservationsComponent } from './reservations/list-reservations/list
 import { AddReservationComponent } from './reservations/add-reservation/add-reservation.component';
 import { ListMemberSubscriptionsComponent } from './members/list-member-subscriptions/list-member-subscriptions.component';
 import { ListSubscriptionsHistoryComponent } from './members/list-subscriptions-history/list-subscriptions-history.component';
+import { ListContactsComponent } from './contact/list-contacts/list-contacts.component';
+import { RespondContactComponent } from './contact/respond-contact/respond-contact.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { ListSubscriptionsHistoryComponent } from './members/list-subscriptions-
     ListMemberSubscriptionsComponent,
     ListReservationsComponent,
     AddReservationComponent,
-    ListSubscriptionsHistoryComponent
+    ListSubscriptionsHistoryComponent,
+    ListContactsComponent,
+    RespondContactComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +57,6 @@ import { ListSubscriptionsHistoryComponent } from './members/list-subscriptions-
     FormsModule,
     ReactiveFormsModule,
     TablerIconsModule,
-
     MaterialModule, 
     SharedModule,
     NgxPaginationModule,

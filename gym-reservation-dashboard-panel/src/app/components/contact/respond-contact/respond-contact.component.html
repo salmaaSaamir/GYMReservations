@@ -1,0 +1,53 @@
+<!-- Modal -->
+<div class="modal fade" id="addContactUsModal" aria-labelledby="addContactUsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow-sm">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addContactUsModalLabel">
+          Respond to Contact
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+      </div>
+
+      <div class="modal-body">
+        <form (ngSubmit)="save()">
+          <!-- Display original message (readonly) -->
+          <div class="mb-3">
+            <label>Original Message</label>
+            <textarea class="form-control" readonly rows="4" disabled>{{contactUs?.Message}}</textarea>
+          </div>
+
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" [value]="contactUs?.Email" disabled>
+          </div>
+
+          <div class="mb-3">
+            <label>Response <i class="bi bi-asterisk"></i></label>
+            <textarea 
+              class="form-control" 
+              rows="5" 
+              placeholder="Type your response here..."
+              [(ngModel)]="contactUs.Response"
+              name="response"
+              #response="ngModel"
+              required
+              minlength="10">
+            </textarea>
+            <div *ngIf="response.invalid && response.touched" class="text-danger">
+              <small *ngIf="response.errors?.['required']">Response is required.</small>
+              <small *ngIf="response.errors?.['minlength']">Response must be at least 10 characters long.</small>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-3 mt-3">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="!contactUs?.Response ">
+              Send Response
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

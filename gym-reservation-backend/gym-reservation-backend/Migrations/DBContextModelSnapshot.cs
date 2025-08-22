@@ -58,6 +58,30 @@ namespace gym_reservation_backend.Migrations
                     b.ToTable("Classes");
                 });
 
+            modelBuilder.Entity("gym_reservation_backend.Models.ContactUs", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ContactUs");
+                });
+
             modelBuilder.Entity("gym_reservation_backend.Models.Member", b =>
                 {
                     b.Property<int>("Id")
@@ -83,6 +107,9 @@ namespace gym_reservation_backend.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -125,11 +152,40 @@ namespace gym_reservation_backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MemberId");
-
                     b.HasIndex("SubscriptionId");
 
                     b.ToTable("MemberSubscriptions");
+                });
+
+            modelBuilder.Entity("gym_reservation_backend.Models.Offer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsGeneralOffer")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SubscriptionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Offers");
                 });
 
             modelBuilder.Entity("gym_reservation_backend.Models.Reservation", b =>
@@ -146,24 +202,11 @@ namespace gym_reservation_backend.Migrations
                     b.Property<int>("MemberId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ReservationNo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClassId");
 
                     b.HasIndex("MemberId");
-
-                    b.HasIndex("TrainerId");
 
                     b.ToTable("Reservations");
                 });
@@ -333,19 +376,11 @@ namespace gym_reservation_backend.Migrations
 
             modelBuilder.Entity("gym_reservation_backend.Models.MemberSubscription", b =>
                 {
-                    b.HasOne("gym_reservation_backend.Models.Member", "Member")
-                        .WithMany("MemberSubscriptions")
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("gym_reservation_backend.Models.Subscription", "Subscription")
                         .WithMany()
                         .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Member");
 
                     b.Navigation("Subscription");
                 });
@@ -364,17 +399,9 @@ namespace gym_reservation_backend.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("gym_reservation_backend.Models.Trainer", "Trainer")
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Class");
 
                     b.Navigation("Member");
-
-                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("gym_reservation_backend.Models.UserMenus", b =>
@@ -403,8 +430,6 @@ namespace gym_reservation_backend.Migrations
 
             modelBuilder.Entity("gym_reservation_backend.Models.Member", b =>
                 {
-                    b.Navigation("MemberSubscriptions");
-
                     b.Navigation("Reservations");
                 });
 

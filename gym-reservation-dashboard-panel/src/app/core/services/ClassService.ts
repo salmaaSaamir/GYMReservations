@@ -16,6 +16,12 @@ export class ClassService {
   getClasses(page: number = 1, pageSize: number = 20) {
     return this.http.get(`${this.APIUrl}GetClasses?page=${page}&pageSize=${pageSize}`);
   }
+
+   /** GET: Get all classes */
+
+  getAllClasses() {
+    return this.http.get(`${this.APIUrl}GetAllClasses`);
+  }
   /** GET: Check if a class exists at specific date/time */
   checkClassConflict(classDay: string, classTime: string): Observable<any> {
     return this.http.get(`${this.APIUrl}CheckClassConflict?classDay=${classDay}&classTime=${classTime}`);

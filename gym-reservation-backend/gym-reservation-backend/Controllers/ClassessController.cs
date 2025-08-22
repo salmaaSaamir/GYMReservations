@@ -23,6 +23,14 @@ namespace gym_reservation_backend.Controllers
             var res = await _classService.GetClasses(page, pageSize);
             return Ok(JsonConvert.SerializeObject(res));
         }
+
+        // GET: api/Classes/GetAllClasses
+        [HttpGet]
+        public async Task<IActionResult> GetAllClasses()
+        {
+            var res = await _classService.GetAllClasses();
+            return Ok(JsonConvert.SerializeObject(res));
+        }
         // GET: api/Classes/CheckClassConflict?classDay=monday&classTime=10:00
         [HttpGet]
         public async Task<IActionResult> CheckClassConflict([FromQuery] string classDay, [FromQuery] string classTime)

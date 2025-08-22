@@ -4,5 +4,6 @@ export class Member {
   Email: string = '';
   Phone: string = '';
   IDCard: string = '';
+  Status: string = ''
   CurrentSubscriptionId: number = 0;
 }

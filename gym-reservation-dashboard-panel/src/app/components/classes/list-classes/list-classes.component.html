@@ -43,7 +43,7 @@
 
                     <td>{{ u.Trainer.Name }}</td>
                     <td class="text-end">
-                        <button class="btn btn-sm btn-outline-info iconButton" [matTooltip]="'show reservations'" (click)="openShowReservationModal(u.Id)">
+                        <button class="btn btn-sm btn-outline-info iconButton" [matTooltip]="'show reservations'" (click)="openShowReservationModal(u)">
                             <i class="bi bi-eye"></i>
                         </button>
                         <button class="btn btn-sm btn-outline-warning iconButton"   matTooltip="cancel" (click)="CancelClass(u.Id)"
@@ -83,5 +83,5 @@
 <app-add-class *ngIf="isAddClass" [class]="selectedClass" (closeAddClassModal)="closeAddClassModal()">
 </app-add-class>
 <app-generate-schadule *ngIf="isGenerateWeeklySchedule" (closeGenerateModal)="closeGenerateModal()"></app-generate-schadule>
-<app-show-class-reservations *ngIf="isShowClassReservation" [classId]="selectedClassId" (closeShoeModal)="closeshowReservationModal()">
+<app-show-class-reservations *ngIf="isShowClassReservation" [classId]="selectedClassId" [className]="selectedClassName" (closeShoeModal)="closeshowReservationModal()">
 </app-show-class-reservations> 

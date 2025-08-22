@@ -38,7 +38,7 @@ export class GenerateSchaduleComponent implements OnInit {
       const res: any = await lastValueFrom(
         this.ClassService.getWeeklySchedule(formattedDate)
       );
-      console.log(res)
+      
       if (res.State) {
         const startDate = new Date(res.Data[0]);
         const endDate = new Date(res.Data[1]);
