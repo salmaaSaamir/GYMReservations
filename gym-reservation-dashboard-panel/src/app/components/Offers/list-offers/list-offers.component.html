@@ -1,0 +1,83 @@
+<div *ngIf="isSpinner">
+    <app-loader></app-loader>
+</div>
+
+<div *ngIf="!isSpinner">
+    <div class="d-flex justify-content-between align-items-center  flex-wrap mb-3">
+        <h3>offers</h3>
+        <div class="d-flex gap-3 align-items-center flex-wrap my-2">
+
+     
+            <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddoffer()">
+                <i class="bi bi-plus-lg"></i> Add offer
+            </button>
+            
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Value</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Subscription ID</th>
+            <th class="text-end">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let u of offers">
+            <td>{{ u.Id }}</td>
+            <td>{{ u.Value }}</td>
+            <td>
+                <span class="badge" [ngClass]="u.IsGeneralOffer ? 'bg-primary' : 'bg-info'">
+                    {{ u.IsGeneralOffer ? 'General' : 'Specific' }}
+                </span>
+            </td>
+            <td>
+                <span class="badge" [ngClass]="u.IsActive ? 'bg-success' : 'bg-dark'">
+                    {{ u.IsActive ? 'Active' : 'Inactive' }}
+                </span>
+            </td>
+            <td>{{ u.StartDate | date:'shortDate' }}</td>
+            <td>{{ u.EndDate | date:'shortDate' }}</td>
+            <td>{{ u.SubscriptionId || 'N/A' }}</td>
+            <td class="text-end">
+                <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="edit" (click)="openAddoffer(u)">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm btn-outline-danger iconButton" matTooltip="delete" (click)="deleteoffer(u.Id)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        </tr>
+        <tr *ngIf="offers.length === 0">
+            <td colspan="8" class="text-center">No offers found</td>
+        </tr>
+    </tbody>
+</table>
+    </div>
+    <!-- Page size selector -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex align-items-center">
+            <label for="pageSize" class="me-2" style="width: 450px;">Items per page:</label>
+            <select id="pageSize" class="form-select form-select-sm" [(ngModel)]="pageSize"
+                (change)="onPageSizeChange()">
+                <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
+            </select>
+        </div>
+        <div class="text-muted">
+            {{ (currentPage - 1) * pageSize + 1 }} to {{ getShowingTo() }} of {{ totalCount }} offers
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit offer Form -->
+<app-add-offer *ngIf="isAddoffer" [offer]="selectedoffer" (closeAddOfferModal)="closeAddofferModal()">
+</app-add-offer>

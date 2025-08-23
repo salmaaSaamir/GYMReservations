@@ -1,5 +1,6 @@
 <!-- Modern Subscription History Modal -->
-<div class="modal fade" id="subscriptionHistoryModal" tabindex="-1" aria-labelledby="subscriptionHistoryModalLabel" aria-hidden="true">
+<div class="modal fade" id="subscriptionHistoryModal" tabindex="-1" aria-labelledby="subscriptionHistoryModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
 
@@ -9,7 +10,8 @@
           <i class="fas fa-id-card me-2 text-primary"></i>
           Subscription History - <span class="text-dark">{{member?.Name}}</span>
         </h5>
-        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"
+          (click)="cancel()"></button>
       </div>
 
       <!-- Body -->
@@ -28,6 +30,8 @@
                 <tr>
                   <th>Subscription</th>
                   <th>Price</th>
+                  <th>Offer</th>
+
                   <th>Start</th>
                   <th>End</th>
                   <th>Duration</th>
@@ -36,8 +40,27 @@
               </thead>
               <tbody>
                 <tr *ngFor="let item of subscriptionHistory">
-                  <td class="fw-semibold">{{item.SubscriptionName}}</td>
-                  <td>${{item.SubscriptionPrice}}</td>
+                  <td>
+                    <div class="fw-semibold">{{item.SubscriptionName}}</div>
+                  </td>
+                  <td>
+                    <div class="fw-semibold">{{item.SubscriptionPrice | number}}</div>
+                    <div class="text-info my-2 small" *ngIf="item.Offer">
+                      Paid: {{item.SubscriptionPrice * (1 - item.Offer.Value / 100) | number}}
+                    </div>
+                  </td>
+                  <td>
+                    <div *ngIf="item.Offer">
+                      <span class="badge bg-warning text-dark mb-1">
+                        {{item.Offer.Value}}% OFF
+                        <span *ngIf="item.Offer.IsGeneralOffer">(General)</span>
+                      </span>
+
+                    </div>
+                    <div *ngIf="!item.Offer">
+                      <span class="text-muted small">No offer</span>
+                    </div>
+                  </td>
                   <td>{{item.StartDate | date:'mediumDate'}}</td>
                   <td>{{item.EndDate | date:'mediumDate'}}</td>
                   <td>{{item.DurationDays}} days</td>
@@ -45,6 +68,7 @@
                     <span [class]="getStatusBadgeClass(item.Status)" class="px-3 py-2 rounded-pill">
                       {{item.Status}}
                     </span>
+
                   </td>
                 </tr>
               </tbody>

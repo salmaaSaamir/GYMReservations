@@ -21,22 +21,38 @@ namespace gym_reservation_backend.Services
         {
             try
             {
-                var query = _dbContext.Subscriptions.AsNoTracking(); // Faster read
+                var currentDate = DateTime.Now;
+
+                var query = _dbContext.Subscriptions
+                    .AsNoTracking()
+                    .Select(subscription => new
+                    {
+                        Subscription = subscription,
+                        ApplicableOffers = _dbContext.Offers
+                            .Where(offer =>
+                                offer.IsActive &&
+                                offer.StartDate <= currentDate &&
+                                offer.EndDate >= currentDate &&
+                                (offer.IsGeneralOffer || offer.SubscriptionId == subscription.Id)
+                            )
+                            .OrderByDescending(offer => offer.IsGeneralOffer) // Specific offers first
+                            .ThenByDescending(offer => offer.Value) // Then by highest value
+                            .ToList()
+                    });
 
                 var total = await query.CountAsync();
 
-                var subscriptions = await query
-                    .OrderBy(u => u.Id)
+                var result = await query
+                    .OrderBy(u => u.Subscription.Id)
                     .Skip((page - 1) * pageSize)
                     .Take(pageSize)
                     .ToListAsync();
-
 
                 _response.State = true;
                 _response.Data.Add(total);
                 _response.Data.Add(page);
                 _response.Data.Add(pageSize);
-                _response.Data.Add(subscriptions);
+                _response.Data.Add(result);
             }
             catch (Exception ex)
             {
@@ -46,6 +62,43 @@ namespace gym_reservation_backend.Services
 
             return _response;
         }
+
+        public async Task<ServiceResponse> GetAllSubscriptions()
+        {
+            try
+            {
+                var currentDate = DateTime.Now;
+
+                var subscriptionsWithOffers = await _dbContext.Subscriptions
+                    .AsNoTracking()
+                    .Select(subscription => new
+                    {
+                        Subscription = subscription,
+                        ApplicableOffers = _dbContext.Offers
+                            .Where(offer =>
+                                offer.IsActive &&
+                                offer.StartDate <= currentDate &&
+                                offer.EndDate >= currentDate &&
+                                (offer.IsGeneralOffer || offer.SubscriptionId == subscription.Id)
+                            )
+                            .OrderByDescending(offer => offer.IsGeneralOffer) // Specific offers first
+                            .ThenByDescending(offer => offer.Value) // Then by highest value
+                            .ToList()
+                    })
+                    .ToListAsync();
+
+                _response.State = true;
+                _response.Data.Add(subscriptionsWithOffers);
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = $"Error retrieving Subscriptions: {ex.Message}";
+            }
+
+            return _response;
+        }
+
         public async Task<bool> Delete(int subscriptionsId)
         {
             if (IsExists(subscriptionsId))
@@ -89,23 +142,5 @@ namespace gym_reservation_backend.Services
         }
 
 
-        public async Task<ServiceResponse> GetAllSubscriptions()
-        {
-            try
-            {
-                var Subscriptions = await _dbContext.Subscriptions.AsNoTracking().ToListAsync(); // Faster read
-                _response.State = true;
-
-                _response.Data.Add(Subscriptions);
-
-            }
-            catch (Exception ex)
-            {
-                _response.State = false;
-                _response.ErrorMessage = $"Error retrieving Subscriptions: {ex.Message}";
-            }
-
-            return _response;
-        }
     }
 }

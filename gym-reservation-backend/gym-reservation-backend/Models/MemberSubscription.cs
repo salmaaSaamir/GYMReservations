@@ -27,5 +27,12 @@ namespace gym_reservation_backend.Models
         public int? RemainingFreezeDays { get; set; }
         public DateTime? FreezeStartDate { get; set; }
         public DateTime? FreezeEndDate { get; set; }
+
+
+        public int? OfferId { get; set; }
+
+        [ForeignKey("OfferId")]
+        [JsonIgnore]
+        public Offer? Offer { get; set; }
     }
 }

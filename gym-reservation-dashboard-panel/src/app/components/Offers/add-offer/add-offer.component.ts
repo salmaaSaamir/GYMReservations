@@ -2,84 +2,75 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
-import { Member } from 'src/app/core/models/Member';
-import { Subscription } from 'src/app/core/models/Subscription';
 import { Offer } from 'src/app/core/models/Offer';
-import { MemberService } from 'src/app/core/services/MemberService';
+import { Subscription } from 'src/app/core/models/Subscription';
+import { OfferService } from 'src/app/core/services/OfferService';
 import { SubscriptionService } from 'src/app/core/services/SubscriptionService';
 
 declare var $: any;
 
 @Component({
-  selector: 'app-add-member',
-  templateUrl: './add-member.component.html',
-  styleUrls: ['./add-member.component.css']
+  selector: 'app-add-offer',
+  templateUrl: './add-offer.component.html',
+  styleUrls: ['./add-offer.component.css']
 })
-export class AddMemberComponent implements OnInit {
-  @Input() member?: Member;
-  @Input() lastIDCard: string = "";
-  @Output() closeAddMemberModal = new EventEmitter();
+export class AddOfferComponent implements OnInit {
+  @Input() offer?: Offer = new Offer();
+  @Output() closeAddOfferModal = new EventEmitter();
+  subscriptions: any[] = [];
   isSpinner = false;
   form: FormGroup;
-  subscriptions: any[] = []; // Changed to any[] to include ApplicableOffers
+  conflictError: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private toaster: ToastrService,
-    private memberService: MemberService,
+    private offerService: OfferService,
     private subscriptionService: SubscriptionService
   ) {
     this.form = this.fb.group({
       Id: [0],
-      Name: ['', [Validators.required, Validators.minLength(2)]],
-      Email: ['', [Validators.required, Validators.email]],
-      Phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10,15}$/)]],
-      IDCard: [{ value: '', disabled: true }],
-      CurrentSubscriptionId: [0, Validators.required]
+      Value: [0, [Validators.required, Validators.min(0)]],
+      SubscriptionId: [null],
+      IsGeneralOffer: [false],
+      IsActive: [true],
+      StartDate: ['', Validators.required],
+      EndDate: ['', Validators.required]
     });
   }
 
   async ngOnInit() {
-    if (this.member && this.member.Id) {
-      // Editing existing member
-      this.form.patchValue(this.member);
-    } else {
-      // Adding new member - generate ID Card
-      this.generateIDCard();
+    await this.getSubscriptionData();
+    if (this.offer && this.offer.Id !== 0) {
+      this.form.patchValue(this.offer);
+      
+      // Convert string dates to Date objects if needed
+      if (typeof this.offer.StartDate === 'string') {
+        this.form.patchValue({
+          StartDate: this.formatDateForInput(this.offer.StartDate),
+          EndDate: this.formatDateForInput(this.offer.EndDate)
+        });
+      }
     }
-    await this.getAllSubscriptions();
-    $('#addMemberModal').modal('show');
+    $('#addOfferModal').modal('show');
   }
 
-  async getAllSubscriptions() {
-    try {
-      this.isSpinner = true;
-      const res: any = await lastValueFrom(
-        this.subscriptionService.getAllSubscriptions()
-      );
+  private formatDateForInput(dateString: string | Date): string {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  }
 
+  async getSubscriptionData() {
+    try {
+      const res: any = await lastValueFrom(this.subscriptionService.getAllSubscriptions());
       if (res.State) {
+        
         this.subscriptions = res.Data[0];
       }
     } catch (error) {
-      console.error('Error loading subscriptions', error);
+      console.error('Error getting subscriptions', error);
       this.toaster.error('Failed to load subscriptions');
-    } finally {
-      this.isSpinner = false;
     }
-  }
-
-  generateIDCard() {
-    let nextNumber = 1;
-    if (this.lastIDCard) {
-      const lastNumber = parseInt(this.lastIDCard, 10);
-      if (!isNaN(lastNumber)) {
-        nextNumber = lastNumber + 1;
-      }
-    }
-    this.form.patchValue({
-      IDCard: nextNumber.toString().padStart(4, '0')
-    });
   }
 
   async save() {
@@ -90,27 +81,34 @@ export class AddMemberComponent implements OnInit {
 
     try {
       this.isSpinner = true;
-      const memberData = this.form.getRawValue(); // Gets ALL values including disabled
+      const offerData = this.form.value as Offer;
+      
+      // If it's a general offer, ensure SubscriptionId is null
+      if (offerData.IsGeneralOffer) {
+        offerData.SubscriptionId = null;
+      }
 
-      const res: any = await lastValueFrom(this.memberService.saveMember(memberData));
+      const res: any = await lastValueFrom(this.offerService.saveOffer(offerData));
 
       if (res.State) {
-        this.toaster.success("Saved successfully");
+        this.toaster.success("Offer saved successfully");
         this.cancel();
-      } else {
-        this.toaster.error(res.ErrorMessage || "Failed to save member");
       }
-    } catch (error) {
-      console.error('Error saving member', error);
-      this.toaster.error("Failed to save member");
+    } catch (error: any) {
+      console.error('Error saving offer', error);
+      if (error.error && error.error.Message) {
+        this.conflictError = error.error.Message;
+      } else {
+        this.toaster.error("Failed to save offer");
+      }
     } finally {
       this.isSpinner = false;
     }
   }
 
   cancel() {
-    $('#addMemberModal').modal('hide');
-    this.closeAddMemberModal.emit();
+    $('#addOfferModal').modal('hide');
+    this.closeAddOfferModal.emit();
   }
 
   // Check if a subscription has an active offer

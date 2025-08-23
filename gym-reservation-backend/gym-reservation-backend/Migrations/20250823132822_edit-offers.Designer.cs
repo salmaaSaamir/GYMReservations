@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using gym_reservation_backend.Context;
 
@@ -11,9 +12,11 @@ using gym_reservation_backend.Context;
 namespace gym_reservation_backend.Migrations
 {
     [DbContext(typeof(DBContext))]
-    partial class DBContextModelSnapshot : ModelSnapshot
+    [Migration("20250823132822_edit-offers")]
+    partial class editoffers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,9 +140,6 @@ namespace gym_reservation_backend.Migrations
                     b.Property<int>("MemberId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OfferId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("RemainingFreezeDays")
                         .HasColumnType("int");
 
@@ -154,8 +154,6 @@ namespace gym_reservation_backend.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OfferId");
 
                     b.HasIndex("SubscriptionId");
 
@@ -383,17 +381,11 @@ namespace gym_reservation_backend.Migrations
 
             modelBuilder.Entity("gym_reservation_backend.Models.MemberSubscription", b =>
                 {
-                    b.HasOne("gym_reservation_backend.Models.Offer", "Offer")
-                        .WithMany()
-                        .HasForeignKey("OfferId");
-
                     b.HasOne("gym_reservation_backend.Models.Subscription", "Subscription")
                         .WithMany()
                         .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Offer");
 
                     b.Navigation("Subscription");
                 });

@@ -22,10 +22,11 @@ import { ListSubscriptionComponent } from './subscription/list-subscription/list
 import { AddSubscriptionComponent } from './subscription/add-subscription/add-subscription.component';
 import { ListReservationsComponent } from './reservations/list-reservations/list-reservations.component';
 import { AddReservationComponent } from './reservations/add-reservation/add-reservation.component';
-import { ListMemberSubscriptionsComponent } from './members/list-member-subscriptions/list-member-subscriptions.component';
 import { ListSubscriptionsHistoryComponent } from './members/list-subscriptions-history/list-subscriptions-history.component';
 import { ListContactsComponent } from './contact/list-contacts/list-contacts.component';
 import { RespondContactComponent } from './contact/respond-contact/respond-contact.component';
+import { ListOffersComponent } from './Offers/list-offers/list-offers.component';
+import { AddOfferComponent } from './Offers/add-offer/add-offer.component';
 
 @NgModule({
   declarations: [
@@ -44,12 +45,13 @@ import { RespondContactComponent } from './contact/respond-contact/respond-conta
     AddMemberComponent,
     ListSubscriptionComponent,
     AddSubscriptionComponent,
-    ListMemberSubscriptionsComponent,
     ListReservationsComponent,
     AddReservationComponent,
     ListSubscriptionsHistoryComponent,
     ListContactsComponent,
-    RespondContactComponent
+    RespondContactComponent,
+    ListOffersComponent,
+    AddOfferComponent
   ],
   imports: [
     CommonModule,

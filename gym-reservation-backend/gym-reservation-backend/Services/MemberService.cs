@@ -78,7 +78,7 @@ namespace gym_reservation_backend.Services
                 var subscriptionHistory = await _dbContext.MemberSubscriptions
                     .AsNoTracking()
                     .Where(ms => ms.MemberId == memberId)
-                    .Include(ms => ms.Subscription)
+                    .Include(ms => ms.Subscription).Include(x=>x.Offer)
                     .OrderByDescending(ms => ms.StartDate)
                     .Select(ms => new
                     {
@@ -93,7 +93,8 @@ namespace gym_reservation_backend.Services
                         ms.RemainingFreezeDays,
                         ms.FreezeStartDate,
                         ms.FreezeEndDate,
-                        DurationDays = (ms.EndDate - ms.StartDate).Days
+                        DurationDays = (ms.EndDate - ms.StartDate).Days,
+                        Offer=ms.Offer
                     })
                     .ToListAsync();
 
@@ -172,6 +173,7 @@ namespace gym_reservation_backend.Services
                     existingMember.Phone = member.Phone;
                     existingMember.IDCard = member.IDCard;
                     existingMember.CurrentSubscriptionId = member.CurrentSubscriptionId;
+
                     // Create new subscription history entry if subscription changed
                     if (subscriptionChanged && member.CurrentSubscriptionId > 0)
                     {
@@ -180,8 +182,9 @@ namespace gym_reservation_backend.Services
                         // Schedule expiration check for the new subscription
                         ScheduleExpirationCheck(memberSubscription.Id, memberSubscription.EndDate);
                     }
+
                     // Update member status based on subscription
-                    if ( member.CurrentSubscriptionId > 0)
+                    if (member.CurrentSubscriptionId > 0)
                     {
                         var subscriptionStatus = await GetActiveSubscriptionStatus(member.Id);
                         existingMember.Status = subscriptionStatus.Status;
@@ -193,8 +196,6 @@ namespace gym_reservation_backend.Services
 
                     _dbContext.Members.Update(existingMember);
                     await _dbContext.SaveChangesAsync();
-
-                   
                 }
 
                 await transaction.CommitAsync();
@@ -210,33 +211,45 @@ namespace gym_reservation_backend.Services
 
             return _response;
         }
-
         private async Task<MemberSubscription> CreateMemberSubscription(int memberId, int subscriptionId)
         {
-            var subscription = await _dbContext.Subscriptions
-                .FirstOrDefaultAsync(s => s.Id == subscriptionId);
+            var subscription = await _dbContext.Subscriptions.FindAsync(subscriptionId);
+            if (subscription == null)
+                throw new Exception("Subscription not found");
 
-            if (subscription != null)
+            // Find active offer for this subscription
+            var activeOffer = await _dbContext.Offers
+                .FirstOrDefaultAsync(o => o.SubscriptionId == subscriptionId &&
+                                         o.IsActive &&
+                                         o.StartDate <= DateTime.Now &&
+                                         o.EndDate >= DateTime.Now);
+
+            DateTime startDate = DateTime.Now;
+            DateTime endDate = startDate.AddMonths(subscription.MonthsNo);
+
+            // Apply offer discount if available
+            decimal finalPrice = subscription.Price;
+            if (activeOffer != null)
             {
-                var memberSubscription = new MemberSubscription
-                {
-                    MemberId = memberId,
-                    SubscriptionId = subscriptionId,
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Now.AddMonths(subscription.MonthsNo),
-                    Status = "Active",
-                    RemainingFreezeDays = subscription.FreezeDays
-                };
-
-                _dbContext.MemberSubscriptions.Add(memberSubscription);
-                await _dbContext.SaveChangesAsync();
-
-                return memberSubscription;
+                finalPrice = subscription.Price * (1 - activeOffer.Value / 100m);
             }
 
-            return null;
-        }
+            var memberSubscription = new MemberSubscription
+            {
+                MemberId = memberId,
+                SubscriptionId = subscriptionId,
+                StartDate = startDate,
+                EndDate = endDate,
+                Status = "Active",
+                RemainingFreezeDays = subscription.FreezeDays,
+                OfferId = activeOffer?.Id // Set OfferId if offer exists
+            };
 
+            _dbContext.MemberSubscriptions.Add(memberSubscription);
+            await _dbContext.SaveChangesAsync();
+
+            return memberSubscription;
+        }
         public async Task<ServiceResponse> FreezeSubscription(int memberId, int subscriptionHistoryId)
         {
             using var transaction = await _dbContext.Database.BeginTransactionAsync();

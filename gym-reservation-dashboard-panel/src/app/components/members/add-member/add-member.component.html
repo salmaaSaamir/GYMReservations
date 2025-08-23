@@ -52,13 +52,41 @@
           <div class="row mb-3">
             <div class="col-12">
               <label>Subscription <i class="bi bi-asterisk"></i></label>
-              <mat-form-field appearance="outline" class="w-100">
-                <mat-select formControlName="CurrentSubscriptionId">
-                  <mat-option *ngFor="let sub of subscriptions" [value]="sub.Id">
-                    {{ sub.Name }} - {{ sub.Price | currency:("EGP") }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+  <mat-select formControlName="CurrentSubscriptionId">
+    <mat-option *ngFor="let sub of subscriptions" [value]="sub.Subscription.Id">
+      <div class="d-flex align-items-center">
+        <!-- Subscription name -->
+        <span class="me-2">{{ sub.Subscription.Name }}</span>
+        
+        <!-- Price section -->
+        <span class="d-flex align-items-center">
+          <!-- Original price with strikethrough when there's an offer -->
+          <span [class.text-decoration-line-through]="hasActiveOffer(sub)" 
+                [class.text-muted]="hasActiveOffer(sub)"
+                class="me-1">
+            {{ sub.Subscription.Price | currency:("EGP") }}
+          </span>
+          
+          <!-- Discounted price when there's an offer -->
+          <span *ngIf="hasActiveOffer(sub)" class="text-success fw-bold me-2">
+            {{ calculateDiscountedPrice(sub.Subscription.Price, getApplicableOffer(sub.ApplicableOffers)) | currency:("EGP") }}
+          </span>
+        </span>
+        
+        <!-- Badge for subscription offer -->
+        <span *ngIf="hasActiveOffer(sub)" class="ms-2">
+          <span class="badge" 
+                [ngClass]="getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer ? 'bg-info' : 'bg-warning'"
+                matTooltip="{{ getOfferTooltip(getApplicableOffer(sub.ApplicableOffers)) }}">
+            {{ getApplicableOffer(sub.ApplicableOffers)?.Value }}% 
+            {{ getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer ? '(G)' : '(S)' }}
+          </span>
+        </span>
+      </div>
+    </mat-option>
+  </mat-select>
+</mat-form-field>
               <div *ngIf="form.get('CurrentSubscriptionId')?.invalid && form.get('CurrentSubscriptionId')?.touched" class="text-danger">
                 <small *ngIf="form.get('CurrentSubscriptionId')?.errors?.['required']">Subscription is required.</small>
               </div>

@@ -37,6 +37,7 @@ export class ListSubscriptionsHistoryComponent implements OnInit {
       );
 
       if (res.State) {
+        
         this.subscriptionHistory = res.Data[0] || [];
       } else {
         this.toaster.error('Failed to load subscription history');

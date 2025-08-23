@@ -25,7 +25,7 @@ export class RespondContactComponent implements OnInit {
   }
 
   ngOnInit() {
-console.log(this.contactUs);
+
     $('#addContactUsModal').modal('show');
   }
 
@@ -34,7 +34,7 @@ console.log(this.contactUs);
     try {
       this.isSpinner = true;
       // Call the responseByEmail service method
-      console.log(this.contactUs);  
+        
       const res: any = await lastValueFrom(
         this.contactUsService.responseByEmail(this.contactUs)
       );
