@@ -4,7 +4,9 @@
 
 export const environment = {
   production: false,
-   backApiUrl: 'https://localhost:7278/api/',
+  backApiUrl: 'https://localhost:7278/api/',
+  notificationUrl: "https://localhost:7278",
+
 };
 
 /*

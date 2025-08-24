@@ -3,8 +3,36 @@
   "WorkspaceRootPath": "E:\\GYM_Reservations\\gym-reservation-backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|e:\\gym_reservations\\gym-reservation-backend\\gym-reservation-backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|solutionrelative:gym-reservation-backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|e:\\gym_reservations\\gym-reservation-backend\\gym-reservation-backend\\hubs\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|solutionrelative:gym-reservation-backend\\hubs\\notificationhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|e:\\gym_reservations\\gym-reservation-backend\\gym-reservation-backend\\services\\memberservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|solutionrelative:gym-reservation-backend\\services\\memberservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|e:\\gym_reservations\\gym-reservation-backend\\gym-reservation-backend\\services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|solutionrelative:gym-reservation-backend\\services\\notificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|e:\\gym_reservations\\gym-reservation-backend\\gym-reservation-backend\\interfaces\\inotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|solutionrelative:gym-reservation-backend\\interfaces\\inotificationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|e:\\gym_reservations\\gym-reservation-backend\\gym-reservation-backend\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|solutionrelative:gym-reservation-backend\\controllers\\notificationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|e:\\gym_reservations\\gym-reservation-backend\\gym-reservation-backend\\models\\classes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|solutionrelative:gym-reservation-backend\\models\\classes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|e:\\gym_reservations\\gym-reservation-backend\\gym-reservation-backend\\services\\classservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{FBC4273A-FBBD-45F7-BFD9-910CA8BFFDEE}|gym-reservation-backend\\gym-reservation-backend.csproj|solutionrelative:gym-reservation-backend\\services\\classservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,11 +42,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 71,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "MemberService.cs",
               "DocumentMoniker": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Services\\MemberService.cs",
               "RelativeDocumentMoniker": "gym-reservation-backend\\Services\\MemberService.cs",
@@ -28,6 +56,97 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-23T15:01:08.912Z",
               "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "INotificationService.cs",
+              "DocumentMoniker": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Interfaces\\INotificationService.cs",
+              "RelativeDocumentMoniker": "gym-reservation-backend\\Interfaces\\INotificationService.cs",
+              "ToolTip": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Interfaces\\INotificationService.cs",
+              "RelativeToolTip": "gym-reservation-backend\\Interfaces\\INotificationService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-24T16:26:18.174Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "NotificationHub.cs",
+              "DocumentMoniker": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Hubs\\NotificationHub.cs",
+              "RelativeDocumentMoniker": "gym-reservation-backend\\Hubs\\NotificationHub.cs",
+              "ToolTip": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Hubs\\NotificationHub.cs",
+              "RelativeToolTip": "gym-reservation-backend\\Hubs\\NotificationHub.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-24T16:22:11.97Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "NotificationService.cs",
+              "DocumentMoniker": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Services\\NotificationService.cs",
+              "RelativeDocumentMoniker": "gym-reservation-backend\\Services\\NotificationService.cs",
+              "ToolTip": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Services\\NotificationService.cs",
+              "RelativeToolTip": "gym-reservation-backend\\Services\\NotificationService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-24T16:25:28.158Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Program.cs",
+              "RelativeDocumentMoniker": "gym-reservation-backend\\Program.cs",
+              "ToolTip": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Program.cs",
+              "RelativeToolTip": "gym-reservation-backend\\Program.cs",
+              "ViewState": "AQIAAGAAAAAAAAAAAAAswHsAAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-24T16:23:45.188Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NotificationsController.cs",
+              "DocumentMoniker": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Controllers\\NotificationsController.cs",
+              "RelativeDocumentMoniker": "gym-reservation-backend\\Controllers\\NotificationsController.cs",
+              "ToolTip": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Controllers\\NotificationsController.cs",
+              "RelativeToolTip": "gym-reservation-backend\\Controllers\\NotificationsController.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAAQAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-24T16:26:38.413Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ClassService.cs",
+              "DocumentMoniker": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Services\\ClassService.cs",
+              "RelativeDocumentMoniker": "gym-reservation-backend\\Services\\ClassService.cs",
+              "ToolTip": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Services\\ClassService.cs",
+              "RelativeToolTip": "gym-reservation-backend\\Services\\ClassService.cs",
+              "ViewState": "AQIAAOMAAAAAAAAAAAAqwP8AAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-24T16:30:34.186Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Classes.cs",
+              "DocumentMoniker": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Models\\Classes.cs",
+              "RelativeDocumentMoniker": "gym-reservation-backend\\Models\\Classes.cs",
+              "ToolTip": "E:\\GYM_Reservations\\gym-reservation-backend\\gym-reservation-backend\\Models\\Classes.cs",
+              "RelativeToolTip": "gym-reservation-backend\\Models\\Classes.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAAAgwCUAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-24T16:30:42.739Z",
               "EditorCaption": ""
             }
           ]

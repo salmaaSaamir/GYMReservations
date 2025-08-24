@@ -16,16 +16,20 @@ export class AddUserComponent implements OnInit {
   @Output() closeAddUserModal = new EventEmitter();
   isSpinner = false;
   form: FormGroup;
-  showPassword: boolean = false; // Property to toggle password visibility
+  showPassword: boolean = false;
 
-  constructor(private fb: FormBuilder,private toaster: ToastrService, private userService: UserService) {
+  constructor(
+    private fb: FormBuilder,
+    private toaster: ToastrService,
+    private userService: UserService
+  ) {
     this.form = this.fb.group({
       Id: [0],
       FName: ['', [Validators.required, Validators.minLength(2)]],
       LName: ['', [Validators.required, Validators.minLength(2)]],
       Email: ['', [Validators.required, Validators.email]],
       Password: ['', [Validators.required, Validators.minLength(6)]],
-      ImageUrl: ['', Validators.required],
+      ImageUrl: [''],
     });
   }
 
@@ -33,22 +37,35 @@ export class AddUserComponent implements OnInit {
     if (this.user) {
       this.form.patchValue(this.user);
 
-      // If editing, remove password requirement
+      // لو edit نلغي شرط الباسورد
       if (this.user.Id > 0) {
         this.form.get('Password')?.clearValidators();
         this.form.get('Password')?.updateValueAndValidity();
       }
     }
     $('#addUserModal').modal('show');
-
   }
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
 
-  async save() {
+  // ✅ هنا التحويل لـ base64
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.form.patchValue({
+          ImageUrl: reader.result as string
+        });
+        this.form.get('ImageUrl')?.markAsTouched(); // عشان التحقق يشتغل
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
+  async save() {
     if (this.form.invalid) return;
 
     try {
@@ -66,6 +83,5 @@ export class AddUserComponent implements OnInit {
   cancel() {
     $('#addUserModal').modal('hide');
     this.closeAddUserModal.emit();
-
   }
 }

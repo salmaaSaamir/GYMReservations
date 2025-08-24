@@ -16,6 +16,7 @@ import { jwtDecode } from 'jwt-decode';
 import { AuthService } from 'src/app/core/services/authService';
 import { lastValueFrom } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from 'src/app/core/services/NotificationService';
 
 @Component({
   selector: 'app-header',
@@ -35,23 +36,27 @@ export class HeaderComponent {
   @Input() showToggle = true;
   @Input() toggleChecked = false;
   @Output() toggleMobileNav = new EventEmitter<void>();
-  constructor(private authService: AuthService,private toaster:ToastrService) {
+  constructor(private authService: AuthService, private toaster: ToastrService, private notificationService: NotificationService) {
     const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
     if (token) {
       this.userData = jwtDecode(token);
+      console.log(this.userData);
     } else {
       this.userData = null;
     }
   }
   userData: any;
   isSpinner = false
- async logOut() {
+  async ngOnInit() {
+     this.notificationService.startConnection();
+  }
+  async logOut() {
 
     this.isSpinner = true;
 
     try {
       const observable = this.authService.logout();
-      
+
 
       this.isSpinner = false;
     } catch (error) {
