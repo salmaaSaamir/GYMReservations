@@ -17,6 +17,7 @@ import { AuthService } from 'src/app/core/services/authService';
 import { lastValueFrom } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NotificationService } from 'src/app/core/services/NotificationService';
+import { UserService } from 'src/app/core/services/UsersService';
 
 @Component({
   selector: 'app-header',
@@ -36,11 +37,12 @@ export class HeaderComponent {
   @Input() showToggle = true;
   @Input() toggleChecked = false;
   @Output() toggleMobileNav = new EventEmitter<void>();
-  constructor(private authService: AuthService, private toaster: ToastrService, private notificationService: NotificationService) {
+  UserImage:string = ""
+  constructor(private authService: AuthService,private UserService:UserService, private toaster: ToastrService, private notificationService: NotificationService) {
     const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
     if (token) {
       this.userData = jwtDecode(token);
-      console.log(this.userData);
+      
     } else {
       this.userData = null;
     }
@@ -48,6 +50,7 @@ export class HeaderComponent {
   userData: any;
   isSpinner = false
   async ngOnInit() {
+    this.GetUserImage();
      this.notificationService.startConnection();
   }
   async logOut() {
@@ -58,6 +61,21 @@ export class HeaderComponent {
       const observable = this.authService.logout();
 
 
+      this.isSpinner = false;
+    } catch (error) {
+      this.isSpinner = false;
+      throw error;
+    }
+  }
+  async GetUserImage() {
+    this.isSpinner = true;
+
+    try {
+      const observable = this.UserService.GetUserImage(this.userData?.Id);
+      var res:any = await lastValueFrom(observable);
+      if(res.State){
+        this.UserImage = res.Data[0]
+      }
       this.isSpinner = false;
     } catch (error) {
       this.isSpinner = false;

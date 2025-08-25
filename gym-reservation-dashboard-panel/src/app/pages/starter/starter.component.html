@@ -4,23 +4,43 @@
   <!-- Row 1 (3 charts) -->
   <div class="row mb-4">
     <div class="col-md-4">
-      <canvas baseChart [data]="barChartData" [type]="barChartType"></canvas>
+      <h5>Active Subscriptions</h5>
+      <canvas baseChart 
+              [data]="barChartData" 
+              [type]="barChartType"
+              [options]="chartOptions"></canvas>
     </div>
     <div class="col-md-4">
-      <canvas baseChart [data]="lineChartData" [type]="lineChartType"></canvas>
+      <h5>Monthly Reservations</h5>
+      <canvas baseChart 
+              [data]="lineChartData" 
+              [type]="lineChartType"
+              [options]="chartOptions"></canvas>
     </div>
     <div class="col-md-4">
-      <canvas baseChart [data]="pieChartData" [type]="pieChartType"></canvas>
+      <h5>Class Status</h5>
+      <canvas baseChart 
+              [data]="pieChartData" 
+              [type]="pieChartType"
+              [options]="chartOptions"></canvas>
     </div>
   </div>
 
   <!-- Row 2 (2 charts) -->
   <div class="row">
     <div class="col-md-6">
-      <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType"></canvas>
+      <h5>Overall Statistics</h5>
+      <canvas baseChart 
+              [data]="doughnutChartData" 
+              [type]="doughnutChartType"
+              [options]="chartOptions"></canvas>
     </div>
     <div class="col-md-6">
-      <canvas baseChart [data]="radarChartData" [type]="radarChartType"></canvas>
+      <h5>Performance Metrics</h5>
+      <canvas baseChart 
+              [data]="radarChartData" 
+              [type]="radarChartType"
+              [options]="chartOptions"></canvas>
     </div>
   </div>
 </div>

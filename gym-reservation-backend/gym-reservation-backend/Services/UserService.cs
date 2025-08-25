@@ -55,7 +55,26 @@ namespace gym_reservation_backend.Services
                 return _response;
             }
         }
+        public async Task<ServiceResponse> GetUserImage(int userId)
+        {
 
+            try
+            {
+                // Get Image to this user
+                var UserImage = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                    
+
+                _response.State = true;
+                _response.Data.Add(UserImage.ImageUrl??"");
+                return _response;
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = $"Error retrieving user Image: {ex.Message}";
+                return _response;
+            }
+        }
         public async Task<ServiceResponse> GetSystemMenus()
         {
 

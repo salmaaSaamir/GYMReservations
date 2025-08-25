@@ -9,8 +9,9 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { ComponentsModule } from './components/components.module';
 import { MaterialModule } from './material.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,13 @@ import { ToastrModule } from 'ngx-toastr';
     TablerIconsModule.pick(TablerIcons), // <-- Pick all icons
     MaterialModule, ToastrModule.forRoot()    
 
+  ],
+   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent] // <-- Bootstrap it
 

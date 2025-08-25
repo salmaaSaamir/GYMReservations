@@ -9,7 +9,8 @@ using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Services;
 using Hangfire;
 using Microsoft.AspNetCore.SignalR;
-using gym_reservation_backend.Hubs; // Make sure this namespace is correct
+using gym_reservation_backend.Hubs;
+using Microsoft.AspNetCore.Authorization; // Make sure this namespace is correct
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Connection");
@@ -39,7 +40,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
         policy
-            .WithOrigins("http://localhost:4200", "https://localhost:4200") // Use WithOrigins instead of SetIsOriginAllowed
+            .WithOrigins("http://localhost:4200") // Use WithOrigins instead of SetIsOriginAllowed
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -48,12 +49,13 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
-        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Bearer {token}\"",
         Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
     });
 
     options.OperationFilter<SecurityRequirementsOperationFilter>();
@@ -91,6 +93,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITrainerService, TrainerService>();
@@ -101,6 +112,7 @@ builder.Services.AddHostedService<SubscriptionBackgroundService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IOfferService, OfferService>();
 builder.Services.AddScoped<IContactService, ContactService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
 var app = builder.Build();
 

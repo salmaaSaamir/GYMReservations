@@ -35,4 +35,8 @@ export class UserService {
   deleteUser(id: number) {
     return this.http.delete(`${this.APIUrl}DeleteUser/${id}`);
   }
+  /** GET: Get Image for a user */
+  GetUserImage(userId: number) {
+    return this.http.get(`${this.APIUrl}GetUserImage/${userId}`);
+  }
 }

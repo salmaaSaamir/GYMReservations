@@ -11,5 +11,6 @@ namespace gym_reservation_backend.Interfaces
         Task<ServiceResponse> DeleteUser(int id);
         Task<ServiceResponse> GetSystemMenus();
         Task<ServiceResponse> SaveUserMenus(UserMenuRequest request);
+        Task<ServiceResponse> GetUserImage(int userId);
     }
 }

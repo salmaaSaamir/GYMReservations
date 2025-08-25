@@ -65,6 +65,12 @@ namespace gym_reservation_backend.Controllers
             return Ok(JsonConvert.SerializeObject(res));
         
         }
-
+        // GET: api/Users/GetUserImage/5
+        [HttpGet("{userId}")]
+        public async Task<IActionResult> GetUserImage(int userId)
+        {
+            var res = await _user.GetUserImage(userId);
+            return Ok(JsonConvert.SerializeObject(res));
+        }
     }
 }

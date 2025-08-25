@@ -59,7 +59,6 @@ namespace gym_reservation_backend.Services
             tokenData.FName = admin.FName;
             tokenData.LName = admin.LName;
             tokenData.Email = admin.Email;
-            tokenData.ImageUrl = admin.ImageUrl;
             tokenData.RemeberMe = model.IsRememberMe;
 
             var token = GenerateJwtToken(tokenData);
@@ -73,7 +72,6 @@ namespace gym_reservation_backend.Services
                 new Claim("Id", tokenData.Id.ToString()),
                 new Claim("Name", tokenData.FName +  tokenData.LName),
                 new Claim("Email",  tokenData.Email),
-                new Claim("ImageUrl",  tokenData.ImageUrl),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
