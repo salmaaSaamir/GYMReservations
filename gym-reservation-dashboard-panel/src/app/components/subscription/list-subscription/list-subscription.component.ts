@@ -19,7 +19,8 @@ export class ListSubscriptionComponent implements OnInit {
   totalCount = 0;
   isAddSubscription = false;
   selectedSubscription?: Subscription;
-
+  filteredSubscriptions: any[] = []; 
+  searchTerm: string = '';
   constructor(
     private subscriptionService: SubscriptionService, 
     private toaster: ToastrService
@@ -42,6 +43,7 @@ export class ListSubscriptionComponent implements OnInit {
         this.currentPage = Math.max(1, Math.min(res.Data[1] || 1, totalPages));
         this.pageSize = res.Data[2];
         this.subscriptionsWithOffers = res.Data[3];
+        this.filteredSubscriptions = [...this.subscriptionsWithOffers]; // Initialize filtered list
       }
     } catch (error) {
       console.error('Error loading subscriptions', error);
@@ -85,7 +87,8 @@ export class ListSubscriptionComponent implements OnInit {
   }
 
   openAddSubscription(subscriptionWithOffers?: any) {
-    this.selectedSubscription = subscriptionWithOffers ? subscriptionWithOffers.Subscription : undefined;
+    console.log('Editing subscription:', subscriptionWithOffers);
+    this.selectedSubscription = subscriptionWithOffers;
     this.isAddSubscription = true;
   }
 
@@ -118,5 +121,28 @@ export class ListSubscriptionComponent implements OnInit {
 
   getShowingTo(): number {
     return Math.min(this.currentPage * this.pageSize, this.totalCount);
+  }
+  // ✅ Smart Search
+  onSearch() {
+    if (!this.searchTerm.trim()) {
+      this.filteredSubscriptions = [...this.subscriptionsWithOffers];
+      return;
+    }
+
+    const searchLower = this.searchTerm.toLowerCase().trim();
+
+    this.filteredSubscriptions = this.subscriptionsWithOffers.filter(sub => {
+      const s = sub.Subscription;
+      const offer = this.getApplicableOffer(sub.ApplicableOffers);
+
+      return (
+        s.Id?.toString().includes(searchLower) ||
+        s.Name?.toLowerCase().includes(searchLower) ||
+        s.Description?.toLowerCase().includes(searchLower) ||
+        s.Price?.toString().includes(searchLower) ||
+        (s.IsActive ? 'active' : 'inactive').includes(searchLower) ||
+        (offer && offer.Value.toString().includes(searchLower))
+      );
+    });
   }
 }

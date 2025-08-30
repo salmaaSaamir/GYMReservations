@@ -21,6 +21,8 @@ export class ListUsersComponent {
   selectedUser?: User;
   isAddUserMenu = false;
   selectedUserId = 0;
+searchTerm: string = '';
+filteredUsers: User[] = [];
 
   constructor(private userService: UserService, private toaster: ToastrService) { }
 
@@ -41,7 +43,8 @@ export class ListUsersComponent {
         const totalPages = Math.ceil(this.totalCount / this.pageSize);
         this.currentPage = Math.max(1, Math.min(res.Data[1] || 1, totalPages));
         this.pageSize = res.Data[2];
-        this.users = res.Data[3];
+this.users = res.Data[3];
+this.filteredUsers = [...this.users]; // Initialize filteredUsers
       }
     } catch (error) {
       console.error('Error loading users', error);
@@ -105,4 +108,20 @@ export class ListUsersComponent {
 getShowingTo(): number {
   return Math.min(this.currentPage * this.pageSize, this.totalCount);
 }
+onSearch() {
+  if (!this.searchTerm.trim()) {
+    this.filteredUsers = [...this.users]; // لو مفيش كتابة رجّع كل اليوزرز
+    return;
+  }
+
+  const searchLower = this.searchTerm.toLowerCase().trim();
+
+  this.filteredUsers = this.users.filter(u =>
+    u.FName?.toLowerCase().includes(searchLower) ||
+    u.LName?.toLowerCase().includes(searchLower) ||
+    u.Email?.toLowerCase().includes(searchLower) ||
+    u.Id?.toString().includes(searchLower)
+  );
+}
+
 }

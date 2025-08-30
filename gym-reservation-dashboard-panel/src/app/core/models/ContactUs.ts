@@ -3,4 +3,5 @@ export class ContactUs {
   Message: string = '';
   Email: string = '';
   Response?: string = '';
+  showFullMessage?: boolean = false;
 }

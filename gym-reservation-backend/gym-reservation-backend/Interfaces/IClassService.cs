@@ -10,7 +10,7 @@ namespace gym_reservation_backend.Interfaces
         Task<ServiceResponse> GetClassReservations(int classId);
         Task<bool> Delete(int classId);
         Task<ServiceResponse> Save(Classes classToSave);
-        Task<ServiceResponse> CancelClass(int classId);
+        Task<ServiceResponse> CancelClass(int classId,string email);
 
         Task<ServiceResponse> GetWeeklySchedule(DateTime? date = null);
         Task<ServiceResponse> GetAllClasses();

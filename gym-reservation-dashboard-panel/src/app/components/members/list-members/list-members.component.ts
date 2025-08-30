@@ -62,29 +62,24 @@ export class ListMembersComponent implements OnInit {
   }
 
   onSearch() {
-    // Debounce search to avoid excessive filtering
-    clearTimeout(this.searchTimeout);
-    this.searchTimeout = setTimeout(() => {
-      this.filterMembers();
-    }, 300);
-  }
-
-  filterMembers() {
     if (!this.searchTerm.trim()) {
       this.filteredMembers = [...this.Members];
       return;
     }
 
     const searchLower = this.searchTerm.toLowerCase().trim();
-    
-    this.filteredMembers = this.Members.filter(member => 
+
+    this.filteredMembers = this.Members.filter(member =>
       member.Name?.toLowerCase().includes(searchLower) ||
       member.Phone?.toLowerCase().includes(searchLower) ||
       member.Email?.toLowerCase().includes(searchLower) ||
       member.IDCard?.toLowerCase().includes(searchLower) ||
       member.Id?.toString().includes(searchLower)
     );
+
   }
+
+
 
   async checkMemberSubscriptions() {
     for (const member of this.Members) {

@@ -27,6 +27,7 @@ import { ListContactsComponent } from './contact/list-contacts/list-contacts.com
 import { RespondContactComponent } from './contact/respond-contact/respond-contact.component';
 import { ListOffersComponent } from './Offers/list-offers/list-offers.component';
 import { AddOfferComponent } from './Offers/add-offer/add-offer.component';
+import { TruncatePipe } from '../pipe/TruncatePipe.pipe';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,7 @@ import { AddOfferComponent } from './Offers/add-offer/add-offer.component';
     ListContactsComponent,
     RespondContactComponent,
     ListOffersComponent,
-    AddOfferComponent
+    AddOfferComponent,TruncatePipe
   ],
   imports: [
     CommonModule,
@@ -62,7 +63,8 @@ import { AddOfferComponent } from './Offers/add-offer/add-offer.component';
     MaterialModule, 
     SharedModule,
     NgxPaginationModule,
-    MatTooltipModule
+    MatTooltipModule,
+    
   ],
 
 })

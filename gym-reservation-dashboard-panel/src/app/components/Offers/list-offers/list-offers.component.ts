@@ -23,7 +23,9 @@ export class ListOffersComponent implements OnInit {
   selectedoffer?: Offer;
   isAddofferMenu = false;
   selectedofferId = 0;
-    selectedofferName ='';
+  selectedofferName = '';
+  searchTerm: string = '';
+  filteredoffers: Offer[] = [];
 
   isShowofferReservation = false;
   constructor(private offerService: OfferService, private toaster: ToastrService) { }
@@ -46,6 +48,8 @@ export class ListOffersComponent implements OnInit {
         this.currentPage = Math.max(1, Math.min(res.Data[1] || 1, totalPages));
         this.pageSize = res.Data[2];
         this.offers = res.Data[3];
+        this.filteredoffers = [...this.offers]; // نسخة لعرضها
+
       }
     } catch (error) {
       console.error('Error loading offers', error);
@@ -110,4 +114,30 @@ export class ListOffersComponent implements OnInit {
       hour12: true
     }).format(date);
   }
+
+  onSearch() {
+    if (!this.searchTerm.trim()) {
+      this.filteredoffers = [...this.offers];
+      return;
+    }
+
+    const searchLower = this.searchTerm.toLowerCase().trim();
+
+    this.filteredoffers = this.offers.filter(u => {
+      const typeText = u.IsGeneralOffer ? 'general' : 'specific';
+      const statusText = u.IsActive ? 'active' : 'inactive';
+
+      return (
+        u.Value?.toString().toLowerCase().includes(searchLower) ||
+        u.Id?.toString().includes(searchLower) ||
+        u.SubscriptionId?.toString().includes(searchLower) ||
+        (u.StartDate && new Date(u.StartDate).toLocaleDateString().toLowerCase().includes(searchLower)) ||
+        (u.EndDate && new Date(u.EndDate).toLocaleDateString().toLowerCase().includes(searchLower)) ||
+        typeText.includes(searchLower) ||    // ✅ General / Specific
+        statusText.includes(searchLower)     // ✅ Active / Inactive
+      );
+    });
+  }
+
+
 }

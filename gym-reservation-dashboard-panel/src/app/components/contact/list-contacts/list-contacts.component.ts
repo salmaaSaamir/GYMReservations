@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { ContactUs } from 'src/app/core/models/ContactUs';
 import { ContactUsService } from 'src/app/core/services/ContactUsService';
 import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-list-contacts',
   templateUrl: './list-contacts.component.html',
@@ -11,8 +12,9 @@ import Swal from 'sweetalert2';
 })
 export class ListContactsComponent implements OnInit {
 
- ContactUss: ContactUs[] = [];
-  currentPage = 1;  // Always start with page 1
+  ContactUss: ContactUs[] = [];
+  filteredContactUss: ContactUs[] = [];
+  currentPage = 1;
   pageSize = 10;
   pageSizeOptions = [5, 10, 20, 50];
   isSpinner = true;
@@ -20,6 +22,9 @@ export class ListContactsComponent implements OnInit {
   isAddContactUs = false;
   selectedContactUs: ContactUs = new ContactUs();
   selectedContactUsId = 0;
+  searchTerm: string = '';
+  statusFilter: string = 'all';
+
   constructor(private ContactUsService: ContactUsService, private toaster: ToastrService) { }
 
   async ngOnInit() {
@@ -35,20 +40,40 @@ export class ListContactsComponent implements OnInit {
 
       if (res.State) {
         this.totalCount = res.Data[0];
-        // Ensure currentPage is within valid range
         const totalPages = Math.ceil(this.totalCount / this.pageSize);
         this.currentPage = Math.max(1, Math.min(res.Data[1] || 1, totalPages));
         this.pageSize = res.Data[2];
-        this.ContactUss = res.Data[3];
-
+        this.ContactUss = res.Data[3].map((contact: ContactUs) => ({
+          ...contact,
+          showFullMessage: false
+        }));
+        this.filterContactUss();
       }
     } catch (error) {
-      console.error('Error loading ContactUss', error);
-      this.toaster.error('Failed to load ContactUss');
+      console.error('Error loading contact messages', error);
+      this.toaster.error('Failed to load contact messages');
     } finally {
       this.isSpinner = false;
     }
   }
+
+  filterContactUss() {
+    this.filteredContactUss = this.ContactUss.filter(contact => {
+      // Search term filter
+      const matchesSearch = this.searchTerm === '' || 
+        contact.Message?.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        contact.Email?.toLowerCase().includes(this.searchTerm.toLowerCase());
+      
+      // Status filter
+      const matchesStatus = this.statusFilter === 'all' ||
+        (this.statusFilter === 'pending' && contact.Response === '') ||
+        (this.statusFilter === 'responded' && contact.Response !== '');
+      
+      return matchesSearch && matchesStatus;
+    });
+  }
+
+ 
 
   onPageChange(page: number) {
     this.currentPage = page;
@@ -60,37 +85,16 @@ export class ListContactsComponent implements OnInit {
     this.loadContactUss();
   }
 
-  openAddContactUs(ContactUs: ContactUs) {
-    this.selectedContactUs = ContactUs;
+  openAddContactUs(contact: ContactUs) {
+    this.selectedContactUs = contact;
     this.isAddContactUs = true;
   }
+
   async closeAddContactUsModal() {
     this.isAddContactUs = false;
     await this.loadContactUss();
   }
 
-  async deleteContactUs(id: number) {
-    const result = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'This ContactUs will be permanently deleted.',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
-      reverseButtons: true
-    });
-
-    if (result.isConfirmed) {
-      try {
-        await lastValueFrom(this.ContactUsService.deleteContact(id));
-        await this.loadContactUss();
-        this.toaster.success('ContactUs deleted successfully');
-      } catch (error) {
-        this.toaster.error('Failed to delete ContactUs');
-      }
-    }
-  }
-  // In your component class
   getShowingTo(): number {
     return Math.min(this.currentPage * this.pageSize, this.totalCount);
   }

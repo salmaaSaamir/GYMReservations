@@ -11,10 +11,11 @@ namespace gym_reservation_backend.Services
     {
         private readonly DBContext _dbContext;
         ServiceResponse _response = new ServiceResponse();
-
-        public ClassService(DBContext dbContext)
+        private readonly INotificationService _notificationService;
+        public ClassService(DBContext dbContext, INotificationService notificationService)
         {
             _dbContext = dbContext;
+            _notificationService = notificationService;
         }
 
         public async Task<ServiceResponse> GetClasses(int page = 1, int pageSize = 20)
@@ -181,10 +182,11 @@ namespace gym_reservation_backend.Services
             }
         }
 
-        public async Task<ServiceResponse> CancelClass(int classId)
+        public async Task<ServiceResponse> CancelClass(int classId,string email)
         {
             try
             {
+
                 var classToCancel = await _dbContext.Classes.FindAsync(classId);
                 if (classToCancel == null)
                 {
@@ -195,6 +197,9 @@ namespace gym_reservation_backend.Services
 
                 classToCancel.IsCancelled = true;
                 await _dbContext.SaveChangesAsync();
+                string message = $"Class {classToCancel.Name} is now Cancelled.";
+
+                 await _notificationService.SendCancellClassNotification(email, message);
 
                 _response.State = true;
                 return _response;

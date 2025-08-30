@@ -7,7 +7,7 @@ namespace gym_reservation_backend.Interfaces
     {
         Task<ServiceResponse> GetReservations(int page = 1, int pageSize = 20);
         Task<bool> Delete(int ReservationId);
-        Task<ServiceResponse> SaveReservation(Reservation reservation);
+        Task<ServiceResponse> SaveReservation(Reservation reservation,string email);
         Task<ServiceResponse> CheckClassAvailability(int classId);
        Task<ServiceResponse> CheckMemberReservation(int classId, int memberId,  string classDay);
     }

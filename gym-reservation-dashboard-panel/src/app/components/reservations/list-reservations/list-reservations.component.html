@@ -15,6 +15,21 @@
         </div>
     </div>
 
+<!-- Search Input -->
+<div class="row mb-3">
+  <div class="col-md-6">
+    <div class="input-group d-flex align-items-center">
+      <span class="input-group-text">
+        <i class="bi bi-search"></i>
+      </span>
+      <input type="text"
+             class="form-control"
+             placeholder="Search reservations..."
+             [(ngModel)]="searchTerm"
+             (input)="onSearch()">
+    </div>
+  </div>
+</div>
 
     <div class="table-responsive">
 
@@ -31,7 +46,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let u of Reservations">
+                <tr *ngFor="let u of filteredReservations">
                     <td>{{ u.Id }}</td>
                     <td>{{ u.ClassName }}</td>
                     <td>{{ u.MemberID }}</td>
@@ -51,7 +66,7 @@
                         </button>
                     </td>
                 </tr>
-                <tr *ngIf="Reservations.length === 0">
+                <tr *ngIf="filteredReservations.length === 0">
                     <td colspan="7" class="text-center">No Reservations found</td>
                 </tr>
             </tbody>

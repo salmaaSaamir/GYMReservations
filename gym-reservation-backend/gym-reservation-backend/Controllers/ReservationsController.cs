@@ -42,10 +42,10 @@ namespace gym_reservation_backend.Controllers
         // POST: api/Reservations/SaveReservation
         // Will Add if Id == 0, Update otherwise
 
-        [HttpPost]
-        public async Task<IActionResult> SaveReservation([FromBody] Reservation reservation)
+        [HttpPost("{email}")]
+        public async Task<IActionResult> SaveReservation([FromBody] Reservation reservation,string email)
         {
-            var res = await _reservationService.SaveReservation(reservation);
+            var res = await _reservationService.SaveReservation(reservation, email);
             return Ok(JsonConvert.SerializeObject(res));
         }
 

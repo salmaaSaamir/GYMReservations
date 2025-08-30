@@ -1,0 +1,71 @@
+/* Bell Icon */
+.notification-bell {
+  position: relative;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.notification-bell .badge {
+position: absolute;
+    top: -5px;
+    right: -15px;
+    height: 30px;
+    display: flex
+;
+    font-size: 12px !important;
+    width: 30px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Bell ringing animation */
+.ringing {
+  animation: ring 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes ring {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(10deg); }
+  50% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+  100% { transform: rotate(0); }
+}
+
+/* Sidebar */
+.notification-sidebar {
+    position: fixed;
+    top: 0;
+    right: -350px;
+    width: 350px;
+    height: 100vh;
+    background: #fff;
+    box-shadow: 0px 0px 9px 1px rgba(221, 0, 92, 0.22);
+    transition: right 0.35s ease-in-out; /* smoother transition */
+    z-index: 1050;
+    padding: 15px;
+    overflow-y: auto;
+    margin-top: 15px;
+    border-radius: 15px;
+}
+
+.notification-sidebar.open {
+  right: 15px; /* match margin-right */
+
+}
+
+.sidebar-header {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.notification-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.notification-item.unread {
+  background: #f8f9fa;
+  font-weight: 600;
+}

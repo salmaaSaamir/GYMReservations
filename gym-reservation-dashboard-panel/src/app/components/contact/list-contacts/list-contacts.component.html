@@ -4,13 +4,19 @@
 
 <div *ngIf="!isSpinner">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>ContactUss</h3>
-
+        <h3>Contact Us</h3>
+        <div class="d-flex gap-2">
+            <!-- Status Filter Dropdown -->
+            <select class="form-control" [(ngModel)]="statusFilter" (change)="filterContactUss()" 
+                    style="width: 150px;">
+                <option value="all">All Status</option>
+                <option value="pending"> Pending</option>
+                <option value="responded">Responded</option>
+            </select>
+        </div>
     </div>
 
     <div class="table-responsive">
-
-
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -18,47 +24,50 @@
                     <th>Message</th>
                     <th>Email</th>
                     <th>State</th>
-
                     <th class="text-end">Actions</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let u of ContactUss">
+                <tr *ngFor="let u of filteredContactUss">
                     <td>{{ u.Id }}</td>
-                    <td>{{ u.Message }}</td>
+                    <td class="text-wrap">
+                        <div class="message-container">
+                            <div class="message-preview" [class.blurred]="u.Message && u.Message.length > 100">
+                                {{ u.Message | truncate:100 }}
+                            </div>
+                           
+                        </div>
+                    </td>
                     <td>{{ u.Email }}</td>
-
-                      <td>
-            <span class="badge bg-success" *ngIf="u.Response !=''">Responded</span>
-            <span class="badge bg-info" *ngIf="u.Response ==''">Pending</span>
-
-          </td>
+                    <td>
+                        <span class="badge bg-success" *ngIf="u.Response != ''">Responded</span>
+                        <span class="badge bg-info" *ngIf="u.Response == ''">Pending</span>
+                    </td>
                     <td class="text-end">
-
                         <button class="btn btn-sm btn-outline-info me-1 iconButton" matTooltip="respond"
-                            (click)="openAddContactUs(u)" [disabled]="u.Response !='' ">
+                            (click)="openAddContactUs(u)" [disabled]="u.Response != ''">
                             <i class="bi bi-chat"></i>
                         </button>
-
                     </td>
                 </tr>
-                <tr *ngIf="ContactUss.length === 0">
-                    <td colspan="6" class="text-center">No ContactUss found</td>
+                <tr *ngIf="filteredContactUss.length === 0">
+                    <td colspan="6" class="text-center">No contact messages found</td>
                 </tr>
             </tbody>
         </table>
     </div>
+
     <!-- Page size selector -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div class="d-flex align-items-center">
-            <label for="pageSize" class="me-2" style="width: 450px;">Items per page:</label>
+            <label for="pageSize" class="me-2">Items per page:</label>
             <select id="pageSize" class="form-select form-select-sm" [(ngModel)]="pageSize"
-                (change)="onPageSizeChange()">
+                (change)="onPageSizeChange()" style="width: 80px;">
                 <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
             </select>
         </div>
         <div class="text-muted">
-            {{ (currentPage - 1) * pageSize + 1 }} to {{ getShowingTo() }} of {{ totalCount }} ContactUss
+            {{ (currentPage - 1) * pageSize + 1 }} to {{ getShowingTo() }} of {{ totalCount }} messages
         </div>
     </div>
 </div>

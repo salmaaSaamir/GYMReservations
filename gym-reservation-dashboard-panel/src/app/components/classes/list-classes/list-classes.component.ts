@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { GymClass } from 'src/app/core/models/GymClass';
@@ -13,6 +14,7 @@ import Swal from 'sweetalert2';
 export class ListClassesComponent implements OnInit {
 
   Classs: GymClass[] = [];
+  filteredClasses: GymClass[] = [];
   currentPage = 1;  // Always start with page 1
   pageSize = 10;
   pageSizeOptions = [5, 10, 20, 50];
@@ -22,10 +24,20 @@ export class ListClassesComponent implements OnInit {
   selectedClass?: GymClass;
   isAddClassMenu = false;
   selectedClassId = 0;
-    selectedClassName ='';
-
+  selectedClassName = '';
+  searchTerm = "";
+  searchTimeout: any;
   isShowClassReservation = false;
-  constructor(private ClassService: ClassService, private toaster: ToastrService) { }
+  userData: any
+  constructor(private ClassService: ClassService, private toaster: ToastrService) {
+    const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
+    if (token) {
+      this.userData = jwtDecode(token);
+
+    } else {
+      this.userData = null;
+    }
+  }
 
   async ngOnInit() {
     await this.loadClasss();
@@ -45,6 +57,7 @@ export class ListClassesComponent implements OnInit {
         this.currentPage = Math.max(1, Math.min(res.Data[1] || 1, totalPages));
         this.pageSize = res.Data[2];
         this.Classs = res.Data[3];
+        this.filteredClasses = [...this.Classs]; // Initialize filtered Classs
       }
     } catch (error) {
       console.error('Error loading Classs', error);
@@ -79,7 +92,7 @@ export class ListClassesComponent implements OnInit {
     await this.loadClasss();
   }
 
- openShowReservationModal(data:any) {
+  openShowReservationModal(data: any) {
     this.isShowClassReservation = true;
     this.selectedClassId = data.Id
     this.selectedClassName = data.Name
@@ -123,7 +136,7 @@ export class ListClassesComponent implements OnInit {
 
     if (result.isConfirmed) {
       try {
-        await lastValueFrom(this.ClassService.CancelClass(id));
+        await lastValueFrom(this.ClassService.CancelClass(id, this.userData.Email));
         await this.loadClasss();
         this.toaster.success('Class cancelled successfully');
       } catch (error) {
@@ -155,5 +168,21 @@ export class ListClassesComponent implements OnInit {
   closeGenerateModal() {
     this.isGenerateWeeklySchedule = false;
   }
+  onSearch() {
 
+    if (!this.searchTerm.trim()) {
+      this.filteredClasses = [...this.Classs];
+      return;
+    }
+
+    const searchLower = this.searchTerm.toLowerCase().trim();
+
+    this.filteredClasses = this.Classs.filter(Class =>
+      Class.Name?.toLowerCase().includes(searchLower) ||
+      Class.ClassDay.toLowerCase().includes(searchLower) ||
+      Class.ClassTime?.toLowerCase().includes(searchLower) ||
+      Class.Id?.toString().includes(searchLower)
+    );
+
+  }
 }

@@ -7,6 +7,7 @@ import { ReservationService } from 'src/app/core/services/ReservationService';
 import { ClassService } from 'src/app/core/services/ClassService';
 import { MemberService } from 'src/app/core/services/MemberService';
 import { cpSync } from 'fs';
+import { jwtDecode } from 'jwt-decode';
 
 declare var $: any;
 
@@ -24,11 +25,11 @@ export class AddReservationComponent implements OnInit {
   classes: any[] = [];
   members: any[] = [];
   classAvailability: any = null;
-  IsmemberHasReservationCheck=false;
-
+  IsmemberHasReservationCheck = false;
+  userData: any
   constructor(
     private fb: FormBuilder,
-    private toaster: ToastrService, 
+    private toaster: ToastrService,
     private reservationService: ReservationService,
     private classService: ClassService,
     private memberService: MemberService,
@@ -62,6 +63,14 @@ export class AddReservationComponent implements OnInit {
         this.IsmemberHasReservationCheck = false; // Reset member reservation check
       }
     });
+
+      const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
+        if (token) {
+          this.userData = jwtDecode(token);
+    
+        } else {
+          this.userData = null;
+        }
   }
 
   async ngOnInit() {
@@ -112,23 +121,23 @@ export class AddReservationComponent implements OnInit {
 
   async checkMemberReservation(memberId: number, classId: number) {
     try {
-      
+
       // Find the selected class to get the classDay
       const selectedClass = this.classes.find(c => c.Id === +classId);
-      
-      
+
+
       if (!selectedClass) {
         console.error('Class not found');
         return;
       }
 
       const classDay = selectedClass.ClassDay;
-      
+
 
       const res: any = await lastValueFrom(
-        this.reservationService.checkMemberReservation( +classId,+memberId, classDay)
+        this.reservationService.checkMemberReservation(+classId, +memberId, classDay)
       );
-      
+
       this.IsmemberHasReservationCheck = res.State
     } catch (error) {
       console.error('Error checking member reservation', error);
@@ -144,9 +153,9 @@ export class AddReservationComponent implements OnInit {
       this.isSpinner = true;
       const reservationData = this.form.value;
       const res: any = await lastValueFrom(
-        this.reservationService.saveReservation(reservationData)
+        this.reservationService.saveReservation(reservationData,this.userData.Email)
       );
-      
+
       if (res.State) {
         this.toaster.success("Reservation saved successfully");
         this.cancel();
@@ -172,7 +181,7 @@ export class AddReservationComponent implements OnInit {
     return this.classes.find(c => c.Id === classId);
   }
 
-    formatTo12Hour(time: string): string {
+  formatTo12Hour(time: string): string {
     const [hours, minutes] = time.split(':').map(Number);
     const date = new Date();
     date.setHours(hours, minutes);

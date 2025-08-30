@@ -21,6 +21,9 @@ export class ListTrainersComponent implements OnInit {
   selectedTrainer?: Trainer;
   selectedTrainerId = 0;
   LastIDCard = ""
+
+  filteredTrainers: Trainer[] = [];
+  searchTerm: string = '';
   constructor(private TrainerService: TrainerService, private toaster: ToastrService) { }
 
   async ngOnInit() {
@@ -42,6 +45,7 @@ export class ListTrainersComponent implements OnInit {
         this.pageSize = res.Data[2];
         this.Trainers = res.Data[3];
         this.LastIDCard = res.Data[4];
+        this.filteredTrainers = [...this.Trainers];
 
       }
     } catch (error) {
@@ -95,5 +99,20 @@ export class ListTrainersComponent implements OnInit {
   // In your component class
   getShowingTo(): number {
     return Math.min(this.currentPage * this.pageSize, this.totalCount);
+  } // ✅ Smart Search
+  onSearch() {
+    if (!this.searchTerm.trim()) {
+      this.filteredTrainers = [...this.Trainers];
+      return;
+    }
+
+    const searchLower = this.searchTerm.toLowerCase().trim();
+
+    this.filteredTrainers = this.Trainers.filter(trainer =>
+      trainer.Id.toString().includes(searchLower) ||
+      trainer.Name?.toLowerCase().includes(searchLower) ||
+      trainer.Phone?.toLowerCase().includes(searchLower) ||
+      trainer.Email?.toLowerCase().includes(searchLower)
+    );
   }
 }

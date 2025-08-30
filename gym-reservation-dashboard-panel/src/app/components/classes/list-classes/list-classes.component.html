@@ -16,7 +16,20 @@
             
         </div>
     </div>
+ <!-- Search Input -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="input-group d-flex align-items-center">
+        <span class="input-group-text">
+          <i class="bi bi-search"></i>
+        </span>
+        <input type="text" class="form-control" placeholder="Search classes..." [(ngModel)]="searchTerm"
+          (input)="onSearch()">
 
+      </div>
+    </div>
+
+  </div>
 
     <div class="table-responsive">
 
@@ -34,7 +47,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let u of Classs">
+                <tr *ngFor="let u of filteredClasses">
                     <td>{{ u.Id }}</td>
                     <td>{{ u.Name }}</td>
                     <td>{{ u.ClassDay }}</td>
@@ -58,7 +71,7 @@
                         </button>
                     </td>
                 </tr>
-                <tr *ngIf="Classs.length === 0">
+                <tr *ngIf="filteredClasses.length === 0">
                     <td colspan="7" class="text-center">No Classs found</td>
                 </tr>
             </tbody>

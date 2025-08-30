@@ -81,7 +81,7 @@ namespace gym_reservation_backend.Services
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
                 claims: claims,
-                expires: tokenData.RemeberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddMinutes(30), 
+                expires: tokenData.RemeberMe ? DateTime.Now.AddDays(3) : DateTime.Now.AddHours(5), 
                                                                                                      
                 signingCredentials: creds);
 

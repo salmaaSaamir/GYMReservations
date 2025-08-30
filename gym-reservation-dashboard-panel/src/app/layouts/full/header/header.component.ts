@@ -14,10 +14,11 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 
 import { jwtDecode } from 'jwt-decode';
 import { AuthService } from 'src/app/core/services/authService';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, share } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { NotificationService } from 'src/app/core/services/NotificationService';
 import { UserService } from 'src/app/core/services/UsersService';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-header',
@@ -28,7 +29,8 @@ import { UserService } from 'src/app/core/services/UsersService';
     NgScrollbarModule,
     TablerIconsModule,
     MaterialModule,
-    MatBadgeModule
+    MatBadgeModule,
+    SharedModule
   ],
   templateUrl: './header.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -51,7 +53,6 @@ export class HeaderComponent {
   isSpinner = false
   async ngOnInit() {
     this.GetUserImage();
-     this.notificationService.startConnection();
   }
   async logOut() {
 

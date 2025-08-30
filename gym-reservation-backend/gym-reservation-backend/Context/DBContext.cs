@@ -36,6 +36,7 @@ namespace gym_reservation_backend.Context
         public DbSet<MemberSubscription> MemberSubscriptions { get; set; }
         public DbSet<Offer> Offers { get; set; }
         public DbSet<ContactUs> ContactUs { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
 
         // Add this method right here, after your DbSet properties

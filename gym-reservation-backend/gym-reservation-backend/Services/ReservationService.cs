@@ -2,6 +2,7 @@
 using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Models;
 using gym_reservation_backend.Response;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace gym_reservation_backend.Services
@@ -10,10 +11,12 @@ namespace gym_reservation_backend.Services
     {
         private readonly DBContext _dbContext;
         ServiceResponse _response = new ServiceResponse();
+        private readonly INotificationService _notificationService;
 
-        public ReservationService(DBContext dbContext)
+        public ReservationService(DBContext dbContext, INotificationService notificationService)
         {
             _dbContext = dbContext;
+            _notificationService = notificationService;
         }
 
         public async Task<ServiceResponse> GetReservations(int page = 1, int pageSize = 20)
@@ -140,7 +143,7 @@ namespace gym_reservation_backend.Services
         }
 
         // Simplified Save method
-        public async Task<ServiceResponse> SaveReservation(Reservation reservation)
+        public async Task<ServiceResponse> SaveReservation(Reservation reservation,string email)
         {
             try
             {
@@ -155,12 +158,12 @@ namespace gym_reservation_backend.Services
 
                 await _dbContext.SaveChangesAsync();
 
+                // ✅ After saving, check if class completion limit is reached
+                await CheckClassCompletion(reservation.ClassId, email);
+
                 // Return minimal data to avoid circular references
                 _response.State = true;
-                _response.Data.Add(
-                reservation
-
-                );
+                _response.Data.Add(reservation);
                 return _response;
             }
             catch (Exception ex)
@@ -170,5 +173,53 @@ namespace gym_reservation_backend.Services
                 return _response;
             }
         }
+
+        private async Task<ServiceResponse> CheckClassCompletion(int classId,string email)
+        {
+            try
+            {
+                // Get class info (assuming you have a Class or Course entity with Capacity/Limit)
+                var classEntity = await _dbContext.Classes.AsNoTracking()
+                    .FirstOrDefaultAsync(c => c.Id == classId);
+
+                if (classEntity == null)
+                {
+                    _response.State = false;
+                    _response.ErrorMessage = "Class not found.";
+                    return _response;
+                }
+
+                // Count current reservations for this class
+                int reservationCount = await _dbContext.Reservations
+                    .CountAsync(r => r.ClassId == classId);
+
+                if (reservationCount >= classEntity.ClassLimit) // assuming Capacity is the limit
+                {
+                    // Class is full → send notifications
+                    string message = $"Class {classEntity.Name} is now fully booked.";
+
+                    _notificationService.SendCompleteClassNotification(email, message);
+
+
+                    _response.State = true;
+                    _response.Data.Add(new { ClassId = classId, Completed = true });
+                }
+                else
+                {
+                    _response.State = true;
+                    _response.Data.Add(new { ClassId = classId, Completed = false });
+                }
+
+                return _response;
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = $"Error checking class completion: {ex.Message}";
+                return _response;
+            }
+        }
+
+
     }
 }

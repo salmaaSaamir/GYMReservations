@@ -65,10 +65,10 @@ namespace gym_reservation_backend.Controllers
         }
         // POST: api/Classes/CancelClass
 
-        [HttpPost("{id}")]
-        public async Task<IActionResult> CancelClass(int id)
+        [HttpPost("{id}/{email}")]
+        public async Task<IActionResult> CancelClass(int id,string email)
         {
-            var res = await _classService.CancelClass(id);
+            var res = await _classService.CancelClass(id,email);
             return Ok(JsonConvert.SerializeObject(res));
         }
         // GET: api/Classes/GetWeeklySchedule

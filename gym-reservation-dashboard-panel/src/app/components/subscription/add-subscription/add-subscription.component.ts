@@ -12,7 +12,7 @@ declare var $: any;
   styleUrls: ['./add-subscription.component.css']
 })
 export class AddSubscriptionComponent implements OnInit {
-  @Input() subscription?: Subscription;
+  @Input() subscription: any
   @Output() closeAddSubscriptionModal = new EventEmitter();
   isSpinner = false;
   form: FormGroup;
@@ -35,6 +35,7 @@ export class AddSubscriptionComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('Received subscription:', this.subscription);
     if (this.subscription) {
       this.form.patchValue(this.subscription);
     }

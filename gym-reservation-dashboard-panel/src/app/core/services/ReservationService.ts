@@ -28,8 +28,8 @@ export class ReservationService {
   }
 
   /** POST: Add or update Reservation */
-  saveReservation(reservation: any): Observable<any> {
-    return this.http.post(`${this.APIUrl}SaveReservation`, reservation);
+  saveReservation(reservation: any,email:string): Observable<any> {
+    return this.http.post(`${this.APIUrl}SaveReservation/${email}`, reservation);
   }
 
   /** DELETE: Delete a Reservation by Id */

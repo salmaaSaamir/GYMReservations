@@ -1,11 +1,8 @@
 
 export interface NotificationModel {
-  id: number;
-  title: string;
-  message: string;
-  messageAr: string;
-  type: string;
-  date: Date;
-  isRead: boolean;
-  productId?: number;
+ Id: number;
+  Type: string;
+  Message: string;
+  IsRead: boolean;
+  CreatedAt: Date;
 }

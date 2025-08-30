@@ -43,8 +43,8 @@ export class ClassService {
   }
 
     /** POST: Cancel class */
-  CancelClass(id: number): Observable<any> {
-    return this.http.post(`${this.APIUrl}CancelClass/${id}`,{});
+  CancelClass(id: number,email:string): Observable<any> {
+    return this.http.post(`${this.APIUrl}CancelClass/${id}/${email}`,{});
   }
 
 

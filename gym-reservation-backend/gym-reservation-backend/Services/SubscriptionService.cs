@@ -69,7 +69,7 @@ namespace gym_reservation_backend.Services
             {
                 var currentDate = DateTime.Now;
 
-                var subscriptionsWithOffers = await _dbContext.Subscriptions
+                var subscriptionsWithOffers = await _dbContext.Subscriptions.Where(x=>x.IsActive)
                     .AsNoTracking()
                     .Select(subscription => new
                     {

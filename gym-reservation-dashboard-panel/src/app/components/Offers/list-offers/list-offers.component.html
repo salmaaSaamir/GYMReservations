@@ -7,61 +7,75 @@
         <h3>offers</h3>
         <div class="d-flex gap-3 align-items-center flex-wrap my-2">
 
-     
+
             <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddoffer()">
                 <i class="bi bi-plus-lg"></i> Add offer
             </button>
-            
+
         </div>
     </div>
 
+    <!-- Search Input -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <div class="input-group d-flex align-items-center">
+                <span class="input-group-text">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" class="form-control" placeholder="Search offers..." [(ngModel)]="searchTerm"
+                    (input)="onSearch()">
+            </div>
+        </div>
+    </div>
 
     <div class="table-responsive">
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Value</th>
-            <th>Type</th>
-            <th>Status</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Subscription ID</th>
-            <th class="text-end">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let u of offers">
-            <td>{{ u.Id }}</td>
-            <td>{{ u.Value }}</td>
-            <td>
-                <span class="badge" [ngClass]="u.IsGeneralOffer ? 'bg-primary' : 'bg-info'">
-                    {{ u.IsGeneralOffer ? 'General' : 'Specific' }}
-                </span>
-            </td>
-            <td>
-                <span class="badge" [ngClass]="u.IsActive ? 'bg-success' : 'bg-dark'">
-                    {{ u.IsActive ? 'Active' : 'Inactive' }}
-                </span>
-            </td>
-            <td>{{ u.StartDate | date:'shortDate' }}</td>
-            <td>{{ u.EndDate | date:'shortDate' }}</td>
-            <td>{{ u.SubscriptionId || 'N/A' }}</td>
-            <td class="text-end">
-                <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="edit" (click)="openAddoffer(u)">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-outline-danger iconButton" matTooltip="delete" (click)="deleteoffer(u.Id)">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </td>
-        </tr>
-        <tr *ngIf="offers.length === 0">
-            <td colspan="8" class="text-center">No offers found</td>
-        </tr>
-    </tbody>
-</table>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Value</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Subscription ID</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let u of filteredoffers">
+                    <td>{{ u.Id }}</td>
+                    <td>{{ u.Value }}</td>
+                    <td>
+                        <span class="badge" [ngClass]="u.IsGeneralOffer ? 'bg-primary' : 'bg-info'">
+                            {{ u.IsGeneralOffer ? 'General' : 'Specific' }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge" [ngClass]="u.IsActive ? 'bg-success' : 'bg-dark'">
+                            {{ u.IsActive ? 'Active' : 'Inactive' }}
+                        </span>
+                    </td>
+                    <td>{{ u.StartDate | date:'shortDate' }}</td>
+                    <td>{{ u.EndDate | date:'shortDate' }}</td>
+                    <td>{{ u.SubscriptionId || 'N/A' }}</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="edit"
+                            (click)="openAddoffer(u)">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger iconButton" matTooltip="delete"
+                            (click)="deleteoffer(u.Id)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="filteredoffers.length === 0">
+                    <td colspan="8" class="text-center">No offers found</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <!-- Page size selector -->
     <div class="d-flex justify-content-between align-items-center mb-3">

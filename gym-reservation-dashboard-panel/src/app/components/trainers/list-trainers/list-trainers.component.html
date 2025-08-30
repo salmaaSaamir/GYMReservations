@@ -9,6 +9,21 @@
       <i class="bi bi-plus-lg"></i> Add Trainer
     </button>
   </div>
+<!-- Search Input -->
+<div class="row mb-3">
+  <div class="col-md-6">
+    <div class="input-group d-flex align-items-center">
+      <span class="input-group-text">
+        <i class="bi bi-search"></i>
+      </span>
+      <input type="text"
+             class="form-control"
+             placeholder="Search trainers..."
+             [(ngModel)]="searchTerm"
+             (input)="onSearch()">
+    </div>
+  </div>
+</div>
 
   <div class="table-responsive">
 
@@ -24,7 +39,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let u of Trainers">
+        <tr *ngFor="let u of filteredTrainers">
           <td>{{ u.Id }}</td>
           <td>{{ u.Name }}</td>
           <td>{{ u.Phone }}</td>
@@ -39,7 +54,7 @@
             </button>
           </td>
         </tr>
-        <tr *ngIf="Trainers.length === 0">
+        <tr *ngIf="filteredTrainers.length === 0">
           <td colspan="5" class="text-center">No Trainers found</td>
         </tr>
       </tbody>

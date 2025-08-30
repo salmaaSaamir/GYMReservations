@@ -1,0 +1,38 @@
+<!-- Bell Icon -->
+<div class="notification-bell" [ngClass]="{ 'ringing': isBellRinging }" (click)="toggleSidebar()">
+  <i class="bi bi-bell fs-2 text-dark " ></i>
+  <span *ngIf="unreadCount > 0" class="badge bg-primary" style="font-size: 11px !important;">{{ unreadCount }}</span>
+</div>
+
+<!-- Sidebar -->
+<div class="notification-sidebar " [class.open]="isSidebarOpen">
+  <div class="sidebar-header d-flex justify-content-between align-items-center">
+    <h5>Notifications</h5>
+    <button class="btn-close" (click)="toggleSidebar()"></button>
+  </div>
+
+  <div class="sidebar-actions d-flex justify-content-between my-3">
+    <button class="btn btn-sm btn-primary" (click)="markAllAsRead()">Mark All Read</button>
+    <button class="btn btn-sm btn-warning" (click)="deleteAll()">Delete All</button>
+  </div>
+
+  <div class="notification-list">
+    <div *ngFor="let n of notifications" class="notification-item d-flex justify-content-between align-items-start"
+         [class.unread]="!n.IsRead">
+      <div style="width: 200px;">
+        <strong>{{ n.Type }}</strong>
+        <p class="text-muted my-2">{{ n.Message }}</p>
+      </div>
+      <div class="actions d-flex align-items-center flex-wrap gap-2">
+        <button class="btn btn-sm btn-info me-1" (click)="markAsRead(n)" *ngIf="!n.IsRead">
+          <i class="bi bi-check2"></i>
+        </button>
+        <button class="btn btn-sm btn-secondary" (click)="deleteNotification(n)">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <p *ngIf="notifications.length === 0" class="text-center text-muted">No notifications</p>
+  </div>
+</div>

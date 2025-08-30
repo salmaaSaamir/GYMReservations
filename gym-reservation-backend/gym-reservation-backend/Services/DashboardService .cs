@@ -32,21 +32,24 @@ namespace gym_reservation_backend.Services
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         // Result Set 1: Subscription Counts
-                        var subscriptionCounts = new List<SubscriptionCount>();
-                        while (await reader.ReadAsync())
+                        if (await reader.ReadAsync())
                         {
-                            subscriptionCounts.Add(new SubscriptionCount
+                            var subscriptionCounts = new List<SubscriptionCount>();
+                            do
                             {
-                                Label = reader["Label"].ToString(),
-                                Count = Convert.ToInt32(reader["Count"])
-                            });
-                        }
+                                subscriptionCounts.Add(new SubscriptionCount
+                                {
+                                    Label = reader["Label"].ToString(),
+                                    Count = Convert.ToInt32(reader["Count"])
+                                });
+                            } while (await reader.ReadAsync());
 
-                        dashboardData.SubscriptionCounts = new SubscriptionCountsDto
-                        {
-                            Labels = subscriptionCounts.Select(x => x.Label).ToArray(),
-                            Data = subscriptionCounts.Select(x => x.Count).ToArray()
-                        };
+                            dashboardData.SubscriptionCounts = new SubscriptionCountsDto
+                            {
+                                Labels = subscriptionCounts.Select(x => x.Label).ToArray(),
+                                Data = subscriptionCounts.Select(x => x.Count).ToArray()
+                            };
+                        }
 
                         // Result Set 2: Monthly Reservation Stats
                         await reader.NextResultAsync();
@@ -102,6 +105,7 @@ namespace gym_reservation_backend.Services
 
             return dashboardData;
         }
+
     }
 
    

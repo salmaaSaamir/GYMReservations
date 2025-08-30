@@ -21,6 +21,8 @@ export class ListReservationsComponent implements OnInit {
   selectedReservation?: Reservation;
   isAddReservationMenu = false;
   selectedReservationId = 0;
+  filteredReservations: any[] = [];
+  searchTerm: string = '';
   constructor(private ReservationService: ReservationService, private toaster: ToastrService) { }
 
   async ngOnInit() {
@@ -41,6 +43,7 @@ export class ListReservationsComponent implements OnInit {
         this.currentPage = Math.max(1, Math.min(res.Data[1] || 1, totalPages));
         this.pageSize = res.Data[2];
         this.Reservations = res.Data[3];
+        this.filteredReservations = [...this.Reservations];
       }
     } catch (error) {
       console.error('Error loading Reservations', error);
@@ -100,4 +103,22 @@ export class ListReservationsComponent implements OnInit {
   getShowingTo(): number {
     return Math.min(this.currentPage * this.pageSize, this.totalCount);
   }
+
+  onSearch() {
+    if (!this.searchTerm.trim()) {
+      this.filteredReservations = [...this.Reservations];
+      return;
+    }
+
+    const searchLower = this.searchTerm.toLowerCase().trim();
+
+    this.filteredReservations = this.Reservations.filter(u =>
+      u.Id?.toString().includes(searchLower) ||
+      u.ClassName?.toLowerCase().includes(searchLower) ||
+      u.MemberID?.toString().includes(searchLower) ||
+      u.MemberName?.toLowerCase().includes(searchLower) ||
+      u.TrainerName?.toLowerCase().includes(searchLower)
+    );
+  }
+
 }
