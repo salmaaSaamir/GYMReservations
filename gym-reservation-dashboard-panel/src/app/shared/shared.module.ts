@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SharedRoutingModule } from './shared-routing.module';
 import { LoaderComponent } from './loader/loader.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 @NgModule({
@@ -13,7 +14,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
   ],
   imports: [
     CommonModule,
-    SharedRoutingModule
+    SharedRoutingModule,TranslateModule
   ],
   exports: [
     LoaderComponent,

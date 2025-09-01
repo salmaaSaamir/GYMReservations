@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { Offer } from 'src/app/core/models/Offer';
@@ -16,7 +17,7 @@ export class ListOffersComponent implements OnInit {
   offers: Offer[] = [];
   currentPage = 1;  // Always start with page 1
   pageSize = 10;
-  pageSizeOptions = [5, 10, 20, 50];
+  pageSizeOptions = [5, 10, 20, 50,100,200,1000];
   isSpinner = true;
   totalCount = 0;
   isAddoffer = false;
@@ -26,9 +27,17 @@ export class ListOffersComponent implements OnInit {
   selectedofferName = '';
   searchTerm: string = '';
   filteredoffers: Offer[] = [];
-
+  language:string="en"
   isShowofferReservation = false;
-  constructor(private offerService: OfferService, private toaster: ToastrService) { }
+  constructor(private offerService: OfferService, private toaster: ToastrService,private translate:TranslateService) {
+        if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
+   }
 
   async ngOnInit() {
     await this.loadoffers();

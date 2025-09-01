@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light px-3 gap-2 topbar">
+<nav class="navbar navbar-expand-lg navbar-light bg-light px-3 gap-2 topbar"     [dir]="language == 'en' ? 'ltr' : 'rtl'">
 
   <!-- Mobile Menu Button -->
   <button class="btn btn-outline-secondary d-flex justify-content-center" type="button" *ngIf="!showToggle"
@@ -6,41 +6,51 @@
     <i class="bi bi-list"></i>
   </button>
 
-  <!-- Notification Dropdown -->
-  <div class="dropdown">
-
-    <app-notifications></app-notifications>
-
+  <div>
+    <!-- Notification Dropdown -->
+    <div class="dropdown"     [dir]="language == 'en' ? 'ltr' : 'rtl'">
+      <app-notifications></app-notifications>
+    </div>
   </div>
 
   <!-- Spacer -->
   <div class="flex-grow-1"></div>
 
-  <!-- Profile Dropdown -->
-  <div class="dropdown">
-    <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center rounded-circle p-0"
-      type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-      <img [src]="UserImage!=''?UserImage: 'assets/images/profile/user-1.jpg'" class="rounded-circle object-fit-cover"
-        width="35" height="35" />
+  <div class="d-flex align-items-center" >
+    <!-- Language Switch -->
+    <button class="btn btn-primary mx-3 fs-6" (click)="toggleRtl()" [dir]="language == 'en' ? 'ltr' : 'rtl'">
+      <span class="fs-6">
+        {{ "SwitchLang" | translate }}
+      </span>
+      <i class="bi bi-flag-fill"></i>
     </button>
-    <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="profileDropdown">
-      <li class="dropdown-item d-flex align-items-center">
-        <i class="bi bi-shield-person me-2"></i>
-        {{userData.Name}}
-      </li>
-      <li class="dropdown-item d-flex align-items-center">
-        <i class="bi bi-person-badge me-2"></i>
-        {{userData.Email}}
-      </li>
-      <li>
-        <hr class="dropdown-divider">
-      </li>
-      <li>
-        <button class="btn btn-outline-danger w-100" (click)="logOut()">
-          <i class="bi bi-box-arrow-right me-1"></i> Logout
-        </button>
-      </li>
-    </ul>
+
+    <!-- Profile Dropdown -->
+    <div class="dropdown"     [dir]="language == 'en' ? 'ltr' : 'rtl'">
+      <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center rounded-circle p-0"
+        type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <img [src]="UserImage!=''?UserImage: 'assets/images/profile/user-1.jpg'" class="rounded-circle object-fit-cover"
+          width="35" height="35" />
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end p-2" aria-labelledby="profileDropdown"  [style]=" language == 'en' ?'':'right: -225px !important;'">
+        <li class="dropdown-item d-flex align-items-center">
+          <i class="bi bi-shield-person me-2"></i>
+     {{userData.Name}}
+        </li>
+        <li class="dropdown-item d-flex align-items-center">
+          <i class="bi bi-person-badge me-2"></i>
+     {{userData.Email}}
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        <li>
+          <button class="btn btn-outline-danger w-100" (click)="logOut()">
+            <i class="bi bi-box-arrow-right me-1"></i> {{ "Logout" | translate }}
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 
 </nav>

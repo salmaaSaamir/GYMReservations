@@ -1,24 +1,24 @@
 <div class="container mt-4">
-  <h2 class="mb-4">Dashboard Analysis</h2>
+  <h2 class="mb-4">{{ "DashboardAnalysis" | translate }}</h2>
 
   <!-- Row 1 (3 charts) -->
   <div class="row mb-4">
     <div class="col-md-4">
-      <h5>Active Subscriptions</h5>
+      <h5>{{ "ActiveSubscriptions" | translate }}</h5>
       <canvas baseChart 
               [data]="barChartData" 
               [type]="barChartType"
               [options]="chartOptions"></canvas>
     </div>
     <div class="col-md-4">
-      <h5>Monthly Reservations</h5>
+      <h5>{{ "MonthlyReservations" | translate }}</h5>
       <canvas baseChart 
               [data]="lineChartData" 
               [type]="lineChartType"
               [options]="chartOptions"></canvas>
     </div>
     <div class="col-md-4">
-      <h5>Class Status</h5>
+      <h5>{{ "ClassStatus" | translate }}</h5>
       <canvas baseChart 
               [data]="pieChartData" 
               [type]="pieChartType"
@@ -29,14 +29,14 @@
   <!-- Row 2 (2 charts) -->
   <div class="row">
     <div class="col-md-6">
-      <h5>Overall Statistics</h5>
+      <h5>{{ "OverallStatistics" | translate }}</h5>
       <canvas baseChart 
               [data]="doughnutChartData" 
               [type]="doughnutChartType"
               [options]="chartOptions"></canvas>
     </div>
     <div class="col-md-6">
-      <h5>Performance Metrics</h5>
+      <h5>{{ "PerformanceMetrics" | translate }}</h5>
       <canvas baseChart 
               [data]="radarChartData" 
               [type]="radarChartType"

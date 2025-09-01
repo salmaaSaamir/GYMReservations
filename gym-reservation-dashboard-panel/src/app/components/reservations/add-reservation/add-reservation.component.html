@@ -1,12 +1,24 @@
 <!-- Modal -->
-<div class="modal fade" data-bs-backdrop="static" id="addReservationModal" aria-labelledby="addReservationModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  data-bs-backdrop="static"
+  id="addReservationModal"
+  aria-labelledby="addReservationModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 shadow-sm">
-      <div class="modal-header">
+      <div class="modal-header d-flex justify-content-between">
         <h5 class="modal-title" id="addReservationModalLabel">
-          {{ form.value.Id ? 'Edit Reservation' : 'Add Reservation' }}
+          {{ form.value.Id ? ("EditReservation" | translate) : ("AddReservation" | translate) }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+        <button
+          type="button"
+          class="btn-close m-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="cancel()"
+        ></button>
       </div>
 
       <div class="modal-body">
@@ -14,58 +26,115 @@
           <!-- First row: Class, Member selection -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label>Class <i class="bi bi-asterisk"></i></label>
+              <label>
+                {{ "Class" | translate }}
+                <i class="bi bi-asterisk"></i>
+              </label>
 
-                <mat-form-field appearance="outline" class="w-100">
+              <mat-form-field appearance="outline" class="w-100">
                 <mat-select formControlName="ClassId">
                   <mat-option *ngFor="let gymClass of classes" [value]="gymClass.Id">
-                  {{ gymClass.Name }} ({{ formatTo12Hour( gymClass.ClassTime) }})
+                    {{ gymClass.Name }} ({{ formatTo12Hour(gymClass.ClassTime) }})
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div *ngIf="form.get('ClassId')?.invalid && form.get('ClassId')?.touched" class="text-danger">
-                <small *ngIf="form.get('ClassId')?.errors?.['required']">Class is required.</small>
+              <div
+                *ngIf="form.get('ClassId')?.invalid && form.get('ClassId')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="form.get('ClassId')?.errors?.['required']">
+                  {{ "ClassRequired" | translate }}
+                </small>
               </div>
               <!-- Class availability info -->
               <div *ngIf="classAvailability" class="mt-2">
-                <small [class.text-success]="!classAvailability.IsFull" 
-                       [class.text-danger]="classAvailability.IsFull">
-                  {{ classAvailability.IsFull ? 
-                     'Class is full' : 
-                     classAvailability.AvailableSlots + ' slots available' }}
+                <small
+                  [class.text-success]="!classAvailability.IsFull"
+                  [class.text-danger]="classAvailability.IsFull"
+                >
+                  {{
+                    classAvailability.IsFull
+                      ? ("ClassFull" | translate)
+                      : classAvailability.AvailableSlots + " " + ("SlotsAvailable" | translate)
+                  }}
                 </small>
               </div>
             </div>
-            
-            <div class="col-md-6">
-              <label>Member <i class="bi bi-asterisk"></i></label>
 
-               <mat-form-field appearance="outline" class="w-100">
-                <mat-select formControlName="MemberId">
-                  <mat-option *ngFor="let member of members" [value]="member.Id">
-                  {{ member.Name }} ({{ member.IDCard }})
+            <div class="col-md-6 ">
+              <label>
+                {{ "Member" | translate }}
+                <i class="bi bi-asterisk"></i>
+              </label>
+
+              <!-- Search input for members -->
+              <div class="d-flex gap-2">
+                <div class="mb-2">
+                <input
+                  type="text"
+                  class="form-control w-100"
+                  style="border-radius: 5px;
+    margin: 4px 0px;
+    height: 36px;"
+                  placeholder="{{ 'SearchMember' | translate }}..."
+                  [(ngModel)]="memberSearch"
+                  [ngModelOptions]="{standalone: true}"
+                  (input)="filterMembers()"
+                  (focus)="showMemberDropdown = true"
+                  (blur)="onMemberSearchBlur()"
+                >
+              </div>
+
+              <mat-form-field appearance="outline" class="w-75">
+                <mat-select formControlName="MemberId" #memberSelect>
+                  <div class="p-2" *ngIf="filteredMembers.length === 0">
+                    <small class="text-muted">{{ 'NoMembersFound' | translate }}</small>
+                  </div>
+                  <mat-option 
+                    *ngFor="let member of filteredMembers" 
+                    [value]="member.Id"
+                    (click)="showMemberDropdown = false"
+                  >
+                    {{ member.Name }} ({{ member.IDCard }})
                   </mat-option>
                 </mat-select>
               </mat-form-field>
+              </div>
 
-
-              <div *ngIf="form.get('MemberId')?.invalid && form.get('MemberId')?.touched" class="text-danger">
-                <small *ngIf="form.get('MemberId')?.errors?.['required']">Member is required.</small>
+              <div
+                *ngIf="form.get('MemberId')?.invalid && form.get('MemberId')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="form.get('MemberId')?.errors?.['required']">
+                  {{ "MemberRequired" | translate }}
+                </small>
               </div>
               <!-- Member reservation check -->
               <div *ngIf="IsmemberHasReservationCheck" class="mt-2">
                 <small class="text-danger">
-                  Member already has a reservation for this class
+                  {{ "MemberAlreadyReserved" | translate }}
                 </small>
               </div>
             </div>
           </div>
 
           <div class="d-flex justify-content-end gap-3 mt-3">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
-            <button type="submit" class="btn btn-primary" 
-                    [disabled]="form.invalid || classAvailability?.IsFull || IsmemberHasReservationCheck">
-              Save
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              (click)="cancel()"
+            >
+              {{ "Cancel" | translate }}
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="
+                form.invalid || classAvailability?.IsFull || IsmemberHasReservationCheck
+              "
+            >
+              {{ "Save" | translate }}
             </button>
           </div>
         </form>

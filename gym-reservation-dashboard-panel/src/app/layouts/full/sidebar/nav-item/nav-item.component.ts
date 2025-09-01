@@ -12,10 +12,11 @@ import { Router } from '@angular/router';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import { MaterialModule } from 'src/app/material.module';
 import { CommonModule } from '@angular/common';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-nav-item',
   standalone: true,
-  imports: [ TablerIconsModule, MaterialModule, CommonModule],
+  imports: [ TablerIconsModule, MaterialModule, CommonModule,TranslateModule],
   templateUrl: './nav-item.component.html',
   styleUrls: [],
 })
@@ -25,7 +26,7 @@ export class AppNavItemComponent implements OnChanges {
   expanded: any = false;
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() depth: any;
-  constructor( public router: Router) {}
+  constructor( public router: Router,private translate:TranslateService) {}
   ngOnChanges() {
 
   }

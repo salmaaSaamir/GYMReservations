@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
@@ -6,7 +6,6 @@ import { Reservation } from 'src/app/core/models/Reservation';
 import { ReservationService } from 'src/app/core/services/ReservationService';
 import { ClassService } from 'src/app/core/services/ClassService';
 import { MemberService } from 'src/app/core/services/MemberService';
-import { cpSync } from 'fs';
 import { jwtDecode } from 'jwt-decode';
 
 declare var $: any;
@@ -20,13 +19,19 @@ export class AddReservationComponent implements OnInit {
 
   @Input() Reservation?: Reservation;
   @Output() closeAddReservationModal = new EventEmitter();
+  @ViewChild('memberSelect') memberSelect!: ElementRef;
+
   isSpinner = false;
   form: FormGroup;
   classes: any[] = [];
   members: any[] = [];
   classAvailability: any = null;
   IsmemberHasReservationCheck = false;
-  userData: any
+  userData: any;
+  memberSearch: string = '';
+  filteredMembers: any[] = [];
+  showMemberDropdown: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private toaster: ToastrService,
@@ -64,13 +69,12 @@ export class AddReservationComponent implements OnInit {
       }
     });
 
-      const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
-        if (token) {
-          this.userData = jwtDecode(token);
-    
-        } else {
-          this.userData = null;
-        }
+    const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
+    if (token) {
+      this.userData = jwtDecode(token);
+    } else {
+      this.userData = null;
+    }
   }
 
   async ngOnInit() {
@@ -99,6 +103,7 @@ export class AddReservationComponent implements OnInit {
       const membersRes: any = await lastValueFrom(this.memberService.getAllMembers());
       if (membersRes.State) {
         this.members = membersRes.Data[0] || [];
+        this.filteredMembers = this.members;
       }
     } catch (error) {
       console.error('Error loading data', error);
@@ -106,6 +111,35 @@ export class AddReservationComponent implements OnInit {
     }
   }
 
+  filterMembers() {
+    const searchValue = this.memberSearch.toLowerCase().trim();
+    
+    if (!searchValue) {
+      this.filteredMembers = [...this.members];
+      return;
+    }
+
+    this.filteredMembers = this.members.filter(member =>
+      member.Name.toLowerCase().includes(searchValue) ||
+      member.IDCard.toLowerCase().includes(searchValue) ||
+      (member.Email && member.Email.toLowerCase().includes(searchValue)) ||
+      (member.Phone && member.Phone.toLowerCase().includes(searchValue))
+    );
+  }
+
+  onMemberSearchBlur() {
+    // Add a small delay before hiding dropdown to allow for click events
+    setTimeout(() => {
+      this.showMemberDropdown = false;
+    }, 200);
+  }
+
+  clearSearch() {
+    this.memberSearch = '';
+    this.filterMembers();
+  }
+
+  // Rest of your existing methods remain the same...
   async checkClassAvailability(classId: number) {
     try {
       const res: any = await lastValueFrom(
@@ -121,10 +155,8 @@ export class AddReservationComponent implements OnInit {
 
   async checkMemberReservation(memberId: number, classId: number) {
     try {
-
       // Find the selected class to get the classDay
       const selectedClass = this.classes.find(c => c.Id === +classId);
-
 
       if (!selectedClass) {
         console.error('Class not found');
@@ -133,12 +165,11 @@ export class AddReservationComponent implements OnInit {
 
       const classDay = selectedClass.ClassDay;
 
-
       const res: any = await lastValueFrom(
         this.reservationService.checkMemberReservation(+classId, +memberId, classDay)
       );
 
-      this.IsmemberHasReservationCheck = res.State
+      this.IsmemberHasReservationCheck = res.State;
     } catch (error) {
       console.error('Error checking member reservation', error);
     }
@@ -153,7 +184,7 @@ export class AddReservationComponent implements OnInit {
       this.isSpinner = true;
       const reservationData = this.form.value;
       const res: any = await lastValueFrom(
-        this.reservationService.saveReservation(reservationData,this.userData.Email)
+        this.reservationService.saveReservation(reservationData, this.userData.Email)
       );
 
       if (res.State) {

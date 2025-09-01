@@ -1,19 +1,19 @@
 <!-- Bell Icon -->
-<div class="notification-bell" [ngClass]="{ 'ringing': isBellRinging }" (click)="toggleSidebar()">
-  <i class="bi bi-bell fs-2 text-dark " ></i>
+<div class="notification-bell" [ngClass]="{ 'ringing': isBellRinging }" (click)="toggleSidebar()"     [dir]="language == 'en' ? 'ltr' : 'rtl'">
+  <i class="bi bi-bell fs-2 text-dark "></i>
   <span *ngIf="unreadCount > 0" class="badge bg-primary" style="font-size: 11px !important;">{{ unreadCount }}</span>
 </div>
 
 <!-- Sidebar -->
-<div class="notification-sidebar " [class.open]="isSidebarOpen">
+<div class="notification-sidebar" [class.open]="isSidebarOpen"     [dir]="language == 'en' ? 'ltr' : 'rtl'">
   <div class="sidebar-header d-flex justify-content-between align-items-center">
-    <h5>Notifications</h5>
+    <h5>{{ "Notifications" | translate }}</h5>
     <button class="btn-close" (click)="toggleSidebar()"></button>
   </div>
 
   <div class="sidebar-actions d-flex justify-content-between my-3">
-    <button class="btn btn-sm btn-primary" (click)="markAllAsRead()">Mark All Read</button>
-    <button class="btn btn-sm btn-warning" (click)="deleteAll()">Delete All</button>
+    <button class="btn btn-sm btn-primary" (click)="markAllAsRead()">{{ "MarkAllRead" | translate }}</button>
+    <button class="btn btn-sm btn-warning" (click)="deleteAll()">{{ "DeleteAll" | translate }}</button>
   </div>
 
   <div class="notification-list">
@@ -33,6 +33,6 @@
       </div>
     </div>
 
-    <p *ngIf="notifications.length === 0" class="text-center text-muted">No notifications</p>
+    <p *ngIf="notifications.length === 0" class="text-center text-muted">{{ "NoNotifications" | translate }}</p>
   </div>
 </div>

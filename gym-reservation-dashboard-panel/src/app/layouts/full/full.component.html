@@ -1,6 +1,6 @@
 
 
-<div class="blue_theme light-theme" dir="ltr">
+<div class="blue_theme light-theme"      [dir]="language == 'en' ? 'ltr' : 'rtl'">
   <!-- <app-topstrip></app-topstrip> -->
   <mat-sidenav-container class="mainWrapper" autosize autoFocus>
     <!-- ============================================================== -->
@@ -55,15 +55,17 @@
         </main>
       </div>
 
-      <div class="text-center card footer-card">
-        Design & Developed by
-        <a
-          class="text-decoration-none"
-          href="https://adminmart.com/"
-          target="_blank"
-          > salma samir</a
-        >
-      </div>
+     <div class="text-center card footer-card">
+  {{ "DesignDevelopedBy" | translate }}
+  <a
+    class="text-decoration-none"
+    href="https://adminmart.com/"
+    target="_blank"
+  >
+    Salma Samir
+  </a>
+</div>
+
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { lastValueFrom } from 'rxjs';
 import { ClassService } from 'src/app/core/services/ClassService';
 declare var $: any;
@@ -14,7 +15,16 @@ export class ShowClassReservationsComponent implements OnInit {
 
   @Output() closeShoeModal = new EventEmitter();
   data: any[] = [];
-  constructor(private ClassService: ClassService) { }
+  language: string = 'en';
+  constructor(private ClassService: ClassService, private translate: TranslateService) {
+    if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
+  }
 
   ngOnInit(): void {
     this.loadReservation();
@@ -26,7 +36,7 @@ export class ShowClassReservationsComponent implements OnInit {
       const res: any = await lastValueFrom(
         this.ClassService.getClassReservations(this.classId)
       );
-      
+
       if (res.State) {
         this.data = res.Data[0];
 

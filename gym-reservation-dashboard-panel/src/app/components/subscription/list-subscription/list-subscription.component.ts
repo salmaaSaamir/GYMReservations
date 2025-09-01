@@ -5,6 +5,7 @@ import { Subscription } from 'src/app/core/models/Subscription';
 import { Offer } from 'src/app/core/models/Offer';
 import { SubscriptionService } from 'src/app/core/services/SubscriptionService';
 import Swal from 'sweetalert2';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-list-subscription',
   templateUrl: './list-subscription.component.html',
@@ -14,17 +15,27 @@ export class ListSubscriptionComponent implements OnInit {
   subscriptionsWithOffers: any[] = [];
   currentPage = 1;
   pageSize = 10;
-  pageSizeOptions = [5, 10, 20, 50];
+  pageSizeOptions = [5, 10, 20, 50,100,200,1000];
   isSpinner = true;
   totalCount = 0;
   isAddSubscription = false;
   selectedSubscription?: Subscription;
   filteredSubscriptions: any[] = []; 
   searchTerm: string = '';
+  language: string = 'en';
   constructor(
     private subscriptionService: SubscriptionService, 
-    private toaster: ToastrService
-  ) { }
+    private toaster: ToastrService,
+    private translate: TranslateService
+  ) { 
+      if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
+  }
 
   async ngOnInit() {
     await this.loadSubscriptions();
@@ -87,7 +98,7 @@ export class ListSubscriptionComponent implements OnInit {
   }
 
   openAddSubscription(subscriptionWithOffers?: any) {
-    console.log('Editing subscription:', subscriptionWithOffers);
+    
     this.selectedSubscription = subscriptionWithOffers;
     this.isAddSubscription = true;
   }

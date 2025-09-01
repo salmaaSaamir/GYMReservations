@@ -1,12 +1,24 @@
 <!-- Modal -->
-<div class="modal fade" data-bs-backdrop="static" id="addOfferModal" aria-labelledby="addOfferModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  data-bs-backdrop="static"
+  id="addOfferModal"
+  aria-labelledby="addOfferModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 shadow-sm">
-      <div class="modal-header">
+      <div class="modal-header d-flex justify-content-between">
         <h5 class="modal-title" id="addOfferModalLabel">
-          {{ form.value.Id ? 'Edit Offer' : 'Add Offer' }}
+          {{ form.value.Id ? ("EditOffer" | translate) : ("AddOffer" | translate) }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+        <button
+          type="button"
+          class="btn-close m-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="cancel()"
+        ></button>
       </div>
 
       <div class="modal-body">
@@ -20,18 +32,39 @@
           <!-- Row 1: Value and Subscription -->
           <div class="row mb-3 d-flex align-items-center">
             <div class="col-md-6">
-              <label class="my-2">Value <i class="bi bi-asterisk"></i></label>
-              <input type="number" class="form-control" formControlName="Value" min="0">
-              <div *ngIf="form.get('Value')?.invalid && form.get('Value')?.touched" class="text-danger">
-                <small *ngIf="form.get('Value')?.errors?.['required']">Value is required.</small>
-                <small *ngIf="form.get('Value')?.errors?.['min']">Value must be positive.</small>
+              <label class="my-2">
+                {{ "Value" | translate }} <i class="bi bi-asterisk"></i>
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="Value"
+                min="0"
+              />
+              <div
+                *ngIf="form.get('Value')?.invalid && form.get('Value')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="form.get('Value')?.errors?.['required']">
+                  {{ "ValueRequired" | translate }}
+                </small>
+                <small *ngIf="form.get('Value')?.errors?.['min']">
+                  {{ "ValueMustBePositive" | translate }}
+                </small>
               </div>
             </div>
-             <div class="col-md-6">
-              <label class="my-2">Offer Type</label>
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="isGeneralOffer" formControlName="IsGeneralOffer">
-                <label class="form-check-label" for="isGeneralOffer">General (for all subscriptions)</label>
+            <div class="col-md-6" [dir]="language == 'en' ? 'ltr' : 'rtl'">
+              <label class="my-2">{{ "OfferType" | translate }}</label>
+              <div class="form-check d-flex" [style]="language == 'en' ?'':'gap: 30px;'">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="isGeneralOffer"
+                  formControlName="IsGeneralOffer"
+                />
+                <label class="form-check-label" for="isGeneralOffer">
+                  {{ "GeneralForAll" | translate }}
+                </label>
               </div>
             </div>
           </div>
@@ -39,17 +72,42 @@
           <!-- Row 2: Start Date and End Date -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label class="my-2">Start Date <i class="bi bi-asterisk"></i></label>
-              <input type="date" class="form-control" formControlName="StartDate">
-              <div *ngIf="form.get('StartDate')?.invalid && form.get('StartDate')?.touched" class="text-danger">
-                <small *ngIf="form.get('StartDate')?.errors?.['required']">Start date is required.</small>
+              <label class="my-2">
+                {{ "StartDate" | translate }} <i class="bi bi-asterisk"></i>
+              </label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="StartDate"
+              />
+              <div
+                *ngIf="
+                  form.get('StartDate')?.invalid &&
+                  form.get('StartDate')?.touched
+                "
+                class="text-danger"
+              >
+                <small *ngIf="form.get('StartDate')?.errors?.['required']">
+                  {{ "StartDateRequired" | translate }}
+                </small>
               </div>
             </div>
             <div class="col-md-6">
-              <label class="my-2">End Date <i class="bi bi-asterisk"></i></label>
-              <input type="date" class="form-control" formControlName="EndDate">
-              <div *ngIf="form.get('EndDate')?.invalid && form.get('EndDate')?.touched" class="text-danger">
-                <small *ngIf="form.get('EndDate')?.errors?.['required']">End date is required.</small>
+              <label class="my-2">
+                {{ "EndDate" | translate }} <i class="bi bi-asterisk"></i>
+              </label>
+              <input
+                type="date"
+                class="form-control"
+                formControlName="EndDate"
+              />
+              <div
+                *ngIf="form.get('EndDate')?.invalid && form.get('EndDate')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="form.get('EndDate')?.errors?.['required']">
+                  {{ "EndDateRequired" | translate }}
+                </small>
               </div>
             </div>
           </div>
@@ -57,19 +115,40 @@
           <!-- Row 3: Subscription and Status -->
           <div class="row mb-3 d-flex align-items-center">
             <div class="col-md-6" *ngIf="!form.get('IsGeneralOffer')?.value">
-              <label class="my-2">Subscription</label>
+              <label class="my-2">{{ "Subscription" | translate }}</label>
               <mat-form-field appearance="outline" class="w-100">
                 <mat-select formControlName="SubscriptionId">
-                  <mat-option [value]="null">None</mat-option>
-                  <mat-option *ngFor="let subscription of subscriptions" [value]="subscription.Subscription.Id">
+                  <mat-option [value]="null">{{ "None" | translate }}</mat-option>
+                  <mat-option
+                    *ngFor="let subscription of subscriptions"
+                    [value]="subscription.Subscription.Id"
+                  >
                     {{ subscription.Subscription.Name }}
                     <!-- Badge for existing offer -->
                     <span *ngIf="hasActiveOffer(subscription)" class="ms-2">
-                      <span class="badge" 
-                            [ngClass]="getApplicableOffer(subscription.ApplicableOffers)?.IsGeneralOffer ? 'bg-info' : 'bg-warning'"
-                            matTooltip="{{ getOfferTooltip(getApplicableOffer(subscription.ApplicableOffers)) }}">
-                        {{ getApplicableOffer(subscription.ApplicableOffers)?.Value }}% 
-                        {{ getApplicableOffer(subscription.ApplicableOffers)?.IsGeneralOffer ? '(G)' : '(S)' }}
+                      <span
+                        class="badge"
+                        [ngClass]="
+                          getApplicableOffer(subscription.ApplicableOffers)
+                            ?.IsGeneralOffer
+                            ? 'bg-info'
+                            : 'bg-warning'
+                        "
+                        matTooltip="{{
+                          getOfferTooltip(
+                            getApplicableOffer(subscription.ApplicableOffers)
+                          )
+                        }}"
+                      >
+                        {{
+                          getApplicableOffer(subscription.ApplicableOffers)?.Value
+                        }}%
+                        {{
+                          getApplicableOffer(subscription.ApplicableOffers)
+                            ?.IsGeneralOffer
+                            ? '(G)'
+                            : '(S)'
+                        }}
                       </span>
                     </span>
                   </mat-option>
@@ -78,16 +157,36 @@
             </div>
             <div class="col-md-6 d-flex align-items-end">
               <div class="form-check form-switch">
-                <input type="checkbox" class="form-check-input" id="isActiveCheck" formControlName="IsActive">
-                <label class="form-check-label" for="isActiveCheck">Active Offer</label>
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="isActiveCheck"
+                  formControlName="IsActive"
+                />
+                <label class="form-check-label" for="isActiveCheck">
+                  {{ "ActiveOffer" | translate }}
+                </label>
               </div>
             </div>
           </div>
 
           <!-- Save/Cancel Buttons -->
           <div class="d-flex justify-content-end gap-3 mt-3">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              (click)="cancel()"
+            >
+              {{ "Cancel" | translate }}
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="form.invalid"
+            >
+              {{ "Save" | translate }}
+            </button>
           </div>
         </form>
       </div>

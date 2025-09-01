@@ -7,6 +7,7 @@ import { Subscription } from 'src/app/core/models/Subscription';
 import { Offer } from 'src/app/core/models/Offer';
 import { MemberService } from 'src/app/core/services/MemberService';
 import { SubscriptionService } from 'src/app/core/services/SubscriptionService';
+import { TranslateService } from '@ngx-translate/core';
 
 declare var $: any;
 
@@ -22,12 +23,13 @@ export class AddMemberComponent implements OnInit {
   isSpinner = false;
   form: FormGroup;
   subscriptions: any[] = []; // Changed to any[] to include ApplicableOffers
-
+  language: string = 'en';
   constructor(
     private fb: FormBuilder,
     private toaster: ToastrService,
     private memberService: MemberService,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private translate: TranslateService
   ) {
     this.form = this.fb.group({
       Id: [0],
@@ -37,6 +39,13 @@ export class AddMemberComponent implements OnInit {
       IDCard: [{ value: '', disabled: true }],
       CurrentSubscriptionId: [0, Validators.required]
     });
+     if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
   }
 
   async ngOnInit() {

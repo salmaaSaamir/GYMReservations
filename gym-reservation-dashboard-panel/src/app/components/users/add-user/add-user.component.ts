@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { User } from 'src/app/core/models/User';
@@ -17,11 +18,12 @@ export class AddUserComponent implements OnInit {
   isSpinner = false;
   form: FormGroup;
   showPassword: boolean = false;
-
+  language:string="en"
   constructor(
     private fb: FormBuilder,
     private toaster: ToastrService,
-    private userService: UserService
+    private userService: UserService,
+    private translate:TranslateService
   ) {
     this.form = this.fb.group({
       Id: [0],
@@ -31,6 +33,13 @@ export class AddUserComponent implements OnInit {
       Password: ['', [Validators.required, Validators.minLength(6)]],
       ImageUrl: [''],
     });
+      if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
   }
 
   ngOnInit() {

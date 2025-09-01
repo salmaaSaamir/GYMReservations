@@ -35,7 +35,7 @@ export class AddSubscriptionComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Received subscription:', this.subscription);
+    
     if (this.subscription) {
       this.form.patchValue(this.subscription);
     }

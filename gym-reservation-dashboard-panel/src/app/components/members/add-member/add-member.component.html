@@ -1,12 +1,24 @@
 <!-- Modal -->
-<div class="modal fade" data-bs-backdrop="static" id="addMemberModal" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  data-bs-backdrop="static"
+  id="addMemberModal"
+  aria-labelledby="addMemberModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 shadow-sm">
-      <div class="modal-header">
+      <div class="modal-header d-flex justify-content-between">
         <h5 class="modal-title" id="addMemberModalLabel">
-          {{ form.value.Id ? 'Edit Member' : 'Add Member' }}
+          {{ form.value.Id ? ("EditMember" | translate) : ("AddMember" | translate) }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+        <button
+          type="button"
+          class="btn-close m-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="cancel()"
+        ></button>
       </div>
 
       <div class="modal-body">
@@ -14,19 +26,19 @@
           <!-- Row 1: Name and Email -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label>Name <i class="bi bi-asterisk"></i></label>
-              <input type="text" class="form-control" formControlName="Name">
+              <label>{{ "Name" | translate }} <i class="bi bi-asterisk"></i></label>
+              <input type="text" class="form-control" formControlName="Name" />
               <div *ngIf="form.get('Name')?.invalid && form.get('Name')?.touched" class="text-danger">
-                <small *ngIf="form.get('Name')?.errors?.['required']">Name is required.</small>
-                <small *ngIf="form.get('Name')?.errors?.['minlength']">Name must be at least 2 characters long.</small>
+                <small *ngIf="form.get('Name')?.errors?.['required']">{{ "NameRequired" | translate }}</small>
+                <small *ngIf="form.get('Name')?.errors?.['minlength']">{{ "NameMinLength" | translate }}</small>
               </div>
             </div>
             <div class="col-md-6">
-              <label>Email <i class="bi bi-asterisk"></i></label>
-              <input type="email" class="form-control" formControlName="Email">
+              <label>{{ "Email" | translate }} <i class="bi bi-asterisk"></i></label>
+              <input type="email" class="form-control" formControlName="Email" />
               <div *ngIf="form.get('Email')?.invalid && form.get('Email')?.touched" class="text-danger">
-                <small *ngIf="form.get('Email')?.errors?.['required']">Email is required.</small>
-                <small *ngIf="form.get('Email')?.errors?.['email']">Invalid email format.</small>
+                <small *ngIf="form.get('Email')?.errors?.['required']">{{ "EmailRequired" | translate }}</small>
+                <small *ngIf="form.get('Email')?.errors?.['email']">{{ "InvalidEmail" | translate }}</small>
               </div>
             </div>
           </div>
@@ -34,70 +46,91 @@
           <!-- Row 2: Phone and ID Card -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label>Phone <i class="bi bi-asterisk"></i></label>
-              <input type="tel" class="form-control" formControlName="Phone">
+              <label>{{ "Phone" | translate }} <i class="bi bi-asterisk"></i></label>
+              <input type="tel" class="form-control" formControlName="Phone" />
               <div *ngIf="form.get('Phone')?.invalid && form.get('Phone')?.touched" class="text-danger">
-                <small *ngIf="form.get('Phone')?.errors?.['required']">Phone is required.</small>
-                <small *ngIf="form.get('Phone')?.errors?.['pattern']">Please enter a valid phone number.</small>
+                <small *ngIf="form.get('Phone')?.errors?.['required']">{{ "PhoneRequired" | translate }}</small>
+                <small *ngIf="form.get('Phone')?.errors?.['pattern']">{{ "InvalidPhone" | translate }}</small>
               </div>
             </div>
             <div class="col-md-6">
-              <label>ID Card</label>
-              <input type="text" class="form-control" formControlName="IDCard" [readonly]="!form.value.Id">
-              <small class="text-muted">ID Card is automatically generated for new members</small>
+              <label>{{ "IDCard" | translate }}</label>
+              <input type="text" class="form-control" formControlName="IDCard" [readonly]="!form.value.Id" />
+              <small class="text-muted">{{ "IDCardAutoGen" | translate }}</small>
             </div>
           </div>
 
-          <!-- Row 3: Subscription (full width) -->
+          <!-- Row 3: Subscription -->
           <div class="row mb-3">
             <div class="col-12">
-              <label>Subscription <i class="bi bi-asterisk"></i></label>
-        <mat-form-field appearance="outline" class="w-100">
-  <mat-select formControlName="CurrentSubscriptionId">
-    <mat-option *ngFor="let sub of subscriptions" [value]="sub.Subscription.Id">
-      <div class="d-flex align-items-center">
-        <!-- Subscription name -->
-        <span class="me-2">{{ sub.Subscription.Name }}</span>
-        
-        <!-- Price section -->
-        <span class="d-flex align-items-center">
-          <!-- Original price with strikethrough when there's an offer -->
-          <span [class.text-decoration-line-through]="hasActiveOffer(sub)" 
-                [class.text-muted]="hasActiveOffer(sub)"
-                class="me-1">
-            {{ sub.Subscription.Price | currency:("EGP") }}
-          </span>
-          
-          <!-- Discounted price when there's an offer -->
-          <span *ngIf="hasActiveOffer(sub)" class="text-success fw-bold me-2">
-            {{ calculateDiscountedPrice(sub.Subscription.Price, getApplicableOffer(sub.ApplicableOffers)) | currency:("EGP") }}
-          </span>
-        </span>
-        
-        <!-- Badge for subscription offer -->
-        <span *ngIf="hasActiveOffer(sub)" class="ms-2">
-          <span class="badge" 
-                [ngClass]="getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer ? 'bg-info' : 'bg-warning'"
-                matTooltip="{{ getOfferTooltip(getApplicableOffer(sub.ApplicableOffers)) }}">
-            {{ getApplicableOffer(sub.ApplicableOffers)?.Value }}% 
-            {{ getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer ? '(G)' : '(S)' }}
-          </span>
-        </span>
-      </div>
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+              <label>{{ "Subscription" | translate }} <i class="bi bi-asterisk"></i></label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="CurrentSubscriptionId">
+                  <mat-option *ngFor="let sub of subscriptions" [value]="sub.Subscription.Id">
+                    <div class="d-flex align-items-center">
+                      <!-- Subscription name -->
+                      <span class="me-2">{{ sub.Subscription.Name }}</span>
+
+                      <!-- Price section -->
+                      <span class="d-flex align-items-center">
+                        <span
+                          [class.text-decoration-line-through]="hasActiveOffer(sub)"
+                          [class.text-muted]="hasActiveOffer(sub)"
+                          class="me-1"
+                        >
+                          {{ sub.Subscription.Price | currency:("EGP") }}
+                        </span>
+
+                        <!-- Discounted price -->
+                        <span *ngIf="hasActiveOffer(sub)" class="text-success fw-bold me-2">
+                          {{
+                            calculateDiscountedPrice(
+                              sub.Subscription.Price,
+                              getApplicableOffer(sub.ApplicableOffers)
+                            ) | currency:("EGP")
+                          }}
+                        </span>
+                      </span>
+
+                      <!-- Offer badge -->
+                      <span *ngIf="hasActiveOffer(sub)" class="ms-2">
+                        <span
+                          class="badge"
+                          [ngClass]="
+                            getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer
+                              ? 'bg-info'
+                              : 'bg-warning'
+                          "
+                          matTooltip="{{ getOfferTooltip(getApplicableOffer(sub.ApplicableOffers)) }}"
+                        >
+                          {{ getApplicableOffer(sub.ApplicableOffers)?.Value }}%
+                          {{
+                            getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer
+                              ? '(G)'
+                              : '(S)'
+                          }}
+                        </span>
+                      </span>
+                    </div>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
               <div *ngIf="form.get('CurrentSubscriptionId')?.invalid && form.get('CurrentSubscriptionId')?.touched" class="text-danger">
-                <small *ngIf="form.get('CurrentSubscriptionId')?.errors?.['required']">Subscription is required.</small>
+                <small *ngIf="form.get('CurrentSubscriptionId')?.errors?.['required']">
+                  {{ "SubscriptionRequired" | translate }}
+                </small>
               </div>
             </div>
           </div>
 
+          <!-- Buttons -->
           <div class="d-flex justify-content-end gap-3 mt-3">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">
+              {{ "Cancel" | translate }}
+            </button>
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <span *ngIf="isSpinner" class="spinner-border spinner-border-sm me-1"></span>
-              Save
+              {{ "Save" | translate }}
             </button>
           </div>
         </form>

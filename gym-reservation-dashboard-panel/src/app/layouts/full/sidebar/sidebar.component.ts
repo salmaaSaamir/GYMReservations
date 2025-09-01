@@ -17,10 +17,13 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidebar.component.html',
 })
 export class SidebarComponent implements OnInit {
-  constructor() {}
+  constructor() {
+    
+  }
   @Input() showToggle = true;
   @Output() toggleMobileNav = new EventEmitter<void>();
   @Output() toggleCollapsed = new EventEmitter<void>();
+  language: string = 'en';
 
   ngOnInit(): void {}
 }

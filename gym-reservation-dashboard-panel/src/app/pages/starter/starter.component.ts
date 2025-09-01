@@ -5,13 +5,14 @@ import { ChartConfiguration, ChartType } from 'chart.js';
 import { DashboardService } from 'src/app/core/services/DashboardService';
 import { DashboardData } from 'src/app/core/interfaces/DashboardData';
 import { lastValueFrom } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-starter',
   standalone: true,
   imports: [
     MaterialModule,
-    NgChartsModule
+    NgChartsModule,TranslateModule
   ],
   templateUrl: './starter.component.html',
   encapsulation: ViewEncapsulation.None,
@@ -46,7 +47,10 @@ export class StarterComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
 
-  constructor(private dashboardService: DashboardService) { }
+  constructor(
+    private dashboardService: DashboardService,
+    private translate: TranslateService
+  ) { }
 
   async ngOnInit() {
     await this.loadDashboardData();
@@ -63,105 +67,108 @@ export class StarterComponent implements OnInit {
       if (res) {
         this.updateCharts(res);
       } else {
-        this.error = 'No data received from server';
+        this.error = this.translate.instant('NoDataReceived');
       }
     } catch (error) {
       console.error('Error loading dashboard data:', error);
-      this.error = 'Failed to load dashboard data';
+      this.error = this.translate.instant('FailedToLoadData');
     } finally {
       this.isLoading = false;
     }
   }
-private updateCharts(data: any): void {
-  console.log('Dashboard Data:', data);
 
-  // Bar Chart - Subscription Counts
-  this.barChartData = {
-    labels: data.SubscriptionCounts?.Labels || [],
-    datasets: [{
-      data: data.SubscriptionCounts?.Data || [],
-      label: 'Active Subscriptions',
-      backgroundColor: '#ec407a',   // medium pink
-      borderColor: '#ad1457',       // darker pink
-      borderWidth: 1
-    }]
-  };
+  private updateCharts(data: any): void {
+    // Bar Chart - Subscription Counts
+    this.barChartData = {
+      labels: data.SubscriptionCounts?.Labels || [],
+      datasets: [{
+        data: data.SubscriptionCounts?.Data || [],
+        label: this.translate.instant('ActiveSubscriptions'),
+        backgroundColor: '#ec407a',
+        borderColor: '#ad1457',
+        borderWidth: 1
+      }]
+    };
 
-  // Line Chart - Monthly Reservations
-  this.lineChartData = {
-    labels: data.ReservationStats?.Labels || [],
-    datasets: [{
-      data: data.ReservationStats?.Data || [],
-      label: 'Monthly Reservations',
-      fill: false,
-      tension: 0.4,
-      borderColor: '#d81b60',             // deep rose pink
-      backgroundColor: 'rgba(236, 64, 122, 0.2)', // soft transparent pink
-      pointBackgroundColor: '#ec407a',    // medium pink
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: '#d81b60'
-    }]
-  };
+    // Line Chart - Monthly Reservations
+    this.lineChartData = {
+      labels: data.ReservationStats?.Labels || [],
+      datasets: [{
+        data: data.ReservationStats?.Data || [],
+        label: this.translate.instant('MonthlyReservations'),
+        fill: false,
+        tension: 0.4,
+        borderColor: '#d81b60',
+        backgroundColor: 'rgba(236, 64, 122, 0.2)',
+        pointBackgroundColor: '#ec407a',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#d81b60'
+      }]
+    };
 
-  // Pie Chart - Class Cancellation Stats
-  this.pieChartData = {
-    labels: ['Active Classes', 'Cancelled Classes'],
-    datasets: [{
-      data: [
-        data.CancellationStats?.ActiveCount || 0,
-        data.CancellationStats?.CancelledCount || 0
+    // Pie Chart - Class Status
+    this.pieChartData = {
+      labels: [
+        this.translate.instant('ActiveClasses'),
+        this.translate.instant('CancelledClasses')
       ],
-      backgroundColor: [
-        '#f8bbd0',  // light pink
-        '#ec407a'   // medium pink
-      ],
-      hoverBackgroundColor: [
-        '#f48fb1',  // soft hover pink
-        '#ad1457'   // dark hover pink
-      ]
-    }]
-  };
+      datasets: [{
+        data: [
+          data.CancellationStats?.ActiveCount || 0,
+          data.CancellationStats?.CancelledCount || 0
+        ],
+        backgroundColor: ['#f8bbd0', '#ec407a'],
+        hoverBackgroundColor: ['#f48fb1', '#ad1457']
+      }]
+    };
 
-  // Doughnut Chart - Totals
-  const totalSubscriptions = data.SubscriptionCounts?.Data?.reduce((a:any, b:any) => a + b, 0) || 0;
-  this.doughnutChartData = {
-    labels: ['Total Reservations', 'Active Member Subscriptions'],
-    datasets: [{
-      data: [
-        data.TotalReservations || 0,
-        totalSubscriptions
+    // Doughnut Chart - Totals
+    const totalSubscriptions = data.SubscriptionCounts?.Data?.reduce((a: any, b: any) => a + b, 0) || 0;
+    this.doughnutChartData = {
+      labels: [
+        this.translate.instant('TotalReservations'),
+        this.translate.instant('ActiveMemberSubscriptions')
       ],
-      backgroundColor: [
-        'rgba(248, 187, 208, 0.7)', // soft light pink
-        'rgba(236, 64, 122, 0.7)'   // medium pink
-      ],
-      hoverBackgroundColor: [
-        'rgba(248, 187, 208, 1)',   // full light pink
-        'rgba(236, 64, 122, 1)'     // strong medium pink
-      ]
-    }]
-  };
+      datasets: [{
+        data: [
+          data.TotalReservations || 0,
+          totalSubscriptions
+        ],
+        backgroundColor: [
+          'rgba(248, 187, 208, 0.7)',
+          'rgba(236, 64, 122, 0.7)'
+        ],
+        hoverBackgroundColor: [
+          'rgba(248, 187, 208, 1)',
+          'rgba(236, 64, 122, 1)'
+        ]
+      }]
+    };
 
-  // Radar Chart - Performance Metrics
-  this.radarChartData = {
-    labels: ['Total Reservations', 'Active Classes', 'Active Members'],
-    datasets: [{
-      data: [
-        data.RadarMetrics?.TotalReservations || 0,
-        data.RadarMetrics?.ActiveClasses || 0,
-        data.RadarMetrics?.ActiveMembers || 0
+    // Radar Chart - Performance Metrics
+    this.radarChartData = {
+      labels: [
+        this.translate.instant('TotalReservations'),
+        this.translate.instant('ActiveClasses'),
+        this.translate.instant('ActiveMembers')
       ],
-      label: 'Performance Metrics',
-      backgroundColor: 'rgba(236, 64, 122, 0.2)',  // soft transparent pink
-      borderColor: '#d81b60',                      // rose pink
-      pointBackgroundColor: '#ec407a',             // medium pink
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: '#ad1457'
-    }]
-  };
-}
+      datasets: [{
+        data: [
+          data.RadarMetrics?.TotalReservations || 0,
+          data.RadarMetrics?.ActiveClasses || 0,
+          data.RadarMetrics?.ActiveMembers || 0
+        ],
+        label: this.translate.instant('PerformanceMetrics'),
+        backgroundColor: 'rgba(236, 64, 122, 0.2)',
+        borderColor: '#d81b60',
+        pointBackgroundColor: '#ec407a',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: '#ad1457'
+      }]
+    };
+  }
 
   refreshData() {
     this.loadDashboardData();

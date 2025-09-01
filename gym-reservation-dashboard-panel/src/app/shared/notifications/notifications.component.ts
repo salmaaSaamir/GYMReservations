@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/core/services/authService';
 import { lastValueFrom, Subscription } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { NotificationModel } from 'src/app/core/interfaces/NotificationModel';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-notifications',
@@ -20,10 +21,12 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   private notificationSub?: Subscription;
   private userEmail: string = '';
   userData: any
+  language: string = 'en';
   constructor(
     private notificationService: NotificationService,
     private auth: AuthService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private translate: TranslateService
   ) {
     const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
     if (token) {
@@ -31,6 +34,13 @@ export class NotificationsComponent implements OnInit, OnDestroy {
 
     } else {
       this.userData = null;
+    }
+        if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
     }
   }
 
@@ -42,7 +52,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     this.notificationService.joinGroup(this.userEmail);
 
     this.notificationSub = this.notificationService.notification$.subscribe((n: any) => {
-      console.log('Notification received in component:', n);
+      
       this.notifications.unshift(n);
       this.updateUnreadCount();
       this.ringBell();
@@ -65,7 +75,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   private async loadNotifications() {
     try {
       const res: any = await lastValueFrom(this.notificationService.getNotifications(this.userEmail));
-      console.log('Loaded notifications:', res);
+      
       if (res.State) {
         this.notifications = res.Data[0] || [];
         this.updateUnreadCount();

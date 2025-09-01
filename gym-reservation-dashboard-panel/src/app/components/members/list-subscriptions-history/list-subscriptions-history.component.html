@@ -1,74 +1,104 @@
 <!-- Modern Subscription History Modal -->
-<div class="modal fade" data-bs-backdrop="static" id="subscriptionHistoryModal" tabindex="-1" aria-labelledby="subscriptionHistoryModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  data-bs-backdrop="static"
+  id="subscriptionHistoryModal"
+  tabindex="-1"
+  aria-labelledby="subscriptionHistoryModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
-
       <!-- Header -->
-      <div class="modal-header bg-light border-0">
-        <h5 class="modal-title fw-semibold text-primary" id="subscriptionHistoryModalLabel">
+      <div class="modal-header bg-light border-0 d-flex justify-content-between">
+        <h5
+          class="modal-title fw-semibold text-primary"
+          id="subscriptionHistoryModalLabel"
+        >
           <i class="fas fa-id-card me-2 text-primary"></i>
-          Subscription History - <span class="text-dark">{{member?.Name}}</span>
+          {{ "SubscriptionHistory" | translate }} -
+          <span class="text-dark">{{ member?.Name }}</span>
         </h5>
-        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"
-          (click)="cancel()"></button>
+        <button
+          type="button"
+          class="btn-close shadow- m-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="cancel()"
+        ></button>
       </div>
 
       <!-- Body -->
       <div class="modal-body p-4">
-
         <!-- Loader -->
         <div *ngIf="isLoading" class="d-flex justify-content-center py-5">
-          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+          <div
+            class="spinner-border text-primary"
+            style="width: 3rem; height: 3rem"
+            role="status"
+          ></div>
         </div>
 
         <!-- Table -->
         <div *ngIf="!isLoading">
-          <div *ngIf="subscriptionHistory && subscriptionHistory.length > 0" class="table-responsive">
+          <div
+            *ngIf="subscriptionHistory && subscriptionHistory.length > 0"
+            class="table-responsive"
+          >
             <table class="table align-middle table-hover mb-0">
               <thead class="table-light">
                 <tr>
-                  <th>Subscription</th>
-                  <th>Price</th>
-                  <th>Offer</th>
-
-                  <th>Start</th>
-                  <th>End</th>
-                  <th>Duration</th>
-                  <th>Status</th>
+                  <th>{{ "Subscription" | translate }}</th>
+                  <th>{{ "Price" | translate }}</th>
+                  <th>{{ "Offer" | translate }}</th>
+                  <th>{{ "Start" | translate }}</th>
+                  <th>{{ "End" | translate }}</th>
+                  <th>{{ "Duration" | translate }}</th>
+                  <th>{{ "Status" | translate }}</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let item of subscriptionHistory">
                   <td>
-                    <div class="fw-semibold">{{item.SubscriptionName}}</div>
+                    <div class="fw-semibold">{{ item.SubscriptionName }}</div>
                   </td>
                   <td>
-                    <div class="fw-semibold">{{item.SubscriptionPrice | number}}</div>
+                    <div class="fw-semibold">
+                      {{ item.SubscriptionPrice | number }}
+                    </div>
                     <div class="text-info my-2 small" *ngIf="item.Offer">
-                      Paid: {{item.SubscriptionPrice * (1 - item.Offer.Value / 100) | number}}
+                      {{ "Paid" | translate }}:
+                      {{
+                        item.SubscriptionPrice * (1 - item.Offer.Value / 100)
+                          | number
+                      }}
                     </div>
                   </td>
                   <td>
                     <div *ngIf="item.Offer">
                       <span class="badge bg-warning text-dark mb-1">
-                        {{item.Offer.Value}}% OFF
-                        <span *ngIf="item.Offer.IsGeneralOffer">(General)</span>
+                        {{ item.Offer.Value }}% {{ "OFF" | translate }}
+                        <span *ngIf="item.Offer.IsGeneralOffer">
+                          ({{ "General" | translate }})
+                        </span>
                       </span>
-
                     </div>
                     <div *ngIf="!item.Offer">
-                      <span class="text-muted small">No offer</span>
+                      <span class="text-muted small">{{
+                        "NoOffer" | translate
+                      }}</span>
                     </div>
                   </td>
-                  <td>{{item.StartDate | date:'mediumDate'}}</td>
-                  <td>{{item.EndDate | date:'mediumDate'}}</td>
-                  <td>{{item.DurationDays}} days</td>
+                  <td>{{ item.StartDate | date: "mediumDate" }}</td>
+                  <td>{{ item.EndDate | date: "mediumDate" }}</td>
+                  <td>{{ item.DurationDays }} {{ "Days" | translate }}</td>
                   <td>
-                    <span [class]="getStatusBadgeClass(item.Status)" class="px-3 py-2 rounded-pill">
-                      {{item.Status}}
+                    <span
+                      [class]="getStatusBadgeClass(item.Status)"
+                      class="px-3 py-2 rounded-pill"
+                    >
+                      {{ item.Status | translate }}
                     </span>
-
                   </td>
                 </tr>
               </tbody>
@@ -76,18 +106,30 @@
           </div>
 
           <!-- Empty state -->
-          <div *ngIf="!subscriptionHistory || subscriptionHistory.length === 0" class="text-center text-muted py-5">
+          <div
+            *ngIf="!subscriptionHistory || subscriptionHistory.length === 0"
+            class="text-center text-muted py-5"
+          >
             <i class="fas fa-history fa-4x mb-3 text-secondary"></i>
-            <h6 class="fw-semibold">No subscription history found</h6>
-            <p class="mb-0 small">This member does not have any subscription records.</p>
+            <h6 class="fw-semibold">
+              {{ "NoSubscriptionHistoryFound" | translate }}
+            </h6>
+            <p class="mb-0 small">
+              {{ "NoSubscriptionRecords" | translate }}
+            </p>
           </div>
         </div>
       </div>
 
       <!-- Footer -->
       <div class="modal-footer bg-light border-0">
-        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal" (click)="cancel()">
-          <i class="fas fa-times me-1"></i> Close
+        <button
+          type="button"
+          class="btn btn-outline-secondary px-4"
+          data-bs-dismiss="modal"
+          (click)="cancel()"
+        >
+          <i class="fas fa-times me-1"></i> {{ "Close" | translate }}
         </button>
       </div>
     </div>

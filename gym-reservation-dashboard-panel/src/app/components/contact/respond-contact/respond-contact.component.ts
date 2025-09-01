@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { ContactUs } from 'src/app/core/models/ContactUs';
@@ -16,12 +17,19 @@ export class RespondContactComponent implements OnInit {
   @Input() contactUs: ContactUs = new ContactUs();
   @Output() closeAddContactUsModal = new EventEmitter();
   isSpinner = false;
-
+  language: string = 'en';
   constructor(
     private toaster: ToastrService,
-    private contactUsService: ContactUsService
+    private contactUsService: ContactUsService,
+    private translate: TranslateService
   ) {
-
+    if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
   }
 
   ngOnInit() {
@@ -34,7 +42,7 @@ export class RespondContactComponent implements OnInit {
     try {
       this.isSpinner = true;
       // Call the responseByEmail service method
-        
+
       const res: any = await lastValueFrom(
         this.contactUsService.responseByEmail(this.contactUs)
       );

@@ -1,100 +1,135 @@
 <div *ngIf="isSpinner">
-    <app-loader></app-loader>
+  <app-loader></app-loader>
 </div>
 
 <div *ngIf="!isSpinner">
-    <div class="d-flex justify-content-between align-items-center  flex-wrap mb-3">
-        <h3>Classs</h3>
-        <div class="d-flex gap-3 align-items-center flex-wrap my-2">
-
-            <button class="btn btn-info d-flex align-items-center gap-1"  (click)="generateWeeklySchedule()">
-                <i class="bi bi-card-image" ></i> Get Weekly Schadual
-            </button>
-            <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddClass()">
-                <i class="bi bi-plus-lg"></i> Add Class
-            </button>
-            
-        </div>
+  <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+    <h3>{{ "Classes" | translate }}</h3>
+    <div class="d-flex gap-3 align-items-center flex-wrap my-2">
+      <button class="btn btn-info d-flex align-items-center gap-1" (click)="generateWeeklySchedule()">
+        <i class="bi bi-card-image"></i> {{ "GetWeeklySchedule" | translate }}
+      </button>
+      <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddClass()">
+        <i class="bi bi-plus-lg"></i> {{ "AddClass" | translate }}
+      </button>
     </div>
- <!-- Search Input -->
+  </div>
+
+  <!-- Search Input -->
   <div class="row mb-3">
     <div class="col-md-6">
-      <div class="input-group d-flex align-items-center">
+      <div class="input-group d-flex align-items-center" [dir]="'ltr'">
         <span class="input-group-text">
           <i class="bi bi-search"></i>
         </span>
-        <input type="text" class="form-control" placeholder="Search classes..." [(ngModel)]="searchTerm"
-          (input)="onSearch()">
-
+        <input
+          type="text"
+          class="form-control"
+          placeholder="{{ 'SearchClasses' | translate }}"
+          [(ngModel)]="searchTerm"
+          (input)="onSearch()"
+        />
       </div>
     </div>
-
   </div>
 
-    <div class="table-responsive">
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>{{ "Name" | translate }}</th>
+          <th>{{ "Date" | translate }}</th>
+          <th>{{ "Time" | translate }}</th>
+          <th>{{ "Limit" | translate }}</th>
+          <th>{{ "Trainer" | translate }}</th>
+          <th class="text-end">{{ "Actions" | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of filteredClasses">
+          <td>{{ u.Id }}</td>
+          <td>{{ u.Name }}</td>
+          <td>{{ u.ClassDay }}</td>
+          <td>{{ formatTo12Hour(u.ClassTime) }}</td>
+          <td>{{ u.ClassLimit }}</td>
+          <td>{{ u.Trainer.Name }}</td>
+          <td class="text-end">
+            <button
+              class="btn btn-sm btn-outline-info iconButton"
+              [matTooltip]="'ShowReservations' | translate"
+              (click)="openShowReservationModal(u)"
+            >
+              <i class="bi bi-eye"></i>
+            </button>
+            <button
+              class="btn btn-sm btn-outline-warning iconButton"
+              [matTooltip]="'CancelClass' | translate"
+              (click)="CancelClass(u.Id)"
+              [disabled]="u.IsCancelled"
+            >
+              <i class="bi bi-x-circle-fill"></i>
+            </button>
+            <button
+              class="btn btn-sm btn-outline-secondary me-1 iconButton"
+              [matTooltip]="'Edit' | translate"
+              (click)="openAddClass(u)"
+            >
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button
+              class="btn btn-sm btn-outline-danger iconButton"
+              [matTooltip]="'Delete' | translate"
+              (click)="deleteClass(u.Id)"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredClasses.length === 0">
+          <td colspan="7" class="text-center">{{ "NoClassesFound" | translate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>Time</th>
-
-                    <th>Limit</th>
-                    <th>Trainer</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let u of filteredClasses">
-                    <td>{{ u.Id }}</td>
-                    <td>{{ u.Name }}</td>
-                    <td>{{ u.ClassDay }}</td>
-                    <td>{{ formatTo12Hour(u.ClassTime) }}</td>
-                    <td>{{ u.ClassLimit }}</td>
-
-                    <td>{{ u.Trainer.Name }}</td>
-                    <td class="text-end">
-                        <button class="btn btn-sm btn-outline-info iconButton" [matTooltip]="'show reservations'" (click)="openShowReservationModal(u)">
-                            <i class="bi bi-eye"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-warning iconButton"   matTooltip="cancel" (click)="CancelClass(u.Id)"
-                            [disabled]="u.IsCancelled">
-                            <i class="bi bi-x-circle-fill"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="edit" (click)="openAddClass(u)">
-                            <i class="bi bi-pencil"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger iconButton"  matTooltip="delete" (click)="deleteClass(u.Id)">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr *ngIf="filteredClasses.length === 0">
-                    <td colspan="7" class="text-center">No Classs found</td>
-                </tr>
-            </tbody>
-        </table>
+  <!-- Page size selector -->
+  <div class="d-flex justify-content-between align-items-center py-3 pages-menu">
+    <div class="d-flex align-items-center my-3">
+      <mat-form-field appearance="outline">
+        <mat-label class="text-primary">{{ "ItemsPerPage" | translate }}</mat-label>
+        <mat-select
+          [(value)]="pageSize"
+          (selectionChange)="onPageSizeChange()"
+          panelClass="page-size-panel"
+        >
+          <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
+            {{ size }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <!-- Page size selector -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <div class="d-flex align-items-center">
-            <label for="pageSize" class="me-2" style="width: 450px;">Items per page:</label>
-            <select id="pageSize" class="form-select form-select-sm" [(ngModel)]="pageSize"
-                (change)="onPageSizeChange()">
-                <option *ngFor="let size of pageSizeOptions" [value]="size">{{size}}</option>
-            </select>
-        </div>
-        <div class="text-muted">
-            {{ (currentPage - 1) * pageSize + 1 }} to {{ getShowingTo() }} of {{ totalCount }} Classs
-        </div>
+    <div class="text-muted">
+      {{ (currentPage - 1) * pageSize + 1 }} {{ "To" | translate }}
+      {{ getShowingTo() }} {{ "Of" | translate }} {{ totalCount }}
+      {{ "Classes" | translate }}
     </div>
+  </div>
 </div>
 
 <!-- Add/Edit Class Form -->
-<app-add-class *ngIf="isAddClass" [class]="selectedClass" (closeAddClassModal)="closeAddClassModal()">
-</app-add-class>
-<app-generate-schadule *ngIf="isGenerateWeeklySchedule" (closeGenerateModal)="closeGenerateModal()"></app-generate-schadule>
-<app-show-class-reservations *ngIf="isShowClassReservation" [classId]="selectedClassId" [className]="selectedClassName" (closeShoeModal)="closeshowReservationModal()">
-</app-show-class-reservations> 
+<app-add-class
+  *ngIf="isAddClass"
+  [class]="selectedClass"
+  (closeAddClassModal)="closeAddClassModal()"
+></app-add-class>
+<app-generate-schadule
+  *ngIf="isGenerateWeeklySchedule"
+  (closeGenerateModal)="closeGenerateModal()"
+></app-generate-schadule>
+<app-show-class-reservations
+  *ngIf="isShowClassReservation"
+  [classId]="selectedClassId"
+  [className]="selectedClassName"
+  (closeShoeModal)="closeshowReservationModal()"
+></app-show-class-reservations>

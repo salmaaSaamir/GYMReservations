@@ -12,6 +12,16 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
+import {HttpClient } from "@angular/common/http";
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
+// Function to create TranslateHttpLoader
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 
 @NgModule({
   declarations: [
@@ -29,8 +39,14 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     ComponentsModule,
     AppRoutingModule,
     TablerIconsModule.pick(TablerIcons), // <-- Pick all icons
-    MaterialModule, ToastrModule.forRoot()    
-
+    MaterialModule, ToastrModule.forRoot(),
+ TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
   ],
    providers: [
     {

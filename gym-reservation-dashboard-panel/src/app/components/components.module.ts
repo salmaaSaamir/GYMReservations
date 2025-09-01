@@ -28,6 +28,7 @@ import { RespondContactComponent } from './contact/respond-contact/respond-conta
 import { ListOffersComponent } from './Offers/list-offers/list-offers.component';
 import { AddOfferComponent } from './Offers/add-offer/add-offer.component';
 import { TruncatePipe } from '../pipe/TruncatePipe.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { TruncatePipe } from '../pipe/TruncatePipe.pipe';
     SharedModule,
     NgxPaginationModule,
     MatTooltipModule,
+    TranslateModule
     
   ],
 

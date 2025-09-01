@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { GymClass } from 'src/app/core/models/GymClass';
@@ -21,12 +22,13 @@ export class AddClassComponent implements OnInit {
   isSpinner = false;
   form: FormGroup;
   conflictError: string | null = null;
-
+  language: string = 'en';
   constructor(
     private fb: FormBuilder,
     private toaster: ToastrService,
     private classService: ClassService,
-    private trainerService: TrainerService
+    private trainerService: TrainerService,
+    private translate: TranslateService
   ) {
     this.form = this.fb.group({
       Id: [0],
@@ -37,6 +39,14 @@ export class AddClassComponent implements OnInit {
       TrainerId: [null, Validators.required],
       IsCancelled: [false]
     });
+
+    if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
   }
 
   async ngOnInit() {
@@ -60,7 +70,7 @@ export class AddClassComponent implements OnInit {
   }
 
   async checkConflict() {
-    
+
     if (!this.form.value.ClassDay || !this.form.value.ClassTime) {
       this.conflictError = null;
       return;

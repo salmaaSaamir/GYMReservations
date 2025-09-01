@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { jwtDecode } from 'jwt-decode';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
@@ -17,7 +18,7 @@ export class ListClassesComponent implements OnInit {
   filteredClasses: GymClass[] = [];
   currentPage = 1;  // Always start with page 1
   pageSize = 10;
-  pageSizeOptions = [5, 10, 20, 50];
+  pageSizeOptions = [5, 10, 20, 50,100,200,1000];
   isSpinner = true;
   totalCount = 0;
   isAddClass = false;
@@ -29,13 +30,21 @@ export class ListClassesComponent implements OnInit {
   searchTimeout: any;
   isShowClassReservation = false;
   userData: any
-  constructor(private ClassService: ClassService, private toaster: ToastrService) {
+  language: string = 'en';
+  constructor(private ClassService: ClassService, private toaster: ToastrService,private translate:TranslateService) {
     const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
     if (token) {
       this.userData = jwtDecode(token);
 
     } else {
       this.userData = null;
+    }
+     if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
     }
   }
 

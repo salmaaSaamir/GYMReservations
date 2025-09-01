@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { Trainer } from 'src/app/core/models/Trainer';
@@ -14,7 +15,7 @@ export class ListTrainersComponent implements OnInit {
   Trainers: Trainer[] = [];
   currentPage = 1;  // Always start with page 1
   pageSize = 10;
-  pageSizeOptions = [5, 10, 20, 50];
+  pageSizeOptions = [5, 10, 20, 50,100,200,1000];
   isSpinner = true;
   totalCount = 0;
   isAddTrainer = false;
@@ -24,7 +25,16 @@ export class ListTrainersComponent implements OnInit {
 
   filteredTrainers: Trainer[] = [];
   searchTerm: string = '';
-  constructor(private TrainerService: TrainerService, private toaster: ToastrService) { }
+  language:string="en"
+  constructor(private TrainerService: TrainerService, private toaster: ToastrService,private translate:TranslateService) { 
+        if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
+  }
 
   async ngOnInit() {
     await this.loadTrainers();

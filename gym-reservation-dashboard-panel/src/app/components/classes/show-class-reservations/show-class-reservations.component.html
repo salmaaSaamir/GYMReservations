@@ -1,35 +1,46 @@
 <!-- Modal -->
-<div class="modal fade"data-bs-backdrop="static" id="showClassReservationModal" aria-labelledby="showClassReservationModalLabel"
-  aria-hidden="true">
+<div
+  class="modal fade"
+  [dir]="language == 'en' ? 'ltr' : 'rtl'"
+  data-bs-backdrop="static"
+  id="showClassReservationModal"
+  aria-labelledby="showClassReservationModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 shadow-sm">
-      <div class="modal-header">
+      <div class="modal-header d-flex justify-content-between">
         <h5 class="modal-title" id="showClassReservationModalLabel">
-          <span class="text-primary ">
-            {{className}}
-          </span> : <span class="text-info">
-            ({{data?.length??0}})
+          <span class="text-primary">
+            {{ className }}
+          </span>
+          :
+          <span class="text-info">
+            ({{ data?.length ?? 0 }})
           </span>
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+        <button
+          type="button"
+          class="btn-close m-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="cancel()"
+        ></button>
       </div>
 
       <div class="modal-body">
         <div *ngIf="data && data.length > 0" class="table-responsive">
-          <table class="table align-middle table-hover mb-0 ">
+          <table class="table align-middle table-hover mb-0">
             <thead class="table-light">
               <tr>
-                <th>Member Name</th>
-                <th>Member ID</th>
-
+                <th>{{ "MemberName" | translate }}</th>
+                <th>{{ "MemberID" | translate }}</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of data">
-                <td>{{item.Name}}</td>
-                <td>{{item.IDCard}}</td>
-
-
+                <td>{{ item.Name }}</td>
+                <td>{{ item.IDCard }}</td>
               </tr>
             </tbody>
           </table>
@@ -38,7 +49,7 @@
         <!-- Empty state -->
         <div *ngIf="!data || data.length === 0" class="text-center text-muted py-5">
           <i class="fas fa-history fa-4x mb-3 text-secondary"></i>
-          <h6 class="fw-semibold">No Class Reservations found</h6>
+          <h6 class="fw-semibold">{{ "NoClassReservations" | translate }}</h6>
         </div>
       </div>
     </div>

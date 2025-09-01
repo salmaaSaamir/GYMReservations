@@ -1,12 +1,28 @@
 <!-- Modal -->
-<div class="modal fade" data-bs-backdrop="static" id="addSubscriptionModal" aria-labelledby="addSubscriptionModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  data-bs-backdrop="static"
+  id="addSubscriptionModal"
+  aria-labelledby="addSubscriptionModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 shadow-sm">
-      <div class="modal-header">
+      <div class="modal-header d-flex justify-content-between">
         <h5 class="modal-title" id="addSubscriptionModalLabel">
-          {{ form.value.Id ? 'Edit Subscription' : 'Add Subscription' }}
+          {{
+            form.value.Id
+              ? ("EditSubscription" | translate)
+              : ("AddSubscription" | translate)
+          }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+        <button
+          type="button"
+          class="btn-close m-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="cancel()"
+        ></button>
       </div>
 
       <div class="modal-body">
@@ -14,67 +30,148 @@
           <!-- First row: Name and Price -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label>Name <i class="bi bi-asterisk"></i></label>
-              <input type="text" class="form-control" formControlName="Name">
-              <div *ngIf="form.get('Name')?.invalid && form.get('Name')?.touched" class="text-danger">
-                <small *ngIf="form.get('Name')?.errors?.['required']">Name is required.</small>
-                <small *ngIf="form.get('Name')?.errors?.['minlength']">Name must be at least 2 characters long.</small>
+              <label>{{ "Name" | translate }} <i class="bi bi-asterisk"></i></label>
+              <input type="text" class="form-control" formControlName="Name" />
+              <div
+                *ngIf="form.get('Name')?.invalid && form.get('Name')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="form.get('Name')?.errors?.['required']">
+                  {{ "NameRequired" | translate }}
+                </small>
+                <small *ngIf="form.get('Name')?.errors?.['minlength']">
+                  {{ "NameMinLength" | translate }}
+                </small>
               </div>
             </div>
             <div class="col-md-6">
-              <label>Price <i class="bi bi-asterisk"></i></label>
-              <input type="number" class="form-control" formControlName="Price" min="0" step="0.01">
-              <div *ngIf="form.get('Price')?.invalid && form.get('Price')?.touched" class="text-danger">
-                <small *ngIf="form.get('Price')?.errors?.['required']">Price is required.</small>
-                <small *ngIf="form.get('Price')?.errors?.['min']">Price must be positive.</small>
+              <label>{{ "Price" | translate }} <i class="bi bi-asterisk"></i></label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="Price"
+                min="0"
+                step="0.01"
+              />
+              <div
+                *ngIf="form.get('Price')?.invalid && form.get('Price')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="form.get('Price')?.errors?.['required']">
+                  {{ "PriceRequired" | translate }}
+                </small>
+                <small *ngIf="form.get('Price')?.errors?.['min']">
+                  {{ "PricePositive" | translate }}
+                </small>
               </div>
             </div>
           </div>
 
-          <!-- Second row: Description (full width) -->
+          <!-- Second row: Description -->
           <div class="mb-3">
-            <label>Description</label>
-            <textarea class="form-control" formControlName="Description" rows="3"></textarea>
+            <label>{{ "Description" | translate }}</label>
+            <textarea
+              class="form-control"
+              formControlName="Description"
+              rows="3"
+            ></textarea>
           </div>
 
-          <!-- Third row: Freeze Days and Invitations Number -->
+          <!-- Third row: Freeze Days and Invitations -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label>Freeze Days</label>
-              <input type="number" class="form-control" formControlName="FreezeDays" min="0">
-              <small class="text-muted">Number of days subscription can be frozen (optional)</small>
+              <label>{{ "FreezeDays" | translate }}</label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="FreezeDays"
+                min="0"
+              />
+              <small class="text-muted">
+                {{ "FreezeDaysHint" | translate }}
+              </small>
             </div>
             <div class="col-md-6">
-              <label>Invitations Number <i class="bi bi-asterisk"></i></label>
-              <input type="number" class="form-control" formControlName="InvetaionsNo" min="0">
-              <div *ngIf="form.get('InvetaionsNo')?.invalid && form.get('InvetaionsNo')?.touched" class="text-danger">
-                <small *ngIf="form.get('InvetaionsNo')?.errors?.['required']">Invitations number is required.</small>
-                <small *ngIf="form.get('InvetaionsNo')?.errors?.['min']">Must be 0 or more.</small>
+              <label>
+                {{ "InvitationsNumber" | translate }}
+                <i class="bi bi-asterisk"></i>
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="InvetaionsNo"
+                min="0"
+              />
+              <div
+                *ngIf="form.get('InvetaionsNo')?.invalid && form.get('InvetaionsNo')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="form.get('InvetaionsNo')?.errors?.['required']">
+                  {{ "InvitationsRequired" | translate }}
+                </small>
+                <small *ngIf="form.get('InvetaionsNo')?.errors?.['min']">
+                  {{ "MustBeZeroOrMore" | translate }}
+                </small>
               </div>
             </div>
           </div>
 
-          <!-- Fourth row: Months Number and Active Subscription -->
+          <!-- Fourth row: Months Number and Active -->
           <div class="row mb-3">
             <div class="col-md-6">
-              <label>Months Number <i class="bi bi-asterisk"></i></label>
-              <input type="number" class="form-control" formControlName="MonthsNo" min="0">
-              <div *ngIf="form.get('MonthsNo')?.invalid && form.get('MonthsNo')?.touched" class="text-danger">
-                <small *ngIf="form.get('MonthsNo')?.errors?.['required']">Months number is required.</small>
-                <small *ngIf="form.get('MonthsNo')?.errors?.['min']">Must be 0 or more.</small>
+              <label>
+                {{ "MonthsNumber" | translate }} <i class="bi bi-asterisk"></i>
+              </label>
+              <input
+                type="number"
+                class="form-control"
+                formControlName="MonthsNo"
+                min="0"
+              />
+              <div
+                *ngIf="form.get('MonthsNo')?.invalid && form.get('MonthsNo')?.touched"
+                class="text-danger"
+              >
+                <small *ngIf="form.get('MonthsNo')?.errors?.['required']">
+                  {{ "MonthsRequired" | translate }}
+                </small>
+                <small *ngIf="form.get('MonthsNo')?.errors?.['min']">
+                  {{ "MustBeZeroOrMore" | translate }}
+                </small>
               </div>
             </div>
             <div class="col-md-6 d-flex align-items-end">
               <div class="form-check form-switch w-100">
-                <input type="checkbox" class="form-check-input" id="isActiveCheck" formControlName="IsActive">
-                <label class="form-check-label" for="isActiveCheck">Active Subscription</label>
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="isActiveCheck"
+                  formControlName="IsActive"
+                />
+                <label class="form-check-label" for="isActiveCheck">
+                  {{ "ActiveSubscription" | translate }}
+                </label>
               </div>
             </div>
           </div>
 
+          <!-- Buttons -->
           <div class="d-flex justify-content-end gap-3 mt-3">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Save</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              (click)="cancel()"
+            >
+              {{ "Cancel" | translate }}
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="form.invalid"
+            >
+              {{ "Save" | translate }}
+            </button>
           </div>
         </form>
       </div>

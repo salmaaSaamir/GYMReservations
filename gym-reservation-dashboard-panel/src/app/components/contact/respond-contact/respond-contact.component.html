@@ -1,49 +1,92 @@
 <!-- Modal -->
-<div class="modal fade" data-bs-backdrop="static" id="addContactUsModal" aria-labelledby="addContactUsModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  data-bs-backdrop="static"
+  id="addContactUsModal"
+  aria-labelledby="addContactUsModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 shadow-sm">
-      <div class="modal-header">
+      <div class="modal-header d-flex justify-content-between" [dir]="language == 'en' ? 'ltr' : 'rtl'">
         <h5 class="modal-title" id="addContactUsModalLabel">
-          Respond to Contact
+          {{ "RespondToContact" | translate }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cancel()"></button>
+        <button
+          type="button"
+          class="btn-close m-0"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          (click)="cancel()"
+        ></button>
       </div>
 
       <div class="modal-body">
         <form (ngSubmit)="save()">
           <!-- Display original message (readonly) -->
           <div class="mb-3">
-            <label>Original Message</label>
-            <textarea class="form-control" readonly rows="4" disabled>{{contactUs?.Message}}</textarea>
+            <label>{{ "OriginalMessage" | translate }}</label>
+            <textarea
+              class="form-control"
+              readonly
+              rows="4"
+              disabled
+            >{{contactUs?.Message}}</textarea>
           </div>
 
           <div class="mb-3">
-            <label>Email</label>
-            <input type="email" class="form-control" [value]="contactUs?.Email" disabled>
+            <label>{{ "Email" | translate }}</label>
+            <input
+              type="email"
+              class="form-control"
+              [value]="contactUs?.Email"
+              disabled
+            />
           </div>
 
           <div class="mb-3">
-            <label>Response <i class="bi bi-asterisk"></i></label>
-            <textarea 
-              class="form-control" 
-              rows="5" 
-              placeholder="Type your response here..."
+            <label>
+              {{ "Response" | translate }}
+              <i class="bi bi-asterisk"></i>
+            </label>
+            <textarea
+              class="form-control"
+              rows="5"
+              [placeholder]="'TypeResponseHere' | translate"
               [(ngModel)]="contactUs.Response"
               name="response"
               #response="ngModel"
               required
-              minlength="10">
-            </textarea>
-            <div *ngIf="response.invalid && response.touched" class="text-danger">
-              <small *ngIf="response.errors?.['required']">Response is required.</small>
-              <small *ngIf="response.errors?.['minlength']">Response must be at least 10 characters long.</small>
+              minlength="10"
+            ></textarea>
+            <div
+              *ngIf="response.invalid && response.touched"
+              class="text-danger"
+            >
+              <small *ngIf="response.errors?.['required']">
+                {{ "ResponseRequired" | translate }}
+              </small>
+              <small *ngIf="response.errors?.['minlength']">
+                {{ "ResponseMinLength" | translate }}
+              </small>
             </div>
           </div>
 
           <div class="d-flex justify-content-end gap-3 mt-3">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">Cancel</button>
-            <button type="submit" class="btn btn-primary" [disabled]="!contactUs?.Response ">
-              Send Response
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              (click)="cancel()"
+            >
+              {{ "Cancel" | translate }}
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="!contactUs?.Response "
+            >
+              {{ "SendResponse" | translate }}
             </button>
           </div>
         </form>

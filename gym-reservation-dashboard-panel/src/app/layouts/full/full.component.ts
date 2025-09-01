@@ -15,6 +15,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { AppNavItemComponent } from './sidebar/nav-item/nav-item.component';
 import { UserService } from 'src/app/core/services/UsersService';
 import { jwtDecode } from 'jwt-decode';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
 @Component({
@@ -29,6 +30,7 @@ const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
     NgScrollbarModule,
     TablerIconsModule,
     HeaderComponent,
+    TranslateModule
     // AppTopstripComponent
   ],
   templateUrl: './full.component.html',
@@ -41,6 +43,7 @@ export class FullComponent implements OnInit {
    sidenav!: MatSidenav;
   resView = false;
   userData: any
+  language: string = 'en';
   @ViewChild('content', { static: true }) content!: MatSidenavContent;
   //get options from service
   options = this.settings.getOptions();
@@ -55,7 +58,8 @@ export class FullComponent implements OnInit {
   constructor(
     private settings: CoreService,
     private router: Router,
-    private breakpointObserver: BreakpointObserver, public userService: UserService) {
+    private breakpointObserver: BreakpointObserver, public userService: UserService,
+    private translate: TranslateService) {
     const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
     if (token) {
       this.userData = jwtDecode(token);
@@ -80,6 +84,13 @@ export class FullComponent implements OnInit {
       .subscribe((e) => {
         this.content.scrollTo({ top: 0 });
       });
+        if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
   }
   async ngOnInit() {
     await this.GetUserMenu()

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { lastValueFrom } from 'rxjs';
 import { Offer } from 'src/app/core/models/Offer';
@@ -21,12 +22,13 @@ export class AddOfferComponent implements OnInit {
   isSpinner = false;
   form: FormGroup;
   conflictError: string | null = null;
-
+language: string = 'en';  
   constructor(
     private fb: FormBuilder,
     private toaster: ToastrService,
     private offerService: OfferService,
-    private subscriptionService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private translate: TranslateService
   ) {
     this.form = this.fb.group({
       Id: [0],
@@ -37,6 +39,13 @@ export class AddOfferComponent implements OnInit {
       StartDate: ['', Validators.required],
       EndDate: ['', Validators.required]
     });
+     if ("language" in localStorage) {
+      this.language = localStorage.getItem("language") ?? "en";
+      this.translate.use(this.language);
+    } else {
+      this.language = "en";
+      this.translate.use("en");
+    }
   }
 
   async ngOnInit() {

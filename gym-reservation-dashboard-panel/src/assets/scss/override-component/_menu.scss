@@ -45,3 +45,18 @@
 .mat-drawer.mat-drawer-side {
   z-index: 1 !important;
 }
+
+
+.form-select {
+    box-shadow: 0px 0px 9px 1px rgb(221 0 92 / 22%) !important;
+
+}
+
+// .mat-select-panel:not([class*=mat-elevation-z]){
+//     position: absolute !important;
+//     top: 45px !important;
+// }
+.page-size-panel {
+  position: absolute !important;
+  top: 45px !important;
+}

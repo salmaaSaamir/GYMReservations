@@ -19,7 +19,7 @@
 
     <i-tabler [name]="item.iconName"></i-tabler>
 
-    <span class="ms-2 hide-menu flex-grow-1">{{ item.displayName }}</span>
+    <span class="ms-2 hide-menu flex-grow-1">{{ item.displayName |translate }}</span>
 
     <!-- children indicator -->
     <ng-container *ngIf="item.children && item.children.length">
@@ -44,7 +44,7 @@
     <i class="bi" [ngClass]="item.iconName"></i>
     <i-tabler name="x"></i-tabler>
 
-    <span class="ms-2 hide-menu flex-grow-1">{{ item.displayName }}</span>
+    <span class="ms-2 hide-menu flex-grow-1">{{ item.displayName |translate}}</span>
 
     <ng-container *ngIf="item.chip">
       <span class="badge rounded-pill ms-auto" [ngClass]="item.chipClass">
