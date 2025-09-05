@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+@font-face {
+    font-family: 'Michroma';
+    src: url('/assets/fonts/Michroma-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+body {
+        font-family:  'Michroma', sans-serif!important;
+
+    text-transform: capitalize;
+}
+
