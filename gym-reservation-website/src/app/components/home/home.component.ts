@@ -1,23 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { AnalyticsService } from 'src/app/services/analytics/analytics.service';
+import { Component } from '@angular/core';
+import { AboutsUsComponent } from '../abouts-us/abouts-us.component';
+import { ContactUsComponent } from '../contact-us/contact-us.component';
+import { WhatWeOfferComponent } from '../what-we-offer/what-we-offer.component';
+import { ReservationCalenderComponent } from '../reservation-calender/reservation-calender.component';
+import { WeeklySchadualComponent } from '../weekly-schadual/weekly-schadual.component';
+import { ScrollTopComponent } from "../../shared/scroll-top/scroll-top.component";
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss'],
-    standalone: false
+  selector: 'app-home',
+  standalone: true,
+  imports: [AboutsUsComponent, ContactUsComponent, WhatWeOfferComponent, ReservationCalenderComponent, WeeklySchadualComponent, ScrollTopComponent],
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
-
-  constructor(
-    private analyticsService: AnalyticsService,
-  ) {
-  }
-
-  ngOnInit(): void {
-    this.analyticsService.sendAnalyticPageView("/inicio", "Se entro a inicio")
-  }
-
+export class HomeComponent {
 
 }

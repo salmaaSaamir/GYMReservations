@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import PureCounter from '@srexi/purecounterjs';
 
 @Component({
   selector: 'app-abouts-us',
   standalone: true,
   imports: [],
   templateUrl: './abouts-us.component.html',
-  styleUrl: './abouts-us.component.css'
+  styleUrls: ['./abouts-us.component.css']
 })
-export class AboutsUsComponent {
-
+export class AboutsUsComponent implements OnInit {
+  ngOnInit(): void {
+    new PureCounter();
+  }
 }
