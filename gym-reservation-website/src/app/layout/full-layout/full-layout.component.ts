@@ -11,7 +11,7 @@ import { HomeComponent } from "../../components/home/home.component";
 @Component({
   selector: 'app-full-layout',
   standalone: true,
-  imports: [HeaderComponent, FooterComponent, AboutsUsComponent, WhatWeOfferComponent, ReservationCalenderComponent, WeeklySchadualComponent, ContactUsComponent, HomeComponent],
+  imports: [HeaderComponent, FooterComponent,HomeComponent],
   templateUrl: './full-layout.component.html',
   styleUrl: './full-layout.component.css'
 })

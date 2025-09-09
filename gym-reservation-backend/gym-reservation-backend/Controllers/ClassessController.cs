@@ -1,5 +1,6 @@
 ﻿using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -74,6 +75,7 @@ namespace gym_reservation_backend.Controllers
         // GET: api/Classes/GetWeeklySchedule
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetWeeklySchedule([FromQuery] DateTime? date = null)
         {
             var res = await _classService.GetWeeklySchedule(date);

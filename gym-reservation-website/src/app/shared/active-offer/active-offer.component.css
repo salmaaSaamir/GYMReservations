@@ -1,0 +1,140 @@
+.offer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000000;
+  overflow: hidden;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* دخان */
+.smoke {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1200px;
+  height: 1200px;
+  opacity: 0.6;
+  z-index: 1;
+  max-width: 200vw; /* مايزودش عن العرض */
+  max-height: 200vh;
+}
+
+/* هدية */
+.gift {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  z-index: 2;
+  animation: bounce 3s infinite;
+}
+
+/* النص */
+.offer-text {
+  margin-top: 20px;
+  z-index: 3;
+  text-align: center;
+  color: #fff;
+  padding: 0 15px;
+}
+
+.offer-text h2 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.offer-text p {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+
+/* الزر */
+.contact-btn {
+  background-color: #ff4081;
+  border: none;
+  color: white;
+  font-size: 18px;
+  padding: 14px 28px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  display: inline-block;
+}
+
+.contact-btn:hover {
+  background-color: #e73370;
+}
+
+/* زر الإغلاق */
+.close {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  color: white !important;
+  font-size: 30px;
+  font-weight: bold;
+  z-index: 4;
+}
+
+/* حركة للهدية */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+/* 📱 موبايل */
+@media (max-width: 576px) {
+  .smoke {
+    width: 600px;
+    height: 600px;
+  }
+
+  .gift {
+    width: 200px;
+    height: 200px;
+  }
+
+  .offer-text h2 {
+    font-size: 1.5rem;
+  }
+
+  .offer-text p {
+    font-size: 1rem;
+  }
+
+  .contact-btn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
+}
+
+/* 💻 تابلت */
+@media (min-width: 577px) and (max-width: 992px) {
+  .smoke {
+    width: 900px;
+    height: 900px;
+  }
+
+  .gift {
+    width: 280px;
+    height: 280px;
+  }
+
+  .offer-text h2 {
+    font-size: 2rem;
+  }
+
+  .offer-text p {
+    font-size: 1.2rem;
+  }
+}

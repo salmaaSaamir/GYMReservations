@@ -1,0 +1,21 @@
+<div class="offer-overlay" *ngIf="isVisible">
+    <button class="btn  close" (click)="closeOfferDeal()">
+        <i class="bi bi-x-square-fill fs-3 fw-bold"></i>
+    </button>
+    <!-- دخان في الخلفية -->
+    <div class="smoke">
+        <ng-lottie [options]="smokeOptions"></ng-lottie>
+    </div>
+
+    <!-- هدية -->
+    <div class="gift">
+        <ng-lottie [options]="giftOptions"></ng-lottie>
+    </div>
+
+    <!-- النص والزر -->
+    <div class="offer-text">
+        <h2>🎉 Special Offer 🎉</h2>
+        <p>50% Discount for One Week – Hurry up and join us!</p>
+        <a href="#contact" class="contact-btn my-2" (click)="closeOfferDeal()">Contact us now</a>
+    </div>
+</div>

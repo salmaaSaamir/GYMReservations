@@ -1,52 +1,51 @@
-  <header id="header" class="header d-flex align-items-center  light-background sticky-top">
-    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+<header id="header" class="header d-flex align-items-center  light-background sticky-top">
+  <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
-        <!-- Uncomment the line below if you also wish to use an image logo -->
-        <!-- <img src="assets/img/logo.png" alt=""> -->
-        <p class="sitename">Fittnes GYM</p>
-      </a>
+    <a (click)="scrollTop()" class="logo d-flex flex-column align-items-center me-auto me-xl-0">
+      <!-- Uncomment the line below if you also wish to use an image logo -->
+      <img src="assets/images/logo.jpg" alt="logo" class="rounded-circle m-2" width="60" height="60">
+    </a>
+<nav id="navmenu" class="navmenu" [class.navmenu-active]="menuOpen">
+  <ul>
+    <li><a (click)="scrollTop(); closeMenu()" [class.active]="activeSection === ''">Home</a></li>
+    <li><a href="#about" (click)="closeMenu()" [class.active]="activeSection === 'about'">About</a></li>
+    <li><a href="#offer" (click)="closeMenu()" [class.active]="activeSection === 'offer'">What We Offer</a></li>
+    <li><a href="#calender" (click)="closeMenu()" [class.active]="activeSection === 'calender'">Calendar</a></li>
+    <li><a href="#contact" (click)="closeMenu()" [class.active]="activeSection === 'contact'">Contact</a></li>
+  </ul>
+  <i class="mobile-nav-toggle d-xl-none bi" 
+     [ngClass]="menuOpen ? 'bi-x' : 'bi-list'" 
+     (click)="toggleMenu()"></i>
+</nav>
 
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="resume.html">Resume</a></li>
-          <li><a href="services.html">Services</a></li>
-          <li><a href="portfolio.html">Portfolio</a></li>
-          
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
 
-      <div class="header-social-links">
-        <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
-        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-      </div>
-
+    <div class="header-social-links">
+      <a class="twitter"><i class="bi bi-twitter-x"></i></a>
+      <a class="facebook"><i class="bi bi-facebook"></i></a>
+      <a class="instagram"><i class="bi bi-instagram"></i></a>
+      <a class="linkedin"><i class="bi bi-linkedin"></i></a>
     </div>
-  </header>
 
-    <main class="main">
+  </div>
+</header>
 
-    <!-- Hero Section -->
-    <section id="hero" class="hero section">
+<main class="main">
 
-      <img src="assets/images/bg.webp" alt="" data-aos="fade-in">
+  <!-- Hero Section -->
+  <section id="hero" class="hero section">
 
-      <div class="container text-center" data-aos="zoom-out" data-aos-delay="100">
-        <div class="row justify-content-center">
-          <div class="col-lg-8">
-            <h2>salma </h2>
-            <p>I'm a professional illustrator from San Francisco</p>
-            <a href="about.html" class="btn-get-started">About Me</a>
-          </div>
+    <img src="assets/images/bg.webp" alt="" data-aos="fade-in">
+
+    <div class="container text-center" data-aos="zoom-out" data-aos-delay="100">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h2 data-aos="fade-right">Commit to be Fit </h2>
+          <p data-aos="fade-left"> <i class="bi bi-pin-angle-fill " style="color: rgb(221, 0, 92);"></i> discover
+            strength by pushing your limits</p>
         </div>
       </div>
+    </div>
 
-    </section><!-- /Hero Section -->
+  </section><!-- /Hero Section -->
 
-  </main>
+</main>

@@ -174,24 +174,21 @@ h6 {
   border: 0px !important;
   outline: none !important;
 }
-.fc .fc-daygrid-day-number{
+
+.fc .fc-daygrid-day-number {
   color: rgb(245 70 143 / 66%) !important
 }
+
 .fc-direction-ltr {
-    direction: ltr;
-    text-align: left;
-    width: 75%;
-    margin: 0px auto;
-    color: rgb(221, 0, 92);
+  direction: ltr;
+  text-align: left;
+  width: 75%;
+  margin: 0px auto;
+  color: rgb(221, 0, 92);
 }
 
 .header .logo {
   line-height: 1;
-}
-
-.header .logo img {
-  max-height: 36px;
-  margin-right: 8px;
 }
 
 .header .logo h1 {
@@ -234,6 +231,7 @@ h6 {
   .header .navmenu {
     order: 3;
   }
+
 }
 
 /*--------------------------------------------------------------
@@ -305,7 +303,7 @@ h6 {
   .navmenu li:hover>a:before,
   .navmenu .active:before {
     visibility: visible;
-    width: 25px;
+    width: 60px;
   }
 
   .navmenu li:hover>a,
@@ -484,17 +482,7 @@ h6 {
     z-index: 9999;
   }
 
-  .mobile-nav-active .navmenu {
-    position: fixed;
-    overflow: hidden;
-    inset: 0;
-    background: rgba(33, 37, 41, 0.8);
-    transition: 0.3s;
-  }
 
-  .mobile-nav-active .navmenu>ul {
-    display: block;
-  }
 }
 
 /*--------------------------------------------------------------
@@ -628,6 +616,7 @@ h6 {
   [data-aos-delay] {
     transition-delay: 0 !important;
   }
+
 }
 
 /*--------------------------------------------------------------
@@ -674,7 +663,7 @@ section,
 .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 60px 0;
+  padding: 60px 0 25px 0px;
   scroll-margin-top: 100px;
   overflow: clip;
 }
@@ -800,6 +789,7 @@ section,
 /*--------------------------------------------------------------
 # About Section
 --------------------------------------------------------------*/
+
 .about .content h2 {
   font-weight: 700;
   font-size: 24px;
@@ -825,43 +815,6 @@ section,
   margin-right: 5px;
   color: var(--accent-color);
   line-height: 0;
-}
-
-/*--------------------------------------------------------------
-# Skills Section
---------------------------------------------------------------*/
-.skills .progress {
-  height: 60px;
-  display: block;
-  background: none;
-  border-radius: 0;
-}
-
-.skills .progress .skill {
-  color: var(--heading-color);
-  padding: 0;
-  margin: 0 0 6px 0;
-  text-transform: uppercase;
-  display: block;
-  font-weight: 600;
-  font-family: var(--heading-font);
-}
-
-.skills .progress .skill .val {
-  float: right;
-  font-style: normal;
-}
-
-.skills .progress-bar-wrap {
-  background: color-mix(in srgb, var(--default-color), transparent 90%);
-  height: 10px;
-}
-
-.skills .progress-bar {
-  width: 1px;
-  height: 10px;
-  transition: 0.9s;
-  background-color: var(--accent-color);
 }
 
 /*--------------------------------------------------------------
@@ -1230,6 +1183,7 @@ section,
     font-size: 14px;
     margin: 0 0 10px 0;
   }
+ 
 }
 
 .portfolio .portfolio-item {
@@ -1452,8 +1406,131 @@ section,
 }
 
 /*--------------------------------------------------------------
-# Starter Section Section
+# Loader 
 --------------------------------------------------------------*/
-.starter-section {
-  /* Add your styles here */
+
+.rope-loader {
+  text-align: center;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999999999;
+  background-color: rgba(0, 0, 0, .5);
+  display: flex;
+}
+
+.jumper {
+  position: relative;
+  width: 40px;
+  height: 60px;
+  background-color: #333;
+  border-radius: 20px 20px 0 0;
+  bottom: 60px;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  animation: jump 0.8s infinite alternate;
+}
+
+.head {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: #cd003b;
+  border-radius: 50%;
+  top: -50%;
+  left: 22%;
+}
+
+.rope {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  top: 33%;
+  left: 47%;
+  border: 3px solid transparent;
+  border-top-color: #cd003b;
+  border-radius: 50%;
+  animation: spin 1.6s infinite linear;
+  box-sizing: border-box;
+}
+
+.rope:before {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #cd003b;
+  border-radius: 50%;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.content {
+  width: 100vw;
+  height: 100vh;
+}
+
+.loading-text {
+  position: relative;
+  bottom: 0;
+  top: 40%;
+  left: 2%;
+  width: 100%;
+  text-align: center;
+  color: #cd003b;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.loading-text:after {
+  content: '';
+  animation: dots 1.5s infinite;
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-30px);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dots {
+
+  0%,
+  20% {
+    content: '.';
+  }
+
+  40% {
+    content: '..';
+  }
+
+  60%,
+  100% {
+    content: '...';
+  }
+}
+
+.fc .fc-toolbar {
+    align-items: center;
+    display: flex !important
+;
+    justify-content: space-between;
+    flex-wrap: wrap !important;
 }

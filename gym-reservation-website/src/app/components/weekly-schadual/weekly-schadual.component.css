@@ -1,0 +1,125 @@
+.app-download {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  direction: rtl;
+  background-color: #dc1e4d;
+  top: 350px;
+  position: fixed;
+  rotate: -90deg;
+  flex-direction: column;
+  z-index: 1000;
+  left: -2rem;
+  cursor: pointer;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+  box-shadow: 1px 2px 14px 5px #00000070;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.app-download:focus {
+  outline: none;
+}
+
+.app-download label {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+.app-download label#first-title {
+  font-size: 1rem;
+}
+
+.app-download label#second-title {
+  font-size: 0.8rem;
+}
+
+.app-download .fa-mobile-phone {
+  color: #fff;
+  font-size: 2.5rem;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  border: 2px dotted #fff;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.app-download .close-download-app {
+  color: #fff;
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+/* Bounce Animation */
+.bounce {
+  animation: bounce 0.5s alternate infinite cubic-bezier(.5, 0.05, 1, .5);
+}
+
+@keyframes bounce {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 3px, 0);
+  }
+}
+
+/* 📱 موبايل */
+@media (max-width: 576px) {
+  .app-download {
+    top: 200px; /* تنزل تحت شوية */
+    left: -1rem;
+    padding: 0.7rem;
+  }
+
+  .app-download label#first-title {
+    font-size: 0.8rem;
+  }
+
+  .app-download i {
+    font-size: 1.2rem !important;
+  }
+}
+
+/* 💻 تابلت */
+@media (min-width: 577px) and (max-width: 992px) {
+  .app-download {
+    top: 280px;
+    left: -1.5rem;
+    padding: 0.8rem;
+  }
+
+  .app-download label#first-title {
+    font-size: 0.9rem;
+  }
+
+  .app-download i {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* 🖥️ ديسكتوب كبير */
+@media (min-width: 1200px) {
+  .app-download {
+    top: 350px;
+    left: -2rem;
+    padding: 1rem 1.2rem;
+  }
+
+  .app-download label#first-title {
+    font-size: 1rem;
+  }
+
+  .app-download i {
+    font-size: 1.8rem !important;
+  }
+}

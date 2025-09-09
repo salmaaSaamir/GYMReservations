@@ -1,0 +1,39 @@
+/* الحالة العادية: متخفي في الموبايل */
+.navmenu ul {
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  background: #fff;
+  padding: 1rem;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 100%;
+  z-index: 999;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* لما يفتح */
+.navmenu.navmenu-active ul {
+  display: flex;
+}
+
+/* في الشاشات الكبيرة القائمة تبقى عادية */
+@media (min-width: 1200px) {
+  .navmenu ul {
+    display: flex !important;
+    flex-direction: row;
+    position: static;
+    background: transparent;
+    box-shadow: none;
+    width: auto;
+    padding: 0;
+  }
+}
+@media (max-width: 1025px) {
+  .navmenu ul {
+   
+      height: 40vh;
+
+  }
+}

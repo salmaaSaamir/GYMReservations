@@ -5,11 +5,12 @@ import { WhatWeOfferComponent } from '../what-we-offer/what-we-offer.component';
 import { ReservationCalenderComponent } from '../reservation-calender/reservation-calender.component';
 import { WeeklySchadualComponent } from '../weekly-schadual/weekly-schadual.component';
 import { ScrollTopComponent } from "../../shared/scroll-top/scroll-top.component";
+import { ActiveOfferComponent } from "../../shared/active-offer/active-offer.component";
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [AboutsUsComponent, ContactUsComponent, WhatWeOfferComponent, ReservationCalenderComponent, WeeklySchadualComponent, ScrollTopComponent],
+  imports: [AboutsUsComponent, ContactUsComponent, WhatWeOfferComponent, ReservationCalenderComponent, WeeklySchadualComponent, ScrollTopComponent, ActiveOfferComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

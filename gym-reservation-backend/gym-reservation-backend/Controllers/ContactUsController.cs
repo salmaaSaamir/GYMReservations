@@ -1,5 +1,6 @@
 ﻿using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -7,6 +8,7 @@ namespace gym_reservation_backend.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    
     public class ContactUsController : ControllerBase
     {
         private readonly IContactService _contactService;
@@ -26,6 +28,7 @@ namespace gym_reservation_backend.Controllers
         // POST: api/ContactUs/SaveContact
         // Will Add if Id == 0, Update otherwise
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> SaveContact([FromBody] ContactUs contact)
         {
             var res = await _contactService.Save(contact);

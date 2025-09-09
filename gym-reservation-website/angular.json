@@ -31,7 +31,8 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "node_modules/aos/dist/aos.css",
               "node_modules/swiper/swiper-bundle.min.css",
-              "node_modules/glightbox/dist/css/glightbox.min.css"
+              "node_modules/glightbox/dist/css/glightbox.min.css",
+              "node_modules/ngx-toastr/toastr.css" 
             ],
             "scripts": [
               "src/assets/js/main.js",
