@@ -8,5 +8,7 @@ namespace gym_reservation_backend.Interfaces
         Task<ServiceResponse> GetOffers(int page = 1, int pageSize = 20);
         Task<bool> Delete(int offerId);
         Task<ServiceResponse> Save(Offer offer);
+        Task<ServiceResponse> GetLastOfferForWebsite();
+        Task<ServiceResponse> GetGymStatsAsync();
     }
 }

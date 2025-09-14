@@ -1,5 +1,6 @@
 ﻿using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -38,6 +39,21 @@ namespace gym_reservation_backend.Controllers
         public async Task<IActionResult> DeleteOffer(int id)
         {
             var res = await _offerService.Delete(id);
+            return Ok(JsonConvert.SerializeObject(res));
+        }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLastOfferForWebsite()
+        {
+            var res = await _offerService.GetLastOfferForWebsite();
+            return Ok(JsonConvert.SerializeObject(res));
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetGymStatsAsync()
+        {
+            var res = await _offerService.GetGymStatsAsync();
             return Ok(JsonConvert.SerializeObject(res));
         }
     }

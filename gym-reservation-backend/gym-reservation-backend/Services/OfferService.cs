@@ -3,7 +3,12 @@ using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Models;
 using gym_reservation_backend.Response;
 using Hangfire;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Data;
 
 namespace gym_reservation_backend.Services
 {
@@ -12,11 +17,13 @@ namespace gym_reservation_backend.Services
         private readonly DBContext _dbContext;
         private readonly IBackgroundJobClient _backgroundJobClient;
         ServiceResponse _response = new ServiceResponse();
+        private readonly IConfiguration _configuration;
 
-        public OfferService(DBContext dbContext, IBackgroundJobClient backgroundJobClient)
+        public OfferService(DBContext dbContext, IBackgroundJobClient backgroundJobClient, IConfiguration configuration)
         {
             _dbContext = dbContext;
             _backgroundJobClient = backgroundJobClient;
+            _configuration = configuration;
         }
 
         public async Task<ServiceResponse> GetOffers(int page = 1, int pageSize = 20)
@@ -205,5 +212,70 @@ namespace gym_reservation_backend.Services
                 throw;
             }
         }
-    }
+        public async Task<ServiceResponse> GetLastOfferForWebsite()
+        {
+            try
+            {
+                var offer = await _dbContext.Offers
+    .Where(x => x.IsActive)
+    .OrderByDescending(x => x.Id)
+    .FirstOrDefaultAsync();
+
+                _response.State = true;
+                _response.Data.Add(offer);
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = $"Error get Offer: {ex.Message}";
+            }
+
+            return _response;
+        }
+
+        public async Task<ServiceResponse> GetGymStatsAsync()
+        {
+            try
+            {
+                var connectionString = _configuration.GetConnectionString("Connection");
+                GymStats stats = null;
+
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new SqlCommand("GetGymStats", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                stats = new GymStats
+                                {
+                                    TotalMembers = Convert.ToInt32(reader["TotalMembers"]),
+                                    TotalSubscriptions = Convert.ToInt32(reader["TotalSubscriptions"]),
+                                    TotalClasses = Convert.ToInt32(reader["TotalClasses"]),
+                                    TotalTrainers = Convert.ToInt32(reader["TotalTrainers"])
+                                };
+                            }
+                        }
+                    }
+                }
+
+                _response.State = true;
+                _response.Data.Add(stats);
+                return _response;
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = $"Error fetching gym stats: {ex.Message}";
+                return _response;
+            }
+        }
+    
+
+}
 }

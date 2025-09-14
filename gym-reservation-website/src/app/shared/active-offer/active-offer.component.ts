@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { LottieComponent, AnimationOptions } from 'ngx-lottie';
+import { lastValueFrom } from 'rxjs';
+import { OfferService } from '../../core/services/OfferService';
 
 @Component({
   selector: 'app-active-offer',
@@ -10,7 +12,8 @@ import { LottieComponent, AnimationOptions } from 'ngx-lottie';
   styleUrls: ['./active-offer.component.css']
 })
 export class ActiveOfferComponent implements OnInit {
-
+  constructor(private offerService: OfferService) { }
+  CurrentOffer: any
   isVisible = false
   // Animation options
   smokeOptions: AnimationOptions = {
@@ -26,12 +29,29 @@ export class ActiveOfferComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    this.GetActiveOfferData()
+    // Show the offer after 3 seconds
     setTimeout(() => {
       this.isVisible = true
     }, 3000);
   }
 
-  closeOfferDeal(){
+  closeOfferDeal() {
     this.isVisible = false
+  }
+  async GetActiveOfferData() {
+    //call api to get active offer data
+    try {
+
+      const res: any = await lastValueFrom(
+        this.offerService.GetLastOfferForWebsite()
+      );
+      if (res.State) {
+        this.CurrentOffer = res.Data[0]
+      } else if (res.ErrorMessage) {
+      }
+    } catch (error: any) {
+      console.error('Error Get response', error);
+    }
   }
 }

@@ -15,7 +15,7 @@
     <!-- النص والزر -->
     <div class="offer-text">
         <h2>🎉 Special Offer 🎉</h2>
-        <p>50% Discount for One Week – Hurry up and join us!</p>
+        <p>{{CurrentOffer?.Value}}% Discount from {{CurrentOffer?.StartDate |date}} to {{CurrentOffer?.EndDate |date}} – Hurry up and join us!</p>
         <a href="#contact" class="contact-btn my-2" (click)="closeOfferDeal()">Contact us now</a>
     </div>
 </div>

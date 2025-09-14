@@ -76,7 +76,7 @@ private async generateScheduleImage(classes: GymClass[], startDate: Date, endDat
 
        // Load and draw logo as rounded circle
     try {
-        const logo = await this.loadImage('assets/images/logos/logo.jpg');
+        const logo = await this.loadImage('assets/images/logo.jpg');
         const logoSize = 80; // Larger logo size
         const logoX = 60;
         const logoY = 10;
