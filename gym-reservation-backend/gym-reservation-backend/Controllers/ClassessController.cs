@@ -81,5 +81,14 @@ namespace gym_reservation_backend.Controllers
             var res = await _classService.GetWeeklySchedule(date);
             return Ok(JsonConvert.SerializeObject(res));
         }
+        // GET: api/Classes/GetClassesForMonth For Website Reservations
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetClassesForMonth()
+        {
+            var res = await _classService.GetClassesForCurrentWeek();
+            return Ok(JsonConvert.SerializeObject(res));
+        }
     }
 }

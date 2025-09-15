@@ -34,4 +34,14 @@ namespace gym_reservation_backend.Models
         public string TrainerName { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
     }
+    public class ClassCalendarDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string TrainerName { get; set; } = string.Empty;
+        public string Date { get; set; }
+        public string Time { get; set; } = string.Empty;
+        public int AvailableSeats { get; set; }
+    }
+
 }

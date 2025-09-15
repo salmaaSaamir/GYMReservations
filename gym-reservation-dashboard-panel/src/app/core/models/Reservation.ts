@@ -1,6 +1,4 @@
-import { GymClass } from "./GymClass";
-import { Member } from "./Member";
-import { Trainer } from "./Trainer";
+
 
 export class Reservation {
   Id: number = 0;

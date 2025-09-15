@@ -257,5 +257,46 @@ namespace gym_reservation_backend.Services
                 return _response;
             }
         }
+
+        public async Task<ServiceResponse> GetClassesForCurrentWeek()
+        {
+            var today = DateTime.Today;
+
+            int diffFromSaturday = (7 + (today.DayOfWeek - DayOfWeek.Saturday)) % 7;
+            var weekStart = today.AddDays(-diffFromSaturday);
+
+            var weekEnd = weekStart.AddDays(6);
+
+            var startDate = today;
+            var endDate = weekEnd;
+
+            var classes = await _dbContext.Classes.Include(x=>x.Trainer).Include(x=>x.Reservations)
+                .Where(c => !c.IsCancelled)
+                .ToListAsync();
+
+            var filtered = classes
+                .Where(c =>
+                {
+                    var classDate = DateTime.Parse(c.ClassDay);
+                    return classDate.Date >= startDate.Date && classDate.Date <= endDate.Date;
+                })
+                .ToList();
+
+            var result = filtered.Select(c => new ClassCalendarDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                TrainerName = c.Trainer?.Name ?? "",
+                Date = c.ClassDay,
+                Time = c.ClassTime,
+                AvailableSeats = c.ClassLimit - c.Reservations.Count
+            }).ToList();
+
+            _response.State = true;
+            _response.Data.Add(result);
+            return _response;
+        }
+
+
     }
 }

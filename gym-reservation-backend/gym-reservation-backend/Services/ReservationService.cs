@@ -143,7 +143,7 @@ namespace gym_reservation_backend.Services
         }
 
         // Simplified Save method
-        public async Task<ServiceResponse> SaveReservation(Reservation reservation,string email)
+        public async Task<ServiceResponse> SaveReservation(Reservation reservation,string? email)
         {
             try
             {
@@ -157,9 +157,12 @@ namespace gym_reservation_backend.Services
                 }
 
                 await _dbContext.SaveChangesAsync();
-
-                // ✅ After saving, check if class completion limit is reached
-                await CheckClassCompletion(reservation.ClassId, email);
+                if (email != null)
+                {
+                    // ✅ After saving, check if class completion limit is reached
+                    await CheckClassCompletion(reservation.ClassId, email);
+                }
+ 
 
                 // Return minimal data to avoid circular references
                 _response.State = true;

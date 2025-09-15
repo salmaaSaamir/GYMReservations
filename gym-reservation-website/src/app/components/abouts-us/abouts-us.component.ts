@@ -25,7 +25,7 @@ export class AboutsUsComponent implements OnInit {
       const res: any = await lastValueFrom(
         this.offerService.GetGymStatsAsync()
       );
-      console.log(res);
+      
       if (res.State) {
         this.CurrentState = res.Data[0]
       } else if (res.ErrorMessage) {

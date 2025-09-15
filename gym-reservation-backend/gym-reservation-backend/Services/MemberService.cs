@@ -71,6 +71,23 @@ namespace gym_reservation_backend.Services
 
             return _response;
         }
+
+        public async Task<ServiceResponse> GetMemberById(string Id)
+        {
+            try
+            {
+                var member = await _dbContext.Members.FirstOrDefaultAsync(x => x.IDCard==Id); // Faster read
+                _response.State = true;
+                _response.Data.Add(member);
+            }
+            catch (Exception ex)
+            {
+                _response.State = false;
+                _response.ErrorMessage = $"Error retrieving Member: {ex.Message}";
+            }
+
+            return _response;
+        }
         public async Task<ServiceResponse> GetMemberSubscriptionHistory(int memberId)
         {
             try

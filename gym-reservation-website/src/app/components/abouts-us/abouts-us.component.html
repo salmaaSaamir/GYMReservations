@@ -4,7 +4,8 @@
   <!-- Section Title -->
   <div class="container section-title" data-aos="fade-up">
     <h2>About Us</h2>
-    <p>We are here to help you achieve your fitness goals with flexible subscriptions, expert trainers, and a supportive community.</p>
+    <p>We are here to help you achieve your fitness goals with flexible subscriptions, expert trainers, and a supportive
+      community.</p>
   </div><!-- End Section Title -->
 
   <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -16,11 +17,14 @@
       <div class="col-lg-8">
         <h2>Fitness. Coaching. Motivation.</h2>
         <p class="fst-italic py-3">
-          Your health is our priority. We believe that fitness is not just about working out, but about building a lifestyle that empowers you every day.
+          Your health is our priority. We believe that fitness is not just about working out, but about building a
+          lifestyle that empowers you every day.
         </p>
-      
+
         <p class="py-3">
-          With us, you get more than a subscription. You get access to top-notch classes, personalized follow-up with professional coaches, and the flexibility to book easily online or through our team. Our mission is to provide a positive, motivating, and results-driven environment for every member.
+          With us, you get more than a subscription. You get access to top-notch classes, personalized follow-up with
+          professional coaches, and the flexibility to book easily online or through our team. Our mission is to provide
+          a positive, motivating, and results-driven environment for every member.
         </p>
       </div>
     </div>
@@ -42,28 +46,33 @@
 
       <div class="col-lg-3 col-md-6">
         <div class="stats-item text-center w-100 h-100">
-          <span data-purecounter-start="0" data-purecounter-end="350" data-purecounter-duration="1" class="purecounter"></span>
+          <span data-purecounter-start="0" [attr.data-purecounter-end]="CurrentState?.TotalMembers"
+            data-purecounter-duration="1" class="purecounter"></span>
           <p>Active Members</p>
         </div>
       </div><!-- End Stats Item -->
 
       <div class="col-lg-3 col-md-6">
         <div class="stats-item text-center w-100 h-100">
-          <span data-purecounter-start="0" data-purecounter-end="1200" data-purecounter-duration="1" class="purecounter"></span>
-          <p>Classes Completed</p>
+          <span attr.data-purecounter-start="0" [attr.data-purecounter-end]="CurrentState?.TotalClasses"
+            attr.data-purecounter-duration="1" class="purecounter">
+          </span>
+          <p>Classes</p>
         </div>
       </div><!-- End Stats Item -->
 
       <div class="col-lg-3 col-md-6">
         <div class="stats-item text-center w-100 h-100">
-          <span data-purecounter-start="0" data-purecounter-end="5000" data-purecounter-duration="1" class="purecounter"></span>
-          <p>Hours of Coaching</p>
+          <span data-purecounter-start="0" [attr.data-purecounter-end]="CurrentState?.TotalSubscriptions"
+            data-purecounter-duration="1" class="purecounter"></span>
+          <p>Our Subscriptions</p>
         </div>
       </div><!-- End Stats Item -->
 
       <div class="col-lg-3 col-md-6">
         <div class="stats-item text-center w-100 h-100">
-          <span data-purecounter-start="0" data-purecounter-end="25" data-purecounter-duration="1" class="purecounter"></span>
+          <span data-purecounter-start="0" [attr.data-purecounter-end]="CurrentState?.TotalTrainers" data-purecounter-duration="1"
+            class="purecounter"></span>
           <p>Professional Trainers</p>
         </div>
       </div><!-- End Stats Item -->

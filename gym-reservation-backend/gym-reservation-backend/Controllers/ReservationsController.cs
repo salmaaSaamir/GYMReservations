@@ -1,6 +1,7 @@
 ﻿using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Models;
 using gym_reservation_backend.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -42,9 +43,12 @@ namespace gym_reservation_backend.Controllers
         // POST: api/Reservations/SaveReservation
         // Will Add if Id == 0, Update otherwise
 
-        [HttpPost("{email}")]
-        public async Task<IActionResult> SaveReservation([FromBody] Reservation reservation,string email)
+        [HttpPost("{email?}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SaveReservation([FromBody] Reservation reservation,string? email)
         {
+            if (string.IsNullOrWhiteSpace(email))
+                email = null;
             var res = await _reservationService.SaveReservation(reservation, email);
             return Ok(JsonConvert.SerializeObject(res));
         }

@@ -1,5 +1,6 @@
 ﻿using gym_reservation_backend.Interfaces;
 using gym_reservation_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -22,6 +23,14 @@ namespace gym_reservation_backend.Controllers
         public async Task<IActionResult> GetMembers([FromQuery] int page = 1, [FromQuery] int pageSize = 20)
         {
             var res = await _memberService.GetMembers(page, pageSize);
+            return Ok(JsonConvert.SerializeObject(res));
+        }
+        // GET: api/Members/GetMemberById
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetMemberById(string id)
+        {
+            var res = await _memberService.GetMemberById(id);
             return Ok(JsonConvert.SerializeObject(res));
         }
 

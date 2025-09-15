@@ -12,5 +12,6 @@ namespace gym_reservation_backend.Interfaces
         Task<ServiceResponse> FreezeSubscription(int memberId, int subscriptionHistoryId);
         Task<bool> Delete(int memberId);
         Task<ServiceResponse> Save(Member member);
+        Task<ServiceResponse> GetMemberById(string Id);
     }
 }

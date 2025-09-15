@@ -32,14 +32,15 @@
               "node_modules/aos/dist/aos.css",
               "node_modules/swiper/swiper-bundle.min.css",
               "node_modules/glightbox/dist/css/glightbox.min.css",
-              "node_modules/ngx-toastr/toastr.css" 
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
-              "src/assets/js/main.js",
+              "node_modules/jquery/dist/jquery.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/aos/dist/aos.js",
               "node_modules/swiper/swiper-bundle.min.js",
-              "node_modules/glightbox/dist/js/glightbox.min.js"
+              "node_modules/glightbox/dist/js/glightbox.min.js",
+              "src/assets/js/main.js"
             ]
           },
           "configurations": {
