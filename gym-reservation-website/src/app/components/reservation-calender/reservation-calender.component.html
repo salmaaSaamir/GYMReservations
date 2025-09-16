@@ -32,7 +32,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-dark mx-2" data-dismiss="modal" (click)="closeReservation()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="SaveReservation()" [disabled]="Reservation.MemberId == 0">Save changes</button>
+        <button type="button" class="btn btn-primary" (click)="GetMemberId()" [disabled]="Reservation.MemberId == 0">Save changes</button>
       </div>
     </div>
   </div>

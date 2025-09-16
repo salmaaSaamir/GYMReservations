@@ -44,15 +44,17 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async ngOnInit() {
+async ngOnInit() {
   this.userEmail = this.userData.Email;
 
   try {
     await this.notificationService.startConnection();
-    this.notificationService.joinGroup(this.userEmail);
+
+  
+    const currentClassId = "GymAdminsGroup"; 
+    this.notificationService.joinClassGroup(currentClassId, this.userEmail);
 
     this.notificationSub = this.notificationService.notification$.subscribe((n: any) => {
-      
       this.notifications.unshift(n);
       this.updateUnreadCount();
       this.ringBell();
@@ -65,12 +67,15 @@ export class NotificationsComponent implements OnInit, OnDestroy {
   }
 }
 
+ngOnDestroy(): void {
+  this.notificationSub?.unsubscribe();
 
-  ngOnDestroy(): void {
-    this.notificationSub?.unsubscribe();
-    this.notificationService.leaveGroup(this.userEmail);
-    this.notificationService.stopConnection();
-  }
+  const currentClassId = "GymAdminsGroup";
+  this.notificationService.leaveClassGroup(currentClassId, this.userEmail);
+
+  this.notificationService.stopConnection();
+}
+
 
   private async loadNotifications() {
     try {

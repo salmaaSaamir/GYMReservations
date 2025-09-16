@@ -138,73 +138,102 @@ public class NotificationService : INotificationService
             return _response;
         }
     }
-
-    public async Task SendCancellClassNotification(string userEmail, string message)
+    public async Task SendCancellClassNotification(string userEmail,string message)
     {
         try
         {
-            var notification = new Notification
-            {
-                userEmail = userEmail,
-                Message = message,
-                Type = "CancellClass",
-                Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                IsRead = false
-            };
+            // 1. get all users
+            var allUsers = _context.Users.Select(u => u.Email).ToList();
 
-            _context.Notifications.Add(notification);
+            // 2. for online users
+            var onlineUsers = NotificationHub.GetUsersInGroup("GymAdminsGroup");
+
+            var notifications = new List<Notification>();
+
+            // 3. for all joined users
+            foreach (var email in allUsers)
+            {
+                var notification= new Notification
+                {
+                    userEmail = email,
+                    Message = message,
+                    Type = "CancellClass",
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    IsRead = false
+                };
+                _context.Notifications.Add(notification);
+
+            }
+
             await _context.SaveChangesAsync();
 
-            await _hubContext.Clients.Group(userEmail).SendAsync("ReceiveNotification", new NotificationDto
+            // 4. بعت إشعار بالـ SignalR للي أونلاين فقط
+            if (onlineUsers.Any())
             {
-                Id = notification.Id,
-                Title = "Class Cancelled",
-                Message = message,
-                Type = "CancellClass",
-                Date = notification.Date,
-                IsRead = false
-            });
-
+                await _hubContext.Clients.Group("GymAdminsGroup").SendAsync("ReceiveNotification", new NotificationDto
+                {
+                    Title = "Class Cancelled",
+                    Message = message,
+                    Type = "CancellClass",
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    IsRead = false
+                });
+            }
         }
         catch (Exception ex)
         {
-            // Log error
             Console.WriteLine($"Error sending cancellation notification: {ex.Message}");
         }
     }
 
-    public async Task SendCompleteClassNotification(string userEmail, string message)
+    public async Task SendCompleteClassNotification(string usrEmail,string message)
     {
         try
         {
-            var notification = new Notification
-            {
-                userEmail = userEmail,
-                Message = message,
-                Type = "CompleteClass",
-                Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                IsRead = false
-            };
+            // 1. get all users emails
+            var allUsers = _context.Users.Select(u => u.Email).ToList();
 
-            _context.Notifications.Add(notification);
+            // 2. get joined emailes
+            var onlineUsers = NotificationHub.GetUsersInGroup("GymAdminsGroup");
+
+            var notifications = new List<Notification>();
+
+            // 3. all the suers get notifcation
+            foreach (var email in allUsers)
+            {
+                var notification = new Notification
+                {
+                    userEmail = email,
+                    Message = message,
+                    Type = "CompleteClass",
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    IsRead = false
+                };
+                _context.Notifications.Add(notification);
+
+            }
+
             await _context.SaveChangesAsync();
 
-            await _hubContext.Clients.Group(userEmail).SendAsync("ReceiveNotification", new NotificationDto
+            // 4. for nline users
+            if (onlineUsers.Any())
             {
-                Id = notification.Id,
-                Title = "Class Completed",
-                Message = message,
-                Type = "CompleteClass",
-                Date = notification.Date,
-                IsRead = false
-            });
-
-
+                await _hubContext.Clients.Group("GymAdminsGroup").SendAsync("ReceiveNotification", new NotificationDto
+                {
+                    Title = "Class Completed",
+                    Message = message,
+                    Type = "CompleteClass",
+                    Date = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    IsRead = false
+                });
+            }
         }
         catch (Exception ex)
         {
-            // Log error
             Console.WriteLine($"Error sending completion notification: {ex.Message}");
         }
     }
+
+
+
 }

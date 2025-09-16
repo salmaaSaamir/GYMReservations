@@ -52,30 +52,6 @@ export class NotificationService {
     });
   }
 
-public joinGroup(email: string): void {
-  if (this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected) {
-    this.hubConnection.invoke('JoinGroupByEmail', email)
-      .then(() => console.log(`✅ Joined group for email: ${email}`))
-      .catch(err => console.error('❌ Error joining group', err));
-  } else {
-    console.warn('⚠️ Hub not connected yet, delaying joinGroup...');
-    this.hubConnection.onreconnected(() => {
-      this.hubConnection.invoke('JoinGroupByEmail', email)
-        .then(() => console.log(`✅ Joined group for email (after reconnect): ${email}`))
-        .catch(err => console.error('❌ Error joining group after reconnect', err));
-    });
-  }
-}
-
-
-  public leaveGroup(email: string): void {
-    if (this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected) {
-      this.hubConnection.invoke('LeaveGroupByEmail', email)
-        .then(() => console.log(`✅ Left group for email: ${email}`))
-        .catch(err => console.error('❌ Error leaving group', err));
-    }
-  }
-
   // HTTP API Methods
   /** POST: Get user notifications */
   getNotifications(model: string) {
@@ -114,4 +90,28 @@ public joinGroup(email: string): void {
   public getConnectionState(): string {
     return this.hubConnection ? this.hubConnection.state : 'Disconnected';
   }
+
+  public joinClassGroup(classId: string, email: string): void {
+  if (this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected) {
+    this.hubConnection.invoke('JoinGroupByClass', classId, email)
+      .then(() => console.log(`✅ Joined group for class: ${classId}, email: ${email}`))
+      .catch(err => console.error('❌ Error joining group', err));
+  } else {
+    console.warn('⚠️ Hub not connected yet, delaying joinGroup...');
+    this.hubConnection.onreconnected(() => {
+      this.hubConnection.invoke('JoinGroupByClass', classId, email)
+        .then(() => console.log(`✅ Joined group for class (after reconnect): ${classId}`))
+        .catch(err => console.error('❌ Error joining group after reconnect', err));
+    });
+  }
+}
+
+public leaveClassGroup(classId: string, email: string): void {
+  if (this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected) {
+    this.hubConnection.invoke('LeaveGroupByClass', classId, email)
+      .then(() => console.log(`✅ Left group for class: ${classId}, email: ${email}`))
+      .catch(err => console.error('❌ Error leaving group', err));
+  }
+}
+
 }

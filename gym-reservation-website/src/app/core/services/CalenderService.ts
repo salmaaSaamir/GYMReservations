@@ -19,13 +19,16 @@ export class CalenderService {
   getClassesForMonth(): Observable<any[]> {
     return this.http.get<any[]>(`${this.ClassesAPIUrl}GetClassesForMonth`);
   }
+saveReservation(reservation: any): Observable<any> {
+  return this.http.post(
+    `${this.ReservationsAPIUrl}SaveReservation`,
+    reservation,
+    { headers: { 'Content-Type': 'application/json' } }  // مهم جداً
+  );
+}
 
-    /** POST: Add  Reservation */
-  saveReservation(reservation: any): Observable<any> {
-    return this.http.post(`${this.ReservationsAPIUrl}SaveReservation`, reservation);
-  }
   /** GET: Get Member By Id */
-  getAllMembers(id:string): Observable<any> {
-    return this.http.get(`${this.MembersAPIUrl}GetMmeberById/${id}`);
+  GetMmeberById(id:string): Observable<any> {
+    return this.http.get(`${this.MembersAPIUrl}GetMemberById/${id}`);
   }
 }

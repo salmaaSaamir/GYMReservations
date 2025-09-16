@@ -157,11 +157,8 @@ namespace gym_reservation_backend.Services
                 }
 
                 await _dbContext.SaveChangesAsync();
-                if (email != null)
-                {
                     // ✅ After saving, check if class completion limit is reached
                     await CheckClassCompletion(reservation.ClassId, email);
-                }
  
 
                 // Return minimal data to avoid circular references
@@ -177,7 +174,7 @@ namespace gym_reservation_backend.Services
             }
         }
 
-        private async Task<ServiceResponse> CheckClassCompletion(int classId,string email)
+        private async Task<ServiceResponse> CheckClassCompletion(int classId,string? email)
         {
             try
             {
