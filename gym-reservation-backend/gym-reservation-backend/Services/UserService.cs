@@ -166,9 +166,9 @@ namespace gym_reservation_backend.Services
 
                 if (IsExists(id))
                 {
-                    var Trainer = await _dbContext.Trainers.FirstAsync(x => x.Id == id);
+                    var User = await _dbContext.Users.FirstAsync(x => x.Id == id);
 
-                    _dbContext.Trainers.Remove(Trainer);
+                    _dbContext.Users.Remove(User);
                     await _dbContext.SaveChangesAsync();
 
 

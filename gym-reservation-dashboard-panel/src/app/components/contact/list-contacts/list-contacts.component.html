@@ -7,20 +7,16 @@
     <h3>{{ "ContactUs" | translate }}</h3>
     <div class="d-flex gap-2">
       <!-- Status Filter Dropdown -->
-    <mat-form-field appearance="outline" style="width: 150px;">
-  <mat-label class="text-primary">
-    {{ "Status" | translate }}
-  </mat-label>
-  <mat-select
-    [(value)]="statusFilter"
-    (selectionChange)="filterContactUss()"
-    panelClass="status-filter-panel"
-  >
-    <mat-option value="all">{{ "AllStatus" | translate }}</mat-option>
-    <mat-option value="pending">{{ "Pending" | translate }}</mat-option>
-    <mat-option value="responded">{{ "Responded" | translate }}</mat-option>
-  </mat-select>
-</mat-form-field>
+      <mat-form-field appearance="outline" style="width: 150px;">
+        <mat-label class="text-primary">
+          {{ "Status" | translate }}
+        </mat-label>
+        <mat-select [(value)]="statusFilter" (selectionChange)="filterContactUss()" panelClass="status-filter-panel">
+          <mat-option value="all">{{ "AllStatus" | translate }}</mat-option>
+          <mat-option value="pending">{{ "Pending" | translate }}</mat-option>
+          <mat-option value="responded">{{ "Responded" | translate }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
     </div>
   </div>
@@ -41,31 +37,30 @@
           <td>{{ u.Id }}</td>
           <td class="text-wrap">
             <div class="message-container">
-              <div
-                class="message-preview"
-                [class.blurred]="u.Message && u.Message.length > 100"
-              >
+              <div class="message-preview" [class.blurred]="u.Message && u.Message.length > 100">
                 {{ u.Message | truncate:100 }}
               </div>
             </div>
           </td>
           <td>{{ u.Email }}</td>
           <td>
-            <span class="badge bg-success" *ngIf="u.Response != ''">
+            <span class="badge bg-success" *ngIf="u.Response!=null">
               {{ "Responded" | translate }}
             </span>
-            <span class="badge bg-info" *ngIf="u.Response == ''">
+            <span class="badge bg-info" *ngIf=" u.Response==null">
               {{ "Pending" | translate }}
             </span>
           </td>
           <td class="text-end">
-            <button
-              class="btn btn-sm btn-outline-info me-1 iconButton"
-              [matTooltip]="'Respond' | translate"
-              (click)="openAddContactUs(u)"
-              [disabled]="u.Response != ''"
-            >
+            <button *ngIf="u.Response == null" class="btn btn-sm btn-outline-info me-1 iconButton"
+              [matTooltip]="'Respond' | translate" (click)="openAddContactUs(u)">
               <i class="bi bi-chat"></i>
+
+            </button>
+            <button *ngIf="u.Response != null" class="btn btn-sm btn-outline-secondary me-1 iconButton"
+              [matTooltip]="'show' | translate" (click)="openAddContactUs(u)">
+              <i class="bi bi-eye"></i>
+
             </button>
           </td>
         </tr>
@@ -85,11 +80,7 @@
         <mat-label class="text-primary">
           {{ "ItemsPerPage" | translate }}
         </mat-label>
-        <mat-select
-          [(value)]="pageSize"
-          (selectionChange)="onPageSizeChange()"
-          panelClass="page-size-panel"
-        >
+        <mat-select [(value)]="pageSize" (selectionChange)="onPageSizeChange()" panelClass="page-size-panel">
           <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
             {{ size }}
           </mat-option>
@@ -103,10 +94,7 @@
   </div>
 
   <!-- Add/Edit ContactUs Form -->
-  <app-respond-contact
-    *ngIf="isAddContactUs"
-    [contactUs]="selectedContactUs"
-    (closeAddContactUsModal)="closeAddContactUsModal()"
-  >
+  <app-respond-contact *ngIf="isAddContactUs" [contactUs]="selectedContactUs"
+    (closeAddContactUsModal)="closeAddContactUsModal()">
   </app-respond-contact>
 </div>

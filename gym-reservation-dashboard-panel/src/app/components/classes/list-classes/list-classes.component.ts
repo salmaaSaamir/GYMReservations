@@ -126,7 +126,7 @@ export class ListClassesComponent implements OnInit {
         await this.loadClasss();
         this.toaster.success('Class deleted successfully');
       } catch (error) {
-        this.toaster.error('Failed to delete Class');
+        this.toaster.error('Failed to delete Class Check the Usage of this Class');
       }
     }
   }

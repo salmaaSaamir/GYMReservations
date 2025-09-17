@@ -50,24 +50,25 @@ export class AddReservationComponent implements OnInit {
       if (classId > 0) {
         this.checkClassAvailability(classId);
         // When class changes, also check member reservation if member is already selected
-        const memberId = this.form.get('MemberId')?.value;
-        if (memberId > 0) {
-          this.checkMemberReservation(memberId, classId);
-        }
+        // const memberId = this.form.get('MemberId')?.value;
+        // if (memberId > 0) {
+        //   this.checkMemberReservation(memberId, classId);
+        // }
       } else {
         this.classAvailability = null;
         this.IsmemberHasReservationCheck = false; // Reset member reservation check
       }
     });
 
-    this.form.get('MemberId')?.valueChanges.subscribe(memberId => {
-      const classId = this.form.get('ClassId')?.value;
-      if (memberId > 0 && classId > 0) {
-        this.checkMemberReservation(memberId, classId);
-      } else {
-        this.IsmemberHasReservationCheck = false; // Reset member reservation check
-      }
-    });
+    // this.form.get('MemberId')?.valueChanges.subscribe(memberId => {
+    //   const classId = this.form.get('ClassId')?.value;
+    //   // if (memberId > 0 && classId > 0) {
+    //   //   this.checkMemberReservation(memberId, classId);
+    //   // }
+    //   //  else {
+    //   //   this.IsmemberHasReservationCheck = false; // Reset member reservation check
+    //   // }
+    // });
 
     const token = localStorage.getItem('GYMReservationToken')?.toString() ?? '';
     if (token) {
@@ -78,16 +79,17 @@ export class AddReservationComponent implements OnInit {
   }
 
   async ngOnInit() {
+
     await this.loadData();
     if (this.Reservation) {
       this.form.patchValue(this.Reservation);
       // If editing, trigger validation checks
-      if (this.Reservation.ClassId > 0) {
+      if (+this.Reservation.ClassId > 0) {
         this.checkClassAvailability(this.Reservation.ClassId);
       }
-      if (this.Reservation.MemberId > 0 && this.Reservation.ClassId > 0) {
-        this.checkMemberReservation(this.Reservation.MemberId, this.Reservation.ClassId);
-      }
+      // if (+this.Reservation.MemberId > 0 && +this.Reservation.ClassId > 0) {
+      //   this.checkMemberReservation(+this.Reservation.MemberId, +this.Reservation.ClassId);
+      // }
     }
     $('#addReservationModal').modal('show');
   }
@@ -155,6 +157,7 @@ export class AddReservationComponent implements OnInit {
 
   async checkMemberReservation(memberId: number, classId: number) {
     try {
+      
       // Find the selected class to get the classDay
       const selectedClass = this.classes.find(c => c.Id === +classId);
 
@@ -168,7 +171,7 @@ export class AddReservationComponent implements OnInit {
       const res: any = await lastValueFrom(
         this.reservationService.checkMemberReservation(+classId, +memberId, classDay)
       );
-
+      console.log(res)
       this.IsmemberHasReservationCheck = res.State;
     } catch (error) {
       console.error('Error checking member reservation', error);

@@ -80,7 +80,6 @@ export class AddClassComponent implements OnInit {
       const res = await lastValueFrom(
         this.classService.checkClassConflict(this.form.value.ClassDay, this.form.value.ClassTime.toString())
       );
-
       if (res.State && res.Data[0]) {
         this.conflictError = 'There is already a class scheduled at this time. Please choose a different time.';
       } else {

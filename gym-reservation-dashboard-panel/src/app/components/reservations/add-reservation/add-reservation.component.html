@@ -1,24 +1,14 @@
 <!-- Modal -->
-<div
-  class="modal fade"
-  data-bs-backdrop="static"
-  id="addReservationModal"
-  aria-labelledby="addReservationModalLabel"
-  aria-hidden="true"
->
+<div class="modal fade" data-bs-backdrop="static" id="addReservationModal" aria-labelledby="addReservationModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content border-0 rounded-4 shadow-sm">
       <div class="modal-header d-flex justify-content-between">
         <h5 class="modal-title" id="addReservationModalLabel">
           {{ form.value.Id ? ("EditReservation" | translate) : ("AddReservation" | translate) }}
         </h5>
-        <button
-          type="button"
-          class="btn-close m-0"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-          (click)="cancel()"
-        ></button>
+        <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"
+          (click)="cancel()"></button>
       </div>
 
       <div class="modal-body">
@@ -38,26 +28,21 @@
                   </mat-option>
                 </mat-select>
               </mat-form-field>
-              <div
-                *ngIf="form.get('ClassId')?.invalid && form.get('ClassId')?.touched"
-                class="text-danger"
-              >
+              <div *ngIf="form.get('ClassId')?.invalid && form.get('ClassId')?.touched" class="text-danger">
                 <small *ngIf="form.get('ClassId')?.errors?.['required']">
                   {{ "ClassRequired" | translate }}
                 </small>
               </div>
               <!-- Class availability info -->
               <div *ngIf="classAvailability" class="mt-2">
-                <small
-                  [class.text-success]="!classAvailability.IsFull"
-                  [class.text-danger]="classAvailability.IsFull"
-                >
+                <p class="fs-6 fw-bold" [class.text-success]="!classAvailability.IsFull"
+                  [class.text-danger]="classAvailability.IsFull">
                   {{
-                    classAvailability.IsFull
-                      ? ("ClassFull" | translate)
-                      : classAvailability.AvailableSlots + " " + ("SlotsAvailable" | translate)
+                  classAvailability.IsFull
+                  ? ("ClassFull" | translate)
+                  : classAvailability.AvailableSlots + " " + ("SlotsAvailable" | translate)
                   }}
-                </small>
+                </p>
               </div>
             </div>
 
@@ -70,41 +55,27 @@
               <!-- Search input for members -->
               <div class="d-flex gap-2">
                 <div class="mb-2">
-                <input
-                  type="text"
-                  class="form-control w-100"
-                  style="border-radius: 5px;
+                  <input type="text" class="form-control w-100" style="border-radius: 5px;
     margin: 4px 0px;
-    height: 36px;"
-                  placeholder="{{ 'SearchMember' | translate }}..."
-                  [(ngModel)]="memberSearch"
-                  [ngModelOptions]="{standalone: true}"
-                  (input)="filterMembers()"
-                  (focus)="showMemberDropdown = true"
-                  (blur)="onMemberSearchBlur()"
-                >
+    height: 36px;" placeholder="{{ 'SearchMember' | translate }}..." [(ngModel)]="memberSearch"
+                    [ngModelOptions]="{standalone: true}" (input)="filterMembers()" (focus)="showMemberDropdown = true"
+                    (blur)="onMemberSearchBlur()">
+                </div>
+
+                <mat-form-field appearance="outline" class="w-75">
+                  <mat-select formControlName="MemberId" #memberSelect
+  (selectionChange)="checkMemberReservation($event.value, form.get('ClassId')?.value)">                    <div class="p-2" *ngIf="filteredMembers.length === 0">
+                      <small class="text-muted">{{ 'NoMembersFound' | translate }}</small>
+                    </div>
+                    <mat-option *ngFor="let member of filteredMembers" [value]="member.Id"
+                      (click)="showMemberDropdown = false">
+                      {{ member.Name }} ({{ member.IDCard }})
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
 
-              <mat-form-field appearance="outline" class="w-75">
-                <mat-select formControlName="MemberId" #memberSelect>
-                  <div class="p-2" *ngIf="filteredMembers.length === 0">
-                    <small class="text-muted">{{ 'NoMembersFound' | translate }}</small>
-                  </div>
-                  <mat-option 
-                    *ngFor="let member of filteredMembers" 
-                    [value]="member.Id"
-                    (click)="showMemberDropdown = false"
-                  >
-                    {{ member.Name }} ({{ member.IDCard }})
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              </div>
-
-              <div
-                *ngIf="form.get('MemberId')?.invalid && form.get('MemberId')?.touched"
-                class="text-danger"
-              >
+              <div *ngIf="form.get('MemberId')?.invalid && form.get('MemberId')?.touched" class="text-danger">
                 <small *ngIf="form.get('MemberId')?.errors?.['required']">
                   {{ "MemberRequired" | translate }}
                 </small>
@@ -119,21 +90,12 @@
           </div>
 
           <div class="d-flex justify-content-end gap-3 mt-3">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-              (click)="cancel()"
-            >
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancel()">
               {{ "Cancel" | translate }}
             </button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              [disabled]="
+            <button type="submit" class="btn btn-primary" [disabled]="
                 form.invalid || classAvailability?.IsFull || IsmemberHasReservationCheck
-              "
-            >
+              ">
               {{ "Save" | translate }}
             </button>
           </div>

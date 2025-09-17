@@ -5,10 +5,7 @@
 <div *ngIf="!isSpinner">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>{{ "Trainers" | translate }}</h3>
-    <button
-      class="btn btn-primary d-flex align-items-center gap-1"
-      (click)="openAddTrainer()"
-    >
+    <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddTrainer()">
       <i class="bi bi-plus-lg"></i> {{ "AddTrainer" | translate }}
     </button>
   </div>
@@ -20,13 +17,8 @@
         <span class="input-group-text">
           <i class="bi bi-search"></i>
         </span>
-        <input
-          type="text"
-          class="form-control"
-          [placeholder]="'SearchTrainers' | translate"
-          [(ngModel)]="searchTerm"
-          (input)="onSearch()"
-        />
+        <input type="text" class="form-control" [placeholder]="'SearchTrainers' | translate" [(ngModel)]="searchTerm"
+          (input)="onSearch()" />
       </div>
     </div>
   </div>
@@ -40,6 +32,8 @@
           <th>{{ "Name" | translate }}</th>
           <th>{{ "Phone" | translate }}</th>
           <th>{{ "Email" | translate }}</th>
+          <th>{{ "IsGeneral" | translate }}</th>
+
           <th class="text-end">{{ "Actions" | translate }}</th>
         </tr>
       </thead>
@@ -49,19 +43,17 @@
           <td>{{ u.Name }}</td>
           <td>{{ u.Phone }}</td>
           <td>{{ u.Email }}</td>
+          <td *ngIf="u.IsGeneralTrainer"><i class="bi bi-check2-circle text-success fs-4"></i> </td>
+          <td *ngIf="!u.IsGeneralTrainer"><i class="bi bi-x-circle text-danger fs-4"></i></td>
+
+
           <td class="text-end">
-            <button
-              class="btn btn-sm btn-outline-secondary me-1 iconButton"
-              matTooltip="{{ 'Edit' | translate }}"
-              (click)="openAddTrainer(u)"
-            >
+            <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="{{ 'Edit' | translate }}"
+              (click)="openAddTrainer(u)">
               <i class="bi bi-pencil"></i>
             </button>
-            <button
-              class="btn btn-sm btn-outline-danger iconButton"
-              matTooltip="{{ 'Delete' | translate }}"
-              (click)="deleteTrainer(u.Id)"
-            >
+            <button class="btn btn-sm btn-outline-danger iconButton" matTooltip="{{ 'Delete' | translate }}"
+              (click)="deleteTrainer(u.Id)">
               <i class="bi bi-trash"></i>
             </button>
           </td>
@@ -80,11 +72,7 @@
     <div class="d-flex align-items-center my-3">
       <mat-form-field appearance="outline">
         <mat-label class="text-primary">{{ "ItemsPerPage" | translate }}</mat-label>
-        <mat-select
-          [(value)]="pageSize"
-          (selectionChange)="onPageSizeChange()"
-          panelClass="page-size-panel"
-        >
+        <mat-select [(value)]="pageSize" (selectionChange)="onPageSizeChange()" panelClass="page-size-panel">
           <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
             {{ size }}
           </mat-option>
@@ -100,10 +88,6 @@
 </div>
 
 <!-- Add/Edit Trainer Form -->
-<app-add-trainer
-  *ngIf="isAddTrainer"
-  [trainer]="selectedTrainer"
-  [lastIDCard]="LastIDCard"
-  (closeAddTrainerModal)="closeAddTrainerModal()"
->
+<app-add-trainer *ngIf="isAddTrainer" [trainer]="selectedTrainer" [lastIDCard]="LastIDCard"
+  (closeAddTrainerModal)="closeAddTrainerModal()">
 </app-add-trainer>

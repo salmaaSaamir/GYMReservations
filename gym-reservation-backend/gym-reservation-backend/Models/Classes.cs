@@ -30,6 +30,8 @@ namespace gym_reservation_backend.Models
         public string ClassTime { get; set; } = string.Empty;
         public string MemberName { get; set; } = string.Empty;
         public string MemberID { get; set; } = string.Empty;
+        public int MemberId { get; set; } 
+        public int ClassId { get; set; } 
    
         public string TrainerName { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }

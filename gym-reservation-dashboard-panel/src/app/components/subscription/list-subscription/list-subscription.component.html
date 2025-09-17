@@ -5,10 +5,7 @@
 <div *ngIf="!isSpinner">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>{{ "Subscriptions" | translate }}</h3>
-    <button
-      class="btn btn-primary d-flex align-items-center gap-1"
-      (click)="openAddSubscription()"
-    >
+    <button class="btn btn-primary d-flex align-items-center gap-1" (click)="openAddSubscription()">
       <i class="bi bi-plus-lg"></i> {{ "AddSubscription" | translate }}
     </button>
   </div>
@@ -16,17 +13,12 @@
   <!-- Search Input -->
   <div class="row mb-3">
     <div class="col-md-6">
-      <div class="input-group d-flex align-items-center" [dir]="'ltr'" >
+      <div class="input-group d-flex align-items-center" [dir]="'ltr'">
         <span class="input-group-text">
           <i class="bi bi-search"></i>
         </span>
-        <input
-          type="text"
-          class="form-control"
-          [placeholder]="'SearchSubscriptions' | translate"
-          [(ngModel)]="searchTerm"
-          (input)="onSearch()"
-        />
+        <input type="text" class="form-control" [placeholder]="'SearchSubscriptions' | translate"
+          [(ngModel)]="searchTerm" (input)="onSearch()" />
       </div>
     </div>
   </div>
@@ -53,39 +45,44 @@
           <td>{{ sub.Subscription.Id }}</td>
           <td>{{ sub.Subscription.Name }}</td>
           <td>{{ sub.Subscription.MonthsNo }}</td>
-          <td>{{ sub.Subscription.Description }}</td>
+
+           <td class="text-wrap">
+            <div class="message-container">
+              <div
+                class="message-preview"
+              >
+                {{sub.Subscription.Description | truncate:100 }}
+              </div>
+            </div>
+          </td>
           <td>{{ sub.Subscription.Price | number }}</td>
           <td>
             {{
-              calculateDiscountedPrice(
-                sub.Subscription.Price,
-                getApplicableOffer(sub.ApplicableOffers)
-              ) | number
+            calculateDiscountedPrice(
+            sub.Subscription.Price,
+            getApplicableOffer(sub.ApplicableOffers)
+            ) | number
             }}
           </td>
           <td>
             <div *ngIf="getApplicableOffer(sub.ApplicableOffers); else noOffer">
-              <span
-                class="badge me-1 mb-1"
-                [ngClass]="
+              <span class="badge me-1 mb-1" [ngClass]="
                   getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer
                     ? 'bg-info'
                     : 'bg-warning'
-                "
-                matTooltip="{{
+                " matTooltip="{{
                   (getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer
                     ? ('GeneralOffer' | translate)
                     : ('SpecificOffer' | translate)
                   )
                 }}: {{ getApplicableOffer(sub.ApplicableOffers)?.Value }}% 
                 ({{ getApplicableOffer(sub.ApplicableOffers)?.StartDate | date:'shortDate' }} - 
-                 {{ getApplicableOffer(sub.ApplicableOffers)?.EndDate | date:'shortDate' }})"
-              >
+                 {{ getApplicableOffer(sub.ApplicableOffers)?.EndDate | date:'shortDate' }})">
                 {{ getApplicableOffer(sub.ApplicableOffers)?.Value }}%
                 {{
-                  getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer
-                    ? "(G)"
-                    : "(S)"
+                getApplicableOffer(sub.ApplicableOffers)?.IsGeneralOffer
+                ? "(G)"
+                : "(S)"
                 }}
               </span>
             </div>
@@ -94,34 +91,25 @@
             </ng-template>
           </td>
           <td>
-            <span
-              class="badge"
-              [ngClass]="
+            <span class="badge" [ngClass]="
                 sub.Subscription.IsActive ? 'bg-success' : 'bg-secondary'
-              "
-            >
+              ">
               {{
-                sub.Subscription.IsActive
-                  ? ("Active" | translate)
-                  : ("Inactive" | translate)
+              sub.Subscription.IsActive
+              ? ("Active" | translate)
+              : ("Inactive" | translate)
               }}
             </span>
           </td>
           <td>{{ sub.Subscription.FreezeDays ?? ("NA" | translate) }}</td>
           <td>{{ sub.Subscription.InvetaionsNo }}</td>
           <td class="text-end">
-            <button
-              class="btn btn-sm btn-outline-secondary me-1 iconButton"
-              matTooltip="{{ 'Edit' | translate }}"
-              (click)="openAddSubscription(sub.Subscription)"
-            >
+            <button class="btn btn-sm btn-outline-secondary me-1 iconButton" matTooltip="{{ 'Edit' | translate }}"
+              (click)="openAddSubscription(sub.Subscription)">
               <i class="bi bi-pencil"></i>
             </button>
-            <button
-              class="btn btn-sm btn-outline-danger iconButton"
-              matTooltip="{{ 'Delete' | translate }}"
-              (click)="deleteSubscription(sub.Subscription.Id)"
-            >
+            <button class="btn btn-sm btn-outline-danger iconButton" matTooltip="{{ 'Delete' | translate }}"
+              (click)="deleteSubscription(sub.Subscription.Id)">
               <i class="bi bi-trash"></i>
             </button>
           </td>
@@ -140,11 +128,7 @@
     <div class="d-flex align-items-center my-3">
       <mat-form-field appearance="outline">
         <mat-label class="text-primary">{{ "ItemsPerPage" | translate }}</mat-label>
-        <mat-select
-          [(value)]="pageSize"
-          (selectionChange)="onPageSizeChange()"
-          panelClass="page-size-panel"
-        >
+        <mat-select [(value)]="pageSize" (selectionChange)="onPageSizeChange()" panelClass="page-size-panel">
           <mat-option *ngFor="let size of pageSizeOptions" [value]="size">
             {{ size }}
           </mat-option>
@@ -163,9 +147,6 @@
 </div>
 
 <!-- Add/Edit Subscription Form -->
-<app-add-subscription
-  *ngIf="isAddSubscription"
-  [subscription]="selectedSubscription"
-  (closeAddSubscriptionModal)="closeAddSubscriptionModal()"
->
+<app-add-subscription *ngIf="isAddSubscription" [subscription]="selectedSubscription"
+  (closeAddSubscriptionModal)="closeAddSubscriptionModal()">
 </app-add-subscription>

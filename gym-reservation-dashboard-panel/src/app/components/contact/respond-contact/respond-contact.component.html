@@ -52,6 +52,7 @@
             <textarea
               class="form-control"
               rows="5"
+              [disabled]="contactUs?.Response !=null"
               [placeholder]="'TypeResponseHere' | translate"
               [(ngModel)]="contactUs.Response"
               name="response"
@@ -84,7 +85,7 @@
             <button
               type="submit"
               class="btn btn-primary"
-              [disabled]="!contactUs?.Response "
+              [disabled]="!contactUs?.Response"
             >
               {{ "SendResponse" | translate }}
             </button>

@@ -41,7 +41,9 @@ namespace gym_reservation_backend.Services
                         ClassName = r.Class.Name,
                         ClassTime = r.Class.ClassTime,
                         MemberName = r.Member.Name,
+                        MemberId = r.Member.Id,
                         MemberID = r.Member.IDCard,
+                        ClassId = r.Class.Id,
                         TrainerName = r.Class.Trainer.Name,
                     })
                     .ToListAsync();

@@ -52,6 +52,8 @@ export class ListContactsComponent implements OnInit {
           ...contact,
           showFullMessage: false
         }));
+                  console.log(this.ContactUss)
+
         this.filterContactUss();
       }
     } catch (error) {
@@ -69,8 +71,8 @@ export class ListContactsComponent implements OnInit {
         contact.Email?.toLowerCase().includes(this.searchTerm.toLowerCase());
       // Status filter
       const matchesStatus = this.statusFilter === 'all' ||
-        (this.statusFilter === 'pending' && contact.Response === '') ||
-        (this.statusFilter === 'responded' && contact.Response !== '');
+        (this.statusFilter === 'pending' && contact.Response ==null) ||
+        (this.statusFilter === 'responded' && contact.Response !== null);
       return matchesSearch && matchesStatus;
     });
   }

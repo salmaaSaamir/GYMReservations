@@ -148,6 +148,7 @@ namespace gym_reservation_backend.Services
         }
 
         public async Task<ServiceResponse> Save(Member member)
+        
         {
             using var transaction = await _dbContext.Database.BeginTransactionAsync();
 
@@ -199,6 +200,7 @@ namespace gym_reservation_backend.Services
                         // Schedule expiration check for the new subscription
                         ScheduleExpirationCheck(memberSubscription.Id, memberSubscription.EndDate);
                     }
+                   
 
                     // Update member status based on subscription
                     if (member.CurrentSubscriptionId > 0)
@@ -234,39 +236,62 @@ namespace gym_reservation_backend.Services
             if (subscription == null)
                 throw new Exception("Subscription not found");
 
-            // Find active offer for this subscription
             var activeOffer = await _dbContext.Offers
                 .FirstOrDefaultAsync(o => o.SubscriptionId == subscriptionId &&
-                                         o.IsActive &&
-                                         o.StartDate <= DateTime.Now &&
-                                         o.EndDate >= DateTime.Now);
+                                          o.IsActive &&
+                                          o.StartDate <= DateTime.Now &&
+                                          o.EndDate >= DateTime.Now);
+
+            if (activeOffer == null)
+            {
+                activeOffer = await _dbContext.Offers
+                    .FirstOrDefaultAsync(o => o.IsGeneralOffer &&
+                                              o.IsActive &&
+                                              o.StartDate <= DateTime.Now &&
+                                              o.EndDate >= DateTime.Now);
+            }
 
             DateTime startDate = DateTime.Now;
             DateTime endDate = startDate.AddMonths(subscription.MonthsNo);
 
-            // Apply offer discount if available
             decimal finalPrice = subscription.Price;
             if (activeOffer != null)
             {
                 finalPrice = subscription.Price * (1 - activeOffer.Value / 100m);
             }
 
-            var memberSubscription = new MemberSubscription
+            var existingSub = await _dbContext.MemberSubscriptions
+                .FirstOrDefaultAsync(ms => ms.MemberId == memberId && ms.Status == "Active");
+
+            if (existingSub != null)
             {
-                MemberId = memberId,
-                SubscriptionId = subscriptionId,
-                StartDate = startDate,
-                EndDate = endDate,
-                Status = "Active",
-                RemainingFreezeDays = subscription.FreezeDays,
-                OfferId = activeOffer?.Id // Set OfferId if offer exists
-            };
+                existingSub.SubscriptionId = subscriptionId;
+                existingSub.StartDate = startDate;
+                existingSub.EndDate = endDate;
+                existingSub.RemainingFreezeDays = subscription.FreezeDays;
+                existingSub.OfferId = activeOffer?.Id;
+                existingSub.Status = "Active";
 
-            _dbContext.MemberSubscriptions.Add(memberSubscription);
-            await _dbContext.SaveChangesAsync();
+                return existingSub;
+            }
+            else
+            {
+                var memberSubscription = new MemberSubscription
+                {
+                    MemberId = memberId,
+                    SubscriptionId = subscriptionId,
+                    StartDate = startDate,
+                    EndDate = endDate,
+                    Status = "Active",
+                    RemainingFreezeDays = subscription.FreezeDays,
+                    OfferId = activeOffer?.Id
+                };
 
-            return memberSubscription;
+                _dbContext.MemberSubscriptions.Add(memberSubscription);
+                return memberSubscription;
+            }
         }
+
         public async Task<ServiceResponse> FreezeSubscription(int memberId, int subscriptionHistoryId)
         {
             using var transaction = await _dbContext.Database.BeginTransactionAsync();
