@@ -159,12 +159,11 @@ export class ListMembersComponent implements OnInit {
 
       if (activeSubRes.State && activeSubRes.Data[0] !== "No active subscription found") {
         const activeSubscription = activeSubRes.Data[0];
-
+console.log(activeSubscription);
         const result = await Swal.fire({
           title: 'Freeze Subscription?',
           html: `Freeze <b>${member.Name}'s</b> subscription?<br>
-                 Current end date: ${new Date(activeSubscription.EndDate).toLocaleDateString()}<br>
-                 Freeze days available: ${activeSubscription.CanFreeze ? 'Yes' : 'No'}`,
+                `,
           icon: 'question',
           showCancelButton: true,
           confirmButtonText: 'Yes, freeze it!',

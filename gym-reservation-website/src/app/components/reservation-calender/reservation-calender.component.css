@@ -21,13 +21,12 @@
 
 /* Calendar container */
 .calendar-wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
+  min-width: 800px; /* الحد الأدنى للعرض */
+  width: 100%;
   padding: 1rem;
   border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-  /* في حالة العرض صغير */
+  overflow-x: auto; /* scroll أفقي */
+  
 }
 
 /* FullCalendar overrides */

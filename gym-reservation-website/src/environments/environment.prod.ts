@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-    backApiUrl: 'http://gymreservationsback.runasp.net/api/',
-    notificationUrl: "http://gymreservationsback.runasp.net",
+  backApiUrl: 'https://gymreservationsback.runasp.net/api/',
+  notificationUrl: "https://gymreservationsback.runasp.net",
 };
