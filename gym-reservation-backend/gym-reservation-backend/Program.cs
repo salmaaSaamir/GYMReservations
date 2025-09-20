@@ -40,7 +40,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
         policy
-            .WithOrigins("http://localhost:4200", "http://localhost:4201", "https://gymreservationsweb.netlify.app/", "https://gymdashboardbanel.netlify.app/") // Use WithOrigins instead of SetIsOriginAllowed
+            .WithOrigins("http://localhost:4200", "http://localhost:4201", "https://gymdashboardbanel.netlify.app", "https://gymreservationsweb.netlify.app") // Use WithOrigins instead of SetIsOriginAllowed
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
@@ -119,7 +119,7 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -127,7 +127,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 
 // MIDDLEWARE ORDER IS CRITICAL!
 app.UseCors("AllowSpecificOrigin"); // CORS first
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseAuthentication(); // Authentication before Authorization
 app.UseAuthorization(); // Authorization before mapping
 
