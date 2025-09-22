@@ -81,9 +81,13 @@ Other: Responsive Design, RESTful APIs, Multi-language Support
 ✔ Real-time notifications and automated background tasks for smooth operations.
 ✔ Modern and professional experience for both staff and members.
 
-📸 Demo
+📸 Demo:
+
 https://gymreservationsweb.netlify.app/
+
 https://gymdashboardbanel.netlify.app/ (user:admin@gmail.com,pass:123456)
+
+
 https://gymreservationsback.runasp.net/swagger
 
 📩 Contact
